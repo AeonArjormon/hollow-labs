@@ -304,11 +304,19 @@
       <div class="stats" aria-live="polite">
         <div class="pill" id="hp">生命 3</div>
         <div class="pill" id="crystals">晶石 0/5</div>
-        <div class="mode-marks" aria-label="环境标记">
-          <button class="mode-token light active" id="lightMark" type="button" aria-label="切换到天堂光环境">
+        <div class="mode-marks" aria-label="场景标记">
+          <button class="mode-token light active" id="lightSceneMark" type="button" aria-label="切换到光场景">
             <span class="token-core" aria-hidden="true"></span>
           </button>
-          <button class="mode-token shadow" id="shadowMark" type="button" aria-label="切换到深渊影环境">
+          <button class="mode-token shadow" id="shadowSceneMark" type="button" aria-label="切换到影场景">
+            <span class="token-core" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="mode-marks" aria-label="形态标记">
+          <button class="mode-token light active" id="lightFormMark" type="button" aria-label="切换到光形态">
+            <span class="token-core" aria-hidden="true"></span>
+          </button>
+          <button class="mode-token shadow" id="shadowFormMark" type="button" aria-label="切换到影形态">
             <span class="token-core" aria-hidden="true"></span>
           </button>
         </div>
@@ -324,10 +332,11 @@
           <p>一个天堂与深渊双环境横版动作原型。你需要在两种环境之间快速切换，利用不同地形穿过遗迹，收集月辉晶石，并抵达传送门。</p>
           <div class="controls">
             <div class="key">A / D 或 方向键：移动</div>
-            <div class="key">K：跳跃，空中可二段跳</div>
-            <div class="key">J：天堂远程圣羽，深渊近战斩击</div>
-            <div class="key">空格：切换天堂 / 深渊</div>
-            <div class="key">Shift：暗影冲刺</div>
+            <div class="key">K：跳跃，光形态更高更轻</div>
+            <div class="key">J：光形态远程，影形态近战</div>
+            <div class="key">空格：切换光 / 影场景</div>
+            <div class="key">L：切换光 / 影形态并触发技能</div>
+            <div class="key">Shift：冲刺，影形态更快更远</div>
           </div>
           <button id="start">开始游戏</button>
         </div>
@@ -336,7 +345,7 @@
 
     <footer class="bottombar">
       <span>目标：在天堂与深渊环境之间切换，收集 5 枚晶石，到达右侧传送门。</span>
-      <span class="hint">J 攻击 · K 跳跃 · 空格切换 · R 重开 · P 暂停</span>
+      <span class="hint">J 攻击 · K 跳跃 · 空格切场景 · L 切形态 · R 重开 · P 暂停</span>
     </footer>
   </main>
 
@@ -345,8 +354,10 @@
     const ctx = canvas.getContext("2d");
     const hpEl = document.getElementById("hp");
     const crystalsEl = document.getElementById("crystals");
-    const lightMark = document.getElementById("lightMark");
-    const shadowMark = document.getElementById("shadowMark");
+    const lightSceneMark = document.getElementById("lightSceneMark");
+    const shadowSceneMark = document.getElementById("shadowSceneMark");
+    const lightFormMark = document.getElementById("lightFormMark");
+    const shadowFormMark = document.getElementById("shadowFormMark");
     const stateEl = document.getElementById("state");
     const overlay = document.getElementById("overlay");
     const startButton = document.getElementById("start");
@@ -368,8 +379,10 @@
     let shake = 0;
     let messageTimer = 0;
     let message = "";
-    let environment = "light";
+    let sceneMode = "light";
+    let formMode = "light";
     let switchTimer = 0;
+    let formSwitchTimer = 0;
     let projectiles = [];
 
     const worldWidth = 3450;
@@ -434,20 +447,24 @@
     };
 
     function activeInCurrentMode(entity) {
-      return !entity.mode || entity.mode === "both" || entity.mode === environment;
+      return !entity.mode || entity.mode === "both" || entity.mode === sceneMode;
     }
 
-    function environmentName() {
-      return environment === "light" ? "天堂" : "深渊";
+    function sceneName() {
+      return sceneMode === "light" ? "光场景" : "影场景";
     }
 
-    function switchEnvironment(nextMode) {
+    function formName() {
+      return formMode === "light" ? "光形态" : "影形态";
+    }
+
+    function switchScene(nextMode) {
       if (!running || paused || won || lost) return;
-      const targetMode = nextMode || (environment === "light" ? "shadow" : "light");
-      if (targetMode === environment) return;
+      const targetMode = nextMode || (sceneMode === "light" ? "shadow" : "light");
+      if (targetMode === sceneMode) return;
       const keepX = player.x;
       const keepY = player.y;
-      environment = targetMode;
+      sceneMode = targetMode;
       player.x = keepX;
       player.y = keepY;
       switchTimer = 18;
@@ -456,20 +473,70 @@
       updateHud();
     }
 
+    function switchForm(nextMode) {
+      if (!running || paused || won || lost) return;
+      const targetMode = nextMode || (formMode === "light" ? "shadow" : "light");
+      if (targetMode === formMode) return;
+      const previousMode = formMode;
+      const keepX = player.x;
+      const keepY = player.y;
+      formMode = targetMode;
+      player.x = keepX;
+      player.y = keepY;
+      player.attack = 0;
+      slashTimer = 0;
+      formSwitchTimer = 18;
+      applyFormSwitchSkill(previousMode, targetMode);
+      updateHud();
+    }
+
+    function applyFormSwitchSkill(previousMode, targetMode) {
+      const burst = {
+        x: player.x + player.w / 2 - 86,
+        y: player.y + player.h / 2 - 64,
+        w: 172,
+        h: 128
+      };
+      let touched = false;
+
+      for (const enemy of enemies) {
+        if (enemy.hp <= 0 || !activeInCurrentMode(enemy) || !rectsOverlap(burst, enemy)) continue;
+        const direction = enemy.x + enemy.w / 2 < player.x + player.w / 2 ? -1 : 1;
+        if (previousMode === "light" && targetMode === "shadow") {
+          damageEnemy(enemy, 1, direction * 1.7);
+          touched = true;
+        } else {
+          enemy.vx += direction * 2.2;
+          enemy.hit = 16;
+          touched = true;
+        }
+      }
+
+      if (previousMode === "shadow" && targetMode === "light") {
+        player.vy = Math.min(player.vy, -3.5);
+      }
+
+      if (touched) {
+        shake = Math.max(shake, previousMode === "light" ? 12 : 8);
+      }
+    }
+
     function resetGame() {
       running = true;
       paused = false;
       won = false;
       lost = false;
-      environment = "light";
+      sceneMode = "light";
+      formMode = "light";
       cameraX = 0;
       slashTimer = 0;
       dashCooldown = 0;
       shake = 0;
       switchTimer = 0;
+      formSwitchTimer = 0;
       projectiles = [];
       messageTimer = 160;
-      message = "切换环境不会改变角色位置";
+      message = "空格切场景，L 切形态，角色位置不变";
       Object.assign(player, {
         x: playerStart.x,
         y: playerStart.y,
@@ -502,7 +569,10 @@
     function jump() {
       if (!running || paused || won || lost) return;
       if (player.grounded || player.jumps < 2) {
-        player.vy = player.grounded ? -15.8 : -13.4;
+        const isLight = formMode === "light";
+        player.vy = player.grounded
+          ? (isLight ? -16.9 : -14.8)
+          : (isLight ? -14.2 : -12.6);
         player.grounded = false;
         player.jumps += 1;
       }
@@ -510,33 +580,36 @@
 
     function attack() {
       if (!running || paused || won || lost || player.attack > 0) return;
-      player.attack = environment === "light" ? 20 : 15;
+      player.attack = formMode === "light" ? 20 : 18;
 
-      if (environment === "light") {
+      if (formMode === "light") {
+        const inLightScene = sceneMode === "light";
         projectiles.push({
           x: player.x + player.w / 2 + player.facing * 22,
           y: player.y + 21,
-          vx: player.facing * 12,
-          w: 34,
-          h: 10,
-          life: 54,
-          mode: "light"
+          vx: player.facing * (inLightScene ? 13.4 : 12.1),
+          w: inLightScene ? 42 : 36,
+          h: 12,
+          life: inLightScene ? 68 : 58,
+          damage: 1,
+          mode: sceneMode,
+          scene: sceneMode
         });
         message = "圣羽射出";
         messageTimer = 32;
         return;
       }
 
-      slashTimer = 12;
+      slashTimer = 18;
       const arc = {
-        x: player.facing > 0 ? player.x + player.w - 4 : player.x - 62,
-        y: player.y + 5,
-        w: 64,
-        h: 44
+        x: player.facing > 0 ? player.x + player.w - 8 : player.x - 74,
+        y: player.y - 2,
+        w: 82,
+        h: 54
       };
       for (const enemy of enemies) {
         if (enemy.hp > 0 && activeInCurrentMode(enemy) && rectsOverlap(arc, enemy)) {
-          damageEnemy(enemy, 1, player.facing * 0.9);
+          damageEnemy(enemy, 2, player.facing * 1.25);
           message = enemy.hp <= 0 ? "炼狱斩击击倒了守卫" : "命中";
           messageTimer = 42;
         }
@@ -552,10 +625,11 @@
 
     function dash() {
       if (!running || paused || won || lost || dashCooldown > 0) return;
-      player.dash = 11;
-      dashCooldown = 72;
-      player.vx = player.facing * 14;
-      player.vy *= 0.35;
+      const isShadow = formMode === "shadow";
+      player.dash = isShadow ? 15 : 9;
+      dashCooldown = isShadow ? 64 : 78;
+      player.vx = player.facing * (isShadow ? 17 : 11.5);
+      player.vy *= isShadow ? 0.24 : 0.45;
     }
 
     function hurt(amount = 1) {
@@ -592,17 +666,28 @@
     function updateHud() {
       hpEl.textContent = `生命 ${Math.max(0, player.hp)}`;
       crystalsEl.textContent = `晶石 ${crystals.filter(c => c.taken).length}/5`;
-      lightMark.classList.toggle("active", environment === "light");
-      shadowMark.classList.toggle("active", environment === "shadow");
+      lightSceneMark.classList.toggle("active", sceneMode === "light");
+      shadowSceneMark.classList.toggle("active", sceneMode === "shadow");
+      lightFormMark.classList.toggle("active", formMode === "light");
+      shadowFormMark.classList.toggle("active", formMode === "shadow");
       stateEl.textContent = won ? "通关" : lost ? "失败" : paused ? "暂停" : running ? "冒险中" : "准备";
     }
 
     function updatePlayer() {
       const left = keys.has("arrowleft") || keys.has("a");
       const right = keys.has("arrowright") || keys.has("d");
-      const accel = player.grounded ? 0.92 : 0.62;
-      const friction = player.grounded ? 0.78 : 0.94;
-      const maxSpeed = player.dash > 0 ? 15 : 6.2;
+      const isLight = formMode === "light";
+      const accel = player.grounded
+        ? (isLight ? 0.86 : 1.08)
+        : (isLight ? 0.72 : 0.56);
+      const friction = player.grounded ? (isLight ? 0.8 : 0.76) : (isLight ? 0.93 : 0.95);
+      const maxSpeed = player.dash > 0
+        ? (isLight ? 13.5 : 18)
+        : (isLight ? 5.8 : 7.25);
+      const gravity = player.dash > 0
+        ? GRAVITY * (isLight ? 0.16 : 0.2)
+        : GRAVITY * (isLight ? 0.72 : 1.12);
+      const maxFall = isLight ? 14.5 : 20;
 
       if (left) {
         player.vx -= accel;
@@ -615,8 +700,8 @@
       if (!left && !right && player.dash <= 0) player.vx *= friction;
 
       player.vx = Math.max(-maxSpeed, Math.min(maxSpeed, player.vx));
-      player.vy += player.dash > 0 ? GRAVITY * 0.18 : GRAVITY;
-      if (player.vy > 18) player.vy = 18;
+      player.vy += gravity;
+      if (player.vy > maxFall) player.vy = maxFall;
 
       const prevY = player.y;
       player.x += player.vx;
@@ -689,6 +774,8 @@
       if (player.invuln > 0) player.invuln -= 1;
       if (player.dash > 0) player.dash -= 1;
       if (player.attack > 0) player.attack -= 1;
+      if (slashTimer > 0) slashTimer -= 1;
+      if (formSwitchTimer > 0) formSwitchTimer -= 1;
       if (dashCooldown > 0) dashCooldown -= 1;
     }
 
@@ -715,7 +802,7 @@
         for (const enemy of enemies) {
           if (enemy.hp <= 0 || !activeInCurrentMode(enemy)) continue;
           if (rectsOverlap(projectile, enemy)) {
-            damageEnemy(enemy, 1, Math.sign(projectile.vx) * 0.45);
+            damageEnemy(enemy, projectile.damage || 1, Math.sign(projectile.vx) * 0.45);
             projectile.life = 0;
             message = enemy.hp <= 0 ? "圣羽净化了守卫" : "命中";
             messageTimer = 34;
@@ -727,7 +814,7 @@
         projectile.life > 0 &&
         projectile.x > cameraX - 120 &&
         projectile.x < cameraX + W + 120 &&
-        projectile.mode === environment
+        projectile.mode === sceneMode
       );
     }
 
@@ -740,7 +827,7 @@
     }
 
     function drawBackground(t) {
-      const isLight = environment === "light";
+      const isLight = sceneMode === "light";
       const sky = ctx.createLinearGradient(0, 0, 0, H);
       sky.addColorStop(0, isLight ? "#dbeeff" : "#08070c");
       sky.addColorStop(0.48, isLight ? "#f6eec8" : "#211018");
@@ -854,14 +941,14 @@
         const isShadow = platform.mode === "shadow";
         const isLightOnly = platform.mode === "light";
         ctx.fillStyle = platform.type === "ground"
-          ? (environment === "light" ? "#d5c184" : "#2a1216")
+          ? (sceneMode === "light" ? "#d5c184" : "#2a1216")
           : isShadow ? "#3b1820" : isLightOnly ? "#e8d79b" : "#59605b";
         ctx.fillRect(platform.x, platform.y, platform.w, platform.h);
         ctx.fillStyle = platform.type === "ground"
-          ? (environment === "light" ? "#fff1b0" : "#ff7048")
+          ? (sceneMode === "light" ? "#fff1b0" : "#ff7048")
           : isShadow ? "#ff7048" : isLightOnly ? "#fff7d8" : "#9fa9a1";
         ctx.fillRect(platform.x, platform.y, platform.w, 8);
-        ctx.fillStyle = environment === "light" ? "rgba(111, 92, 41, 0.22)" : "rgba(255, 74, 36, 0.2)";
+        ctx.fillStyle = sceneMode === "light" ? "rgba(111, 92, 41, 0.22)" : "rgba(255, 74, 36, 0.2)";
         for (let x = platform.x + 18; x < platform.x + platform.w; x += 54) {
           ctx.fillRect(x, platform.y + 16, 28, 5);
         }
@@ -932,7 +1019,7 @@
       ctx.beginPath();
       ctx.ellipse(portal.x + portal.w / 2, portal.y + portal.h / 2, portal.w * portalPulse, portal.h * 0.58, 0, 0, Math.PI * 2);
       ctx.fill();
-      ctx.strokeStyle = crystals.every(c => c.taken) ? "#f3c95b" : environment === "light" ? "#fff7d8" : "#ff7048";
+      ctx.strokeStyle = crystals.every(c => c.taken) ? "#f3c95b" : sceneMode === "light" ? "#fff7d8" : "#ff7048";
       ctx.lineWidth = 7;
       ctx.beginPath();
       ctx.ellipse(portal.x + portal.w / 2, portal.y + portal.h / 2, portal.w * 0.42, portal.h * 0.48, 0, 0, Math.PI * 2);
@@ -941,20 +1028,22 @@
       ctx.fillRect(portal.x + 4, portal.y + portal.h - 8, portal.w - 8, 18);
 
       drawProjectiles(t);
+      drawFormSwitchBurst();
       drawPlayer(t);
       ctx.restore();
     }
 
     function drawProjectiles(t) {
       for (const projectile of projectiles) {
-        if (projectile.mode !== environment) continue;
+        if (projectile.mode !== sceneMode) continue;
+        const inLightScene = projectile.scene === "light";
         ctx.save();
         ctx.translate(projectile.x, projectile.y);
-        ctx.fillStyle = "rgba(255, 247, 216, 0.34)";
+        ctx.fillStyle = inLightScene ? "rgba(255, 247, 216, 0.34)" : "rgba(159, 229, 255, 0.26)";
         ctx.beginPath();
         ctx.ellipse(0, 0, 28, 9, 0, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = "#fff7d8";
+        ctx.fillStyle = inLightScene ? "#fff7d8" : "#b7ecff";
         ctx.beginPath();
         ctx.moveTo(projectile.vx > 0 ? 18 : -18, 0);
         ctx.lineTo(projectile.vx > 0 ? -10 : 10, -8);
@@ -962,7 +1051,7 @@
         ctx.lineTo(projectile.vx > 0 ? -10 : 10, 8);
         ctx.closePath();
         ctx.fill();
-        ctx.strokeStyle = "rgba(255, 232, 148, 0.92)";
+        ctx.strokeStyle = inLightScene ? "rgba(255, 232, 148, 0.92)" : "rgba(123, 218, 255, 0.9)";
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(projectile.vx > 0 ? -24 : 24, Math.sin(t * 0.03) * 3);
@@ -972,10 +1061,43 @@
       }
     }
 
+    function drawFormSwitchBurst() {
+      if (formSwitchTimer <= 0) return;
+      const p = 1 - formSwitchTimer / 18;
+      const cx = player.x + player.w / 2;
+      const cy = player.y + player.h / 2;
+      const isLightForm = formMode === "light";
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.globalAlpha = 1 - p;
+      if (isLightForm) {
+        ctx.strokeStyle = "rgba(255, 247, 216, 0.95)";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.arc(0, 0, 26 + p * 74, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.fillStyle = "rgba(255, 232, 148, 0.28)";
+        ctx.beginPath();
+        ctx.arc(0, 0, 18 + p * 54, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        ctx.strokeStyle = "rgba(255, 74, 36, 0.95)";
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.ellipse(0, 18, 34 + p * 80, 12 + p * 22, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.fillStyle = "rgba(189, 47, 47, 0.3)";
+        ctx.beginPath();
+        ctx.ellipse(0, 18, 24 + p * 62, 8 + p * 18, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
     function drawPlayer(t) {
       const flicker = player.invuln > 0 && Math.floor(t / 80) % 2 === 0;
       if (flicker) return;
-      const isLight = environment === "light";
+      const isLight = formMode === "light";
       ctx.save();
       ctx.translate(player.x + player.w / 2, player.y + player.h / 2);
       ctx.scale(player.facing, 1);
@@ -1071,17 +1193,61 @@
       ctx.fillRect(4, 20, 8, 14);
 
       if (slashTimer > 0) {
-        ctx.strokeStyle = "rgba(255, 74, 36, 0.92)";
-        ctx.lineWidth = 8;
-        ctx.beginPath();
-        ctx.arc(21, -1, 38, -0.9, 0.85);
-        ctx.stroke();
-        ctx.strokeStyle = "rgba(189, 47, 47, 0.72)";
-        ctx.lineWidth = 4;
-        ctx.beginPath();
-        ctx.arc(23, -1, 48, -0.75, 0.68);
-        ctx.stroke();
+        drawMeleeSlash(slashTimer / 18, sceneMode);
       }
+      ctx.restore();
+    }
+
+    function drawMeleeSlash(progress, scene) {
+      const p = Math.max(0, Math.min(1, progress));
+      const swing = 1 - p;
+      const reach = 38 + swing * 20;
+      const lift = -18 + Math.sin(swing * Math.PI) * 10;
+      const alpha = Math.max(0, Math.min(1, p * 1.25));
+      const hot = scene === "light" ? "255, 232, 148" : "255, 74, 36";
+      const core = scene === "light" ? "#fff7d8" : "#ff7048";
+      const dark = scene === "light" ? "rgba(214, 176, 89, 0.5)" : "rgba(189, 47, 47, 0.58)";
+
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.translate(2, 0);
+      ctx.rotate(-0.65 + swing * 1.4);
+
+      const blade = ctx.createLinearGradient(8, lift - 26, reach + 22, lift + 32);
+      blade.addColorStop(0, `rgba(${hot}, 0)`);
+      blade.addColorStop(0.22, `rgba(${hot}, 0.72)`);
+      blade.addColorStop(0.58, core);
+      blade.addColorStop(1, `rgba(${hot}, 0)`);
+
+      ctx.fillStyle = blade;
+      ctx.beginPath();
+      ctx.moveTo(14, lift - 18);
+      ctx.quadraticCurveTo(reach, lift - 44, reach + 34, lift - 4);
+      ctx.quadraticCurveTo(reach - 2, lift + 31, 13, lift + 20);
+      ctx.quadraticCurveTo(32, lift + 5, 14, lift - 18);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.strokeStyle = `rgba(${hot}, 0.88)`;
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(18, lift - 9);
+      ctx.quadraticCurveTo(reach - 4, lift - 34, reach + 28, lift - 1);
+      ctx.stroke();
+
+      ctx.strokeStyle = dark;
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(12, lift + 18);
+      ctx.quadraticCurveTo(reach - 8, lift + 32, reach + 24, lift + 8);
+      ctx.stroke();
+
+      ctx.fillStyle = `rgba(${hot}, 0.55)`;
+      for (let i = 0; i < 4; i++) {
+        const spark = i * 13 + swing * 18;
+        ctx.fillRect(reach - spark, lift + 24 + Math.sin(i + swing * 4) * 8, 10, 3);
+      }
+
       ctx.restore();
     }
 
@@ -1089,13 +1255,13 @@
       if (switchTimer <= 0) return;
       const alpha = Math.min(0.72, switchTimer / 22);
       ctx.save();
-      ctx.fillStyle = environment === "light"
+      ctx.fillStyle = sceneMode === "light"
         ? `rgba(255, 236, 170, ${alpha})`
         : `rgba(30, 20, 58, ${alpha})`;
       ctx.fillRect(0, 0, W, H);
-      ctx.fillStyle = environment === "light"
-        ? `rgba(77, 180, 169, ${alpha * 0.38})`
-        : `rgba(155, 107, 229, ${alpha * 0.42})`;
+      ctx.fillStyle = sceneMode === "light"
+        ? `rgba(255, 247, 216, ${alpha * 0.42})`
+        : `rgba(255, 74, 36, ${alpha * 0.46})`;
       ctx.beginPath();
       ctx.arc(W / 2, H / 2, 360 * (1 - switchTimer / 24), 0, Math.PI * 2);
       ctx.fill();
@@ -1122,7 +1288,7 @@
       const w = W - 56;
       ctx.fillStyle = "rgba(8, 11, 13, 0.45)";
       ctx.fillRect(x, y, w, 8);
-      ctx.fillStyle = environment === "light" ? "#fff7d8" : "#ff7048";
+      ctx.fillStyle = sceneMode === "light" ? "#fff7d8" : "#ff7048";
       ctx.fillRect(x, y, w * ((player.x + player.w / 2) / worldWidth), 8);
       ctx.fillStyle = "#f3c95b";
       ctx.fillRect(x + w * (portal.x / worldWidth) - 3, y - 5, 6, 18);
@@ -1167,8 +1333,9 @@
         updateHud();
       }
       if (!event.repeat && key === " ") {
-        switchEnvironment();
+        switchScene();
       }
+      if (!event.repeat && key === "l") switchForm();
       if (!event.repeat && key === "k") jump();
       if (!event.repeat && key === "j") attack();
       if (key === "shift") dash();
@@ -1180,8 +1347,10 @@
     });
 
     startButton.addEventListener("click", resetGame);
-    lightMark.addEventListener("click", () => switchEnvironment("light"));
-    shadowMark.addEventListener("click", () => switchEnvironment("shadow"));
+    lightSceneMark.addEventListener("click", () => switchScene("light"));
+    shadowSceneMark.addEventListener("click", () => switchScene("shadow"));
+    lightFormMark.addEventListener("click", () => switchForm("light"));
+    shadowFormMark.addEventListener("click", () => switchForm("shadow"));
     updateHud();
     requestAnimationFrame(loop);
   </script>
