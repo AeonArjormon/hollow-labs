@@ -85,6 +85,90 @@
       white-space: nowrap;
     }
 
+    .mode-marks {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 8px;
+      border: 1px solid rgba(238, 244, 238, 0.16);
+      border-radius: 6px;
+      background: rgba(8, 11, 13, 0.42);
+    }
+
+    .mode-token {
+      position: relative;
+      width: 28px;
+      height: 28px;
+      border: 0;
+      border-radius: 50%;
+      padding: 0;
+      background: rgba(255, 255, 255, 0.06);
+      cursor: pointer;
+    }
+
+    .mode-token::before,
+    .mode-token::after,
+    .token-core {
+      content: "";
+      position: absolute;
+      inset: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .token-core {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .mode-token.light::before {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 232, 148, 0.45);
+    }
+
+    .mode-token.light::after {
+      width: 6px;
+      height: 22px;
+      background: #ffe894;
+      box-shadow: 0 0 16px rgba(255, 232, 148, 0.55);
+    }
+
+    .mode-token.light .token-core {
+      background: #fff7d8;
+      box-shadow: 0 0 14px rgba(255, 247, 216, 0.9);
+    }
+
+    .mode-token.shadow::before {
+      width: 21px;
+      height: 21px;
+      border: 2px solid #bd2f2f;
+      transform: translate(-50%, -50%) rotate(45deg);
+      border-radius: 5px 50% 5px 50%;
+      box-shadow: 0 0 14px rgba(189, 47, 47, 0.52);
+    }
+
+    .mode-token.shadow::after {
+      width: 5px;
+      height: 22px;
+      background: #ff7048;
+      transform: translate(-50%, -50%) rotate(-35deg);
+    }
+
+    .mode-token.shadow .token-core {
+      width: 9px;
+      height: 9px;
+      background: #16080a;
+      border: 2px solid #ff7048;
+    }
+
+    .mode-token.active {
+      outline: 2px solid #fff7d8;
+      outline-offset: 2px;
+    }
+
     .game-frame {
       position: relative;
       min-height: 0;
@@ -199,6 +283,10 @@
         font-size: 12px;
       }
 
+      .mode-marks {
+        padding: 4px 7px;
+      }
+
       .controls {
         grid-template-columns: 1fr;
       }
@@ -216,6 +304,14 @@
       <div class="stats" aria-live="polite">
         <div class="pill" id="hp">生命 3</div>
         <div class="pill" id="crystals">晶石 0/5</div>
+        <div class="mode-marks" aria-label="环境标记">
+          <button class="mode-token light active" id="lightMark" type="button" aria-label="切换到天堂光环境">
+            <span class="token-core" aria-hidden="true"></span>
+          </button>
+          <button class="mode-token shadow" id="shadowMark" type="button" aria-label="切换到深渊影环境">
+            <span class="token-core" aria-hidden="true"></span>
+          </button>
+        </div>
         <div class="pill" id="state">准备</div>
       </div>
     </header>
@@ -225,12 +321,13 @@
       <div class="overlay" id="overlay">
         <div class="panel">
           <h1>Shadow Jump</h1>
-          <p>一个横版奇幻动作跑酷原型。你是影刃旅者，需要穿过森林遗迹，击败守卫，收集月辉晶石，并抵达传送门。</p>
+          <p>一个天堂与深渊双环境横版动作原型。你需要在两种环境之间快速切换，利用不同地形穿过遗迹，收集月辉晶石，并抵达传送门。</p>
           <div class="controls">
             <div class="key">A / D 或 方向键：移动</div>
-            <div class="key">W / 空格 / ↑：跳跃，空中可二段跳</div>
+            <div class="key">K：跳跃，空中可二段跳</div>
+            <div class="key">J：天堂远程圣羽，深渊近战斩击</div>
+            <div class="key">空格：切换天堂 / 深渊</div>
             <div class="key">Shift：暗影冲刺</div>
-            <div class="key">J / F：近战攻击</div>
           </div>
           <button id="start">开始游戏</button>
         </div>
@@ -238,8 +335,8 @@
     </section>
 
     <footer class="bottombar">
-      <span>目标：收集 5 枚晶石，到达右侧传送门。</span>
-      <span class="hint">R 重开 · P 暂停</span>
+      <span>目标：在天堂与深渊环境之间切换，收集 5 枚晶石，到达右侧传送门。</span>
+      <span class="hint">J 攻击 · K 跳跃 · 空格切换 · R 重开 · P 暂停</span>
     </footer>
   </main>
 
@@ -248,6 +345,8 @@
     const ctx = canvas.getContext("2d");
     const hpEl = document.getElementById("hp");
     const crystalsEl = document.getElementById("crystals");
+    const lightMark = document.getElementById("lightMark");
+    const shadowMark = document.getElementById("shadowMark");
     const stateEl = document.getElementById("state");
     const overlay = document.getElementById("overlay");
     const startButton = document.getElementById("start");
@@ -269,42 +368,49 @@
     let shake = 0;
     let messageTimer = 0;
     let message = "";
+    let environment = "light";
+    let switchTimer = 0;
+    let projectiles = [];
 
     const worldWidth = 3450;
 
     const platforms = [
-      { x: 0, y: FLOOR, w: 520, h: 92, type: "ground" },
-      { x: 560, y: FLOOR - 52, w: 180, h: 24, type: "stone" },
-      { x: 825, y: FLOOR - 122, w: 190, h: 24, type: "stone" },
-      { x: 1100, y: FLOOR, w: 360, h: 92, type: "ground" },
-      { x: 1540, y: FLOOR - 72, w: 190, h: 24, type: "stone" },
-      { x: 1835, y: FLOOR - 142, w: 190, h: 24, type: "stone" },
-      { x: 2130, y: FLOOR - 48, w: 230, h: 24, type: "stone" },
-      { x: 2470, y: FLOOR, w: 410, h: 92, type: "ground" },
-      { x: 2920, y: FLOOR - 96, w: 210, h: 24, type: "stone" },
-      { x: 3180, y: FLOOR, w: 270, h: 92, type: "ground" }
+      { x: 0, y: FLOOR, w: 520, h: 92, type: "ground", mode: "both" },
+      { x: 560, y: FLOOR - 52, w: 180, h: 24, type: "stone", mode: "light" },
+      { x: 825, y: FLOOR - 122, w: 190, h: 24, type: "stone", mode: "shadow" },
+      { x: 1100, y: FLOOR, w: 360, h: 92, type: "ground", mode: "both" },
+      { x: 1540, y: FLOOR - 72, w: 190, h: 24, type: "stone", mode: "light" },
+      { x: 1835, y: FLOOR - 142, w: 190, h: 24, type: "stone", mode: "shadow" },
+      { x: 2130, y: FLOOR - 48, w: 230, h: 24, type: "stone", mode: "light" },
+      { x: 2470, y: FLOOR, w: 410, h: 92, type: "ground", mode: "both" },
+      { x: 2920, y: FLOOR - 96, w: 210, h: 24, type: "stone", mode: "shadow" },
+      { x: 3180, y: FLOOR, w: 270, h: 92, type: "ground", mode: "both" },
+      { x: 645, y: FLOOR - 174, w: 112, h: 20, type: "glass", mode: "shadow" },
+      { x: 1325, y: FLOOR - 118, w: 130, h: 20, type: "glass", mode: "shadow" },
+      { x: 2260, y: FLOOR - 128, w: 130, h: 20, type: "glass", mode: "shadow" },
+      { x: 2650, y: FLOOR - 118, w: 170, h: 20, type: "glass", mode: "light" }
     ];
 
     const hazards = [
-      { x: 760, y: FLOOR + 46, w: 260, h: 38 },
-      { x: 1468, y: FLOOR + 46, w: 250, h: 38 },
-      { x: 2370, y: FLOOR + 46, w: 120, h: 38 },
-      { x: 2878, y: FLOOR + 46, w: 190, h: 38 }
+      { x: 760, y: FLOOR + 46, w: 260, h: 38, mode: "light" },
+      { x: 1468, y: FLOOR + 46, w: 250, h: 38, mode: "shadow" },
+      { x: 2370, y: FLOOR + 46, w: 120, h: 38, mode: "light" },
+      { x: 2878, y: FLOOR + 46, w: 190, h: 38, mode: "shadow" }
     ];
 
     const crystals = [
-      { x: 625, y: FLOOR - 94, taken: false },
-      { x: 905, y: FLOOR - 165, taken: false },
-      { x: 1620, y: FLOOR - 114, taken: false },
-      { x: 1910, y: FLOOR - 184, taken: false },
-      { x: 3005, y: FLOOR - 138, taken: false }
+      { x: 625, y: FLOOR - 94, taken: false, mode: "light" },
+      { x: 905, y: FLOOR - 165, taken: false, mode: "shadow" },
+      { x: 1620, y: FLOOR - 114, taken: false, mode: "light" },
+      { x: 1910, y: FLOOR - 184, taken: false, mode: "shadow" },
+      { x: 3005, y: FLOOR - 138, taken: false, mode: "shadow" }
     ];
 
     const enemies = [
-      { x: 390, y: FLOOR - 32, w: 42, h: 32, hp: 2, min: 300, max: 500, vx: 0.9, hit: 0 },
-      { x: 1240, y: FLOOR - 36, w: 48, h: 36, hp: 3, min: 1120, max: 1410, vx: 1.2, hit: 0 },
-      { x: 2210, y: FLOOR - 84, w: 44, h: 36, hp: 2, min: 2140, max: 2330, vx: 1.0, hit: 0 },
-      { x: 2665, y: FLOOR - 42, w: 56, h: 42, hp: 4, min: 2495, max: 2840, vx: 1.35, hit: 0 }
+      { x: 390, y: FLOOR - 32, w: 42, h: 32, hp: 2, min: 300, max: 500, vx: 0.9, hit: 0, mode: "light" },
+      { x: 1240, y: FLOOR - 36, w: 48, h: 36, hp: 3, min: 1120, max: 1410, vx: 1.2, hit: 0, mode: "shadow" },
+      { x: 2210, y: FLOOR - 84, w: 44, h: 36, hp: 2, min: 2140, max: 2330, vx: 1.0, hit: 0, mode: "light" },
+      { x: 2665, y: FLOOR - 42, w: 56, h: 42, hp: 4, min: 2495, max: 2840, vx: 1.35, hit: 0, mode: "shadow" }
     ];
 
     const portal = { x: 3330, y: FLOOR - 112, w: 76, h: 112 };
@@ -327,17 +433,43 @@
       checkpoint: { ...playerStart }
     };
 
+    function activeInCurrentMode(entity) {
+      return !entity.mode || entity.mode === "both" || entity.mode === environment;
+    }
+
+    function environmentName() {
+      return environment === "light" ? "天堂" : "深渊";
+    }
+
+    function switchEnvironment(nextMode) {
+      if (!running || paused || won || lost) return;
+      const targetMode = nextMode || (environment === "light" ? "shadow" : "light");
+      if (targetMode === environment) return;
+      const keepX = player.x;
+      const keepY = player.y;
+      environment = targetMode;
+      player.x = keepX;
+      player.y = keepY;
+      switchTimer = 18;
+      shake = Math.max(shake, 5);
+      projectiles = projectiles.filter(projectile => projectile.mode === targetMode);
+      updateHud();
+    }
+
     function resetGame() {
       running = true;
       paused = false;
       won = false;
       lost = false;
+      environment = "light";
       cameraX = 0;
       slashTimer = 0;
       dashCooldown = 0;
       shake = 0;
+      switchTimer = 0;
+      projectiles = [];
       messageTimer = 160;
-      message = "穿过遗迹，抵达传送门";
+      message = "切换环境不会改变角色位置";
       Object.assign(player, {
         x: playerStart.x,
         y: playerStart.y,
@@ -355,10 +487,10 @@
         checkpoint: { ...playerStart }
       });
       crystals.forEach(c => c.taken = false);
-      enemies[0] = { x: 390, y: FLOOR - 32, w: 42, h: 32, hp: 2, min: 300, max: 500, vx: 0.9, hit: 0 };
-      enemies[1] = { x: 1240, y: FLOOR - 36, w: 48, h: 36, hp: 3, min: 1120, max: 1410, vx: 1.2, hit: 0 };
-      enemies[2] = { x: 2210, y: FLOOR - 84, w: 44, h: 36, hp: 2, min: 2140, max: 2330, vx: 1.0, hit: 0 };
-      enemies[3] = { x: 2665, y: FLOOR - 42, w: 56, h: 42, hp: 4, min: 2495, max: 2840, vx: 1.35, hit: 0 };
+      enemies[0] = { x: 390, y: FLOOR - 32, w: 42, h: 32, hp: 2, min: 300, max: 500, vx: 0.9, hit: 0, mode: "light" };
+      enemies[1] = { x: 1240, y: FLOOR - 36, w: 48, h: 36, hp: 3, min: 1120, max: 1410, vx: 1.2, hit: 0, mode: "shadow" };
+      enemies[2] = { x: 2210, y: FLOOR - 84, w: 44, h: 36, hp: 2, min: 2140, max: 2330, vx: 1.0, hit: 0, mode: "light" };
+      enemies[3] = { x: 2665, y: FLOOR - 42, w: 56, h: 42, hp: 4, min: 2495, max: 2840, vx: 1.35, hit: 0, mode: "shadow" };
       overlay.classList.add("hidden");
       updateHud();
     }
@@ -378,24 +510,44 @@
 
     function attack() {
       if (!running || paused || won || lost || player.attack > 0) return;
-      player.attack = 15;
+      player.attack = environment === "light" ? 20 : 15;
+
+      if (environment === "light") {
+        projectiles.push({
+          x: player.x + player.w / 2 + player.facing * 22,
+          y: player.y + 21,
+          vx: player.facing * 12,
+          w: 34,
+          h: 10,
+          life: 54,
+          mode: "light"
+        });
+        message = "圣羽射出";
+        messageTimer = 32;
+        return;
+      }
+
       slashTimer = 12;
       const arc = {
-        x: player.facing > 0 ? player.x + player.w - 2 : player.x - 52,
-        y: player.y + 10,
-        w: 54,
-        h: 34
+        x: player.facing > 0 ? player.x + player.w - 4 : player.x - 62,
+        y: player.y + 5,
+        w: 64,
+        h: 44
       };
       for (const enemy of enemies) {
-        if (enemy.hp > 0 && rectsOverlap(arc, enemy)) {
-          enemy.hp -= 1;
-          enemy.hit = 16;
-          enemy.vx += player.facing * 0.7;
-          shake = 8;
-          message = enemy.hp <= 0 ? "暗影斩击击倒了守卫" : "命中";
+        if (enemy.hp > 0 && activeInCurrentMode(enemy) && rectsOverlap(arc, enemy)) {
+          damageEnemy(enemy, 1, player.facing * 0.9);
+          message = enemy.hp <= 0 ? "炼狱斩击击倒了守卫" : "命中";
           messageTimer = 42;
         }
       }
+    }
+
+    function damageEnemy(enemy, amount, knockback = 0) {
+      enemy.hp -= amount;
+      enemy.hit = 16;
+      enemy.vx += knockback;
+      shake = Math.max(shake, 8);
     }
 
     function dash() {
@@ -440,6 +592,8 @@
     function updateHud() {
       hpEl.textContent = `生命 ${Math.max(0, player.hp)}`;
       crystalsEl.textContent = `晶石 ${crystals.filter(c => c.taken).length}/5`;
+      lightMark.classList.toggle("active", environment === "light");
+      shadowMark.classList.toggle("active", environment === "shadow");
       stateEl.textContent = won ? "通关" : lost ? "失败" : paused ? "暂停" : running ? "冒险中" : "准备";
     }
 
@@ -471,6 +625,7 @@
       player.grounded = false;
 
       for (const platform of platforms) {
+        if (!activeInCurrentMode(platform)) continue;
         if (!rectsOverlap(player, platform)) continue;
         const wasAbove = prevY + player.h <= platform.y + 5;
         if (wasAbove && player.vy >= 0) {
@@ -488,6 +643,7 @@
       }
 
       for (const hazard of hazards) {
+        if (!activeInCurrentMode(hazard)) continue;
         if (rectsOverlap(player, hazard)) hurt(1);
       }
 
@@ -508,6 +664,7 @@
       }
 
       for (const crystal of crystals) {
+        if (!activeInCurrentMode(crystal)) continue;
         if (!crystal.taken && rectsOverlap(player, { x: crystal.x - 16, y: crystal.y - 16, w: 32, h: 32 })) {
           crystal.taken = true;
           message = "获得月辉晶石";
@@ -537,7 +694,7 @@
 
     function updateEnemies() {
       for (const enemy of enemies) {
-        if (enemy.hp <= 0) continue;
+        if (enemy.hp <= 0 || !activeInCurrentMode(enemy)) continue;
         enemy.x += enemy.vx;
         if (enemy.x < enemy.min || enemy.x + enemy.w > enemy.max) {
           enemy.vx *= -1;
@@ -551,6 +708,29 @@
       }
     }
 
+    function updateProjectiles() {
+      for (const projectile of projectiles) {
+        projectile.x += projectile.vx;
+        projectile.life -= 1;
+        for (const enemy of enemies) {
+          if (enemy.hp <= 0 || !activeInCurrentMode(enemy)) continue;
+          if (rectsOverlap(projectile, enemy)) {
+            damageEnemy(enemy, 1, Math.sign(projectile.vx) * 0.45);
+            projectile.life = 0;
+            message = enemy.hp <= 0 ? "圣羽净化了守卫" : "命中";
+            messageTimer = 34;
+            break;
+          }
+        }
+      }
+      projectiles = projectiles.filter(projectile =>
+        projectile.life > 0 &&
+        projectile.x > cameraX - 120 &&
+        projectile.x < cameraX + W + 120 &&
+        projectile.mode === environment
+      );
+    }
+
     function updateCamera() {
       const target = player.x + player.w / 2 - W * 0.42;
       cameraX += (target - cameraX) * 0.08;
@@ -560,22 +740,40 @@
     }
 
     function drawBackground(t) {
+      const isLight = environment === "light";
       const sky = ctx.createLinearGradient(0, 0, 0, H);
-      sky.addColorStop(0, "#142127");
-      sky.addColorStop(0.52, "#1b2a2a");
-      sky.addColorStop(1, "#243222");
+      sky.addColorStop(0, isLight ? "#dbeeff" : "#08070c");
+      sky.addColorStop(0.48, isLight ? "#f6eec8" : "#211018");
+      sky.addColorStop(1, isLight ? "#b9d8ee" : "#3a0d0d");
       ctx.fillStyle = sky;
       ctx.fillRect(0, 0, W, H);
 
       ctx.save();
       ctx.translate(-cameraX * 0.18, 0);
-      for (let i = 0; i < 18; i++) {
-        const x = i * 260 + 40;
-        const y = 96 + Math.sin(i * 1.8 + t * 0.0005) * 9;
-        ctx.fillStyle = i % 3 === 0 ? "rgba(243, 201, 91, 0.82)" : "rgba(196, 229, 213, 0.5)";
+      if (isLight) {
+        ctx.fillStyle = "rgba(255, 247, 216, 0.9)";
         ctx.beginPath();
-        ctx.arc(x, y, i % 3 === 0 ? 2.6 : 1.8, 0, Math.PI * 2);
+        ctx.arc(178, 118, 52, 0, Math.PI * 2);
         ctx.fill();
+        ctx.strokeStyle = "rgba(255, 232, 148, 0.5)";
+        ctx.lineWidth = 8;
+        ctx.beginPath();
+        ctx.arc(178, 118, 72 + Math.sin(t * 0.002) * 4, 0, Math.PI * 2);
+        ctx.stroke();
+        for (let i = -1; i < 16; i++) {
+          const x = i * 310 + 40;
+          const y = 112 + Math.sin(i + t * 0.0004) * 10;
+          drawCloud(x, y, 1.05);
+        }
+      } else {
+        for (let i = 0; i < 22; i++) {
+          const x = i * 190 + 20;
+          const y = 70 + Math.sin(i * 1.6 + t * 0.001) * 20;
+          ctx.fillStyle = i % 2 === 0 ? "rgba(255, 74, 36, 0.7)" : "rgba(129, 28, 39, 0.8)";
+          ctx.beginPath();
+          ctx.arc(x, y, i % 2 === 0 ? 2.8 : 2, 0, Math.PI * 2);
+          ctx.fill();
+        }
       }
       ctx.restore();
 
@@ -583,12 +781,12 @@
       ctx.translate(-cameraX * 0.35, 0);
       for (let i = -1; i < 12; i++) {
         const x = i * 350;
-        ctx.fillStyle = "#172426";
+        ctx.fillStyle = isLight ? "rgba(214, 226, 232, 0.72)" : "#13080d";
         ctx.beginPath();
         ctx.moveTo(x, H);
-        ctx.lineTo(x + 90, 252);
-        ctx.lineTo(x + 170, 314);
-        ctx.lineTo(x + 260, 230);
+        ctx.lineTo(x + 90, isLight ? 302 : 252);
+        ctx.lineTo(x + 170, isLight ? 278 : 324);
+        ctx.lineTo(x + 260, isLight ? 296 : 216);
         ctx.lineTo(x + 370, H);
         ctx.closePath();
         ctx.fill();
@@ -597,14 +795,43 @@
 
       ctx.save();
       ctx.translate(-cameraX * 0.58, 0);
-      for (let i = -1; i < 16; i++) {
-        const x = i * 260 + 30;
-        ctx.fillStyle = "#1d342e";
-        ctx.fillRect(x + 88, 278, 18, 270);
-        ctx.beginPath();
-        ctx.arc(x + 96, 270, 74, 0, Math.PI * 2);
-        ctx.fill();
+      if (isLight) {
+        for (let i = -1; i < 16; i++) {
+          const x = i * 260 + 30;
+          ctx.fillStyle = "rgba(255, 250, 228, 0.84)";
+          ctx.fillRect(x + 82, 278, 24, 270);
+          ctx.fillRect(x + 62, 270, 64, 14);
+          ctx.fillStyle = "rgba(231, 196, 104, 0.72)";
+          ctx.fillRect(x + 78, 292, 32, 5);
+        }
+      } else {
+        for (let i = -1; i < 16; i++) {
+          const x = i * 260 + 30;
+          ctx.fillStyle = "#1a0b10";
+          ctx.beginPath();
+          ctx.moveTo(x + 68, H);
+          ctx.lineTo(x + 100, 270);
+          ctx.lineTo(x + 132, H);
+          ctx.closePath();
+          ctx.fill();
+          ctx.fillStyle = "rgba(255, 74, 36, 0.55)";
+          ctx.fillRect(x + 95, 314, 8, 234);
+        }
       }
+      ctx.restore();
+    }
+
+    function drawCloud(x, y, scale = 1) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(scale, scale);
+      ctx.fillStyle = "rgba(255, 255, 255, 0.68)";
+      ctx.beginPath();
+      ctx.arc(0, 6, 28, 0, Math.PI * 2);
+      ctx.arc(28, -2, 34, 0, Math.PI * 2);
+      ctx.arc(66, 8, 28, 0, Math.PI * 2);
+      ctx.fillRect(-8, 4, 86, 28);
+      ctx.fill();
       ctx.restore();
     }
 
@@ -615,42 +842,59 @@
       ctx.translate(-cameraX + sx, sy);
 
       for (const platform of platforms) {
-        ctx.fillStyle = platform.type === "ground" ? "#36503d" : "#59605b";
+        const active = activeInCurrentMode(platform);
+        if (!active) {
+          ctx.globalAlpha = 0.16;
+          ctx.strokeStyle = platform.mode === "light" ? "#f3c95b" : "#9b6be5";
+          ctx.lineWidth = 2;
+          ctx.strokeRect(platform.x, platform.y, platform.w, platform.h);
+          ctx.globalAlpha = 1;
+          continue;
+        }
+        const isShadow = platform.mode === "shadow";
+        const isLightOnly = platform.mode === "light";
+        ctx.fillStyle = platform.type === "ground"
+          ? (environment === "light" ? "#d5c184" : "#2a1216")
+          : isShadow ? "#3b1820" : isLightOnly ? "#e8d79b" : "#59605b";
         ctx.fillRect(platform.x, platform.y, platform.w, platform.h);
-        ctx.fillStyle = platform.type === "ground" ? "#80a35f" : "#9fa9a1";
+        ctx.fillStyle = platform.type === "ground"
+          ? (environment === "light" ? "#fff1b0" : "#ff7048")
+          : isShadow ? "#ff7048" : isLightOnly ? "#fff7d8" : "#9fa9a1";
         ctx.fillRect(platform.x, platform.y, platform.w, 8);
-        ctx.fillStyle = "rgba(0,0,0,0.16)";
+        ctx.fillStyle = environment === "light" ? "rgba(111, 92, 41, 0.22)" : "rgba(255, 74, 36, 0.2)";
         for (let x = platform.x + 18; x < platform.x + platform.w; x += 54) {
           ctx.fillRect(x, platform.y + 16, 28, 5);
         }
       }
 
       for (const hazard of hazards) {
-        ctx.fillStyle = "#271719";
+        if (!activeInCurrentMode(hazard)) continue;
+        ctx.fillStyle = hazard.mode === "shadow" ? "#18070a" : "#7d6a38";
         ctx.fillRect(hazard.x, hazard.y + hazard.h - 6, hazard.w, 8);
         for (let x = hazard.x; x < hazard.x + hazard.w; x += 24) {
-          ctx.fillStyle = "#c85d4d";
+          ctx.fillStyle = hazard.mode === "shadow" ? "#bd2f2f" : "#ffe894";
           ctx.beginPath();
           ctx.moveTo(x, hazard.y + hazard.h);
           ctx.lineTo(x + 12, hazard.y);
           ctx.lineTo(x + 24, hazard.y + hazard.h);
           ctx.closePath();
           ctx.fill();
-          ctx.fillStyle = "#f3c95b";
+          ctx.fillStyle = hazard.mode === "shadow" ? "#ff7048" : "#ffffff";
           ctx.fillRect(x + 10, hazard.y + 10, 4, 12);
         }
       }
 
       for (const crystal of crystals) {
+        if (!activeInCurrentMode(crystal)) continue;
         if (crystal.taken) continue;
         const bob = Math.sin(t * 0.004 + crystal.x) * 5;
         ctx.save();
         ctx.translate(crystal.x, crystal.y + bob);
-        ctx.fillStyle = "rgba(77, 180, 169, 0.18)";
+        ctx.fillStyle = crystal.mode === "shadow" ? "rgba(255, 74, 36, 0.18)" : "rgba(255, 247, 216, 0.28)";
         ctx.beginPath();
         ctx.arc(0, 0, 22, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = "#6be5d0";
+        ctx.fillStyle = crystal.mode === "shadow" ? "#ff7048" : "#fff7d8";
         ctx.beginPath();
         ctx.moveTo(0, -20);
         ctx.lineTo(13, 0);
@@ -664,8 +908,8 @@
       }
 
       for (const enemy of enemies) {
-        if (enemy.hp <= 0) continue;
-        const glow = enemy.hit > 0 ? "#ffd96c" : "#9b6be5";
+        if (enemy.hp <= 0 || !activeInCurrentMode(enemy)) continue;
+        const glow = enemy.hit > 0 ? "#ffd96c" : enemy.mode === "light" ? "#b48b3c" : "#bd2f2f";
         ctx.fillStyle = "rgba(0,0,0,0.22)";
         ctx.beginPath();
         ctx.ellipse(enemy.x + enemy.w / 2, enemy.y + enemy.h + 4, enemy.w * 0.55, 7, 0, 0, Math.PI * 2);
@@ -688,7 +932,7 @@
       ctx.beginPath();
       ctx.ellipse(portal.x + portal.w / 2, portal.y + portal.h / 2, portal.w * portalPulse, portal.h * 0.58, 0, 0, Math.PI * 2);
       ctx.fill();
-      ctx.strokeStyle = crystals.every(c => c.taken) ? "#f3c95b" : "#6be5d0";
+      ctx.strokeStyle = crystals.every(c => c.taken) ? "#f3c95b" : environment === "light" ? "#fff7d8" : "#ff7048";
       ctx.lineWidth = 7;
       ctx.beginPath();
       ctx.ellipse(portal.x + portal.w / 2, portal.y + portal.h / 2, portal.w * 0.42, portal.h * 0.48, 0, 0, Math.PI * 2);
@@ -696,13 +940,42 @@
       ctx.fillStyle = "#213036";
       ctx.fillRect(portal.x + 4, portal.y + portal.h - 8, portal.w - 8, 18);
 
+      drawProjectiles(t);
       drawPlayer(t);
       ctx.restore();
+    }
+
+    function drawProjectiles(t) {
+      for (const projectile of projectiles) {
+        if (projectile.mode !== environment) continue;
+        ctx.save();
+        ctx.translate(projectile.x, projectile.y);
+        ctx.fillStyle = "rgba(255, 247, 216, 0.34)";
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 28, 9, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#fff7d8";
+        ctx.beginPath();
+        ctx.moveTo(projectile.vx > 0 ? 18 : -18, 0);
+        ctx.lineTo(projectile.vx > 0 ? -10 : 10, -8);
+        ctx.lineTo(projectile.vx > 0 ? -4 : 4, 0);
+        ctx.lineTo(projectile.vx > 0 ? -10 : 10, 8);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = "rgba(255, 232, 148, 0.92)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(projectile.vx > 0 ? -24 : 24, Math.sin(t * 0.03) * 3);
+        ctx.lineTo(projectile.vx > 0 ? 8 : -8, 0);
+        ctx.stroke();
+        ctx.restore();
+      }
     }
 
     function drawPlayer(t) {
       const flicker = player.invuln > 0 && Math.floor(t / 80) % 2 === 0;
       if (flicker) return;
+      const isLight = environment === "light";
       ctx.save();
       ctx.translate(player.x + player.w / 2, player.y + player.h / 2);
       ctx.scale(player.facing, 1);
@@ -713,31 +986,119 @@
       ctx.fill();
 
       if (player.dash > 0) {
-        ctx.fillStyle = "rgba(77,180,169,0.3)";
-        for (let i = 1; i <= 4; i++) ctx.fillRect(-i * 20, -20, 15, 38);
+        ctx.fillStyle = isLight ? "rgba(255, 247, 216, 0.35)" : "rgba(255, 74, 36, 0.28)";
+        for (let i = 1; i <= 4; i++) ctx.fillRect(-i * 20, -22, 15, 42);
       }
 
-      ctx.fillStyle = "#151619";
+      if (isLight) {
+        ctx.strokeStyle = "rgba(255, 232, 148, 0.9)";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.ellipse(0, -37, 13, 5, 0, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.fillStyle = "rgba(255, 255, 255, 0.82)";
+        ctx.beginPath();
+        ctx.ellipse(-19, -5, 17, 34, -0.55, 0, Math.PI * 2);
+        ctx.ellipse(19, -5, 17, 34, 0.55, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = "rgba(214, 176, 89, 0.5)";
+        ctx.lineWidth = 2;
+        for (let i = 0; i < 4; i++) {
+          ctx.beginPath();
+          ctx.moveTo(-7, -18 + i * 8);
+          ctx.quadraticCurveTo(-31, -8 + i * 7, -35, 13 + i * 3);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(7, -18 + i * 8);
+          ctx.quadraticCurveTo(31, -8 + i * 7, 35, 13 + i * 3);
+          ctx.stroke();
+        }
+      } else {
+        ctx.fillStyle = "rgba(255, 74, 36, 0.28)";
+        ctx.beginPath();
+        ctx.moveTo(-6, -18);
+        ctx.lineTo(-34, -34);
+        ctx.lineTo(-22, 2);
+        ctx.closePath();
+        ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(6, -18);
+        ctx.lineTo(34, -34);
+        ctx.lineTo(22, 2);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      ctx.fillStyle = isLight ? "#fff7d8" : "#1a080b";
       ctx.beginPath();
-      ctx.roundRect(-15, -22, 30, 44, 7);
+      ctx.roundRect(-15, -22, 30, 44, isLight ? 11 : 6);
       ctx.fill();
-      ctx.fillStyle = "#2d3134";
+
+      ctx.fillStyle = isLight ? "#e7c468" : "#3a0d0d";
       ctx.fillRect(-10, -28, 20, 16);
-      ctx.fillStyle = "#fff2bd";
-      ctx.fillRect(4, -22, 5, 5);
-      ctx.fillStyle = "#4db4a9";
+
+      if (isLight) {
+        ctx.fillStyle = "#fffdf2";
+        ctx.fillRect(4, -22, 5, 5);
+        ctx.fillStyle = "#d6b059";
+        ctx.fillRect(-11, -1, 22, 5);
+      } else {
+        ctx.fillStyle = "#ff7048";
+        ctx.beginPath();
+        ctx.moveTo(-10, -29);
+        ctx.lineTo(-20, -41);
+        ctx.lineTo(-5, -30);
+        ctx.moveTo(10, -29);
+        ctx.lineTo(20, -41);
+        ctx.lineTo(5, -30);
+        ctx.fill();
+        ctx.fillRect(5, -22, 5, 5);
+        ctx.fillStyle = "#ff7048";
+        ctx.fillRect(-11, -1, 22, 5);
+        ctx.strokeStyle = "#bd2f2f";
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(-10, 11);
+        ctx.quadraticCurveTo(-34, 24, -16, 32);
+        ctx.stroke();
+      }
+
+      ctx.fillStyle = isLight ? "#d8c78e" : "#120609";
       ctx.fillRect(-11, -1, 22, 5);
-      ctx.fillStyle = "#151619";
+      ctx.fillStyle = isLight ? "#e9dfbe" : "#16080a";
       ctx.fillRect(-12, 20, 8, 14);
       ctx.fillRect(4, 20, 8, 14);
 
       if (slashTimer > 0) {
-        ctx.strokeStyle = "rgba(243, 201, 91, 0.92)";
-        ctx.lineWidth = 7;
+        ctx.strokeStyle = "rgba(255, 74, 36, 0.92)";
+        ctx.lineWidth = 8;
         ctx.beginPath();
-        ctx.arc(20, -2, 34, -0.9, 0.85);
+        ctx.arc(21, -1, 38, -0.9, 0.85);
+        ctx.stroke();
+        ctx.strokeStyle = "rgba(189, 47, 47, 0.72)";
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.arc(23, -1, 48, -0.75, 0.68);
         ctx.stroke();
       }
+      ctx.restore();
+    }
+
+    function drawEnvironmentFlash() {
+      if (switchTimer <= 0) return;
+      const alpha = Math.min(0.72, switchTimer / 22);
+      ctx.save();
+      ctx.fillStyle = environment === "light"
+        ? `rgba(255, 236, 170, ${alpha})`
+        : `rgba(30, 20, 58, ${alpha})`;
+      ctx.fillRect(0, 0, W, H);
+      ctx.fillStyle = environment === "light"
+        ? `rgba(77, 180, 169, ${alpha * 0.38})`
+        : `rgba(155, 107, 229, ${alpha * 0.42})`;
+      ctx.beginPath();
+      ctx.arc(W / 2, H / 2, 360 * (1 - switchTimer / 24), 0, Math.PI * 2);
+      ctx.fill();
       ctx.restore();
     }
 
@@ -761,7 +1122,7 @@
       const w = W - 56;
       ctx.fillStyle = "rgba(8, 11, 13, 0.45)";
       ctx.fillRect(x, y, w, 8);
-      ctx.fillStyle = "#4db4a9";
+      ctx.fillStyle = environment === "light" ? "#fff7d8" : "#ff7048";
       ctx.fillRect(x, y, w * ((player.x + player.w / 2) / worldWidth), 8);
       ctx.fillStyle = "#f3c95b";
       ctx.fillRect(x + w * (portal.x / worldWidth) - 3, y - 5, 6, 18);
@@ -774,11 +1135,14 @@
       if (running && !paused && elapsed >= 0) {
         updatePlayer();
         updateEnemies();
+        updateProjectiles();
         updateCamera();
+        if (switchTimer > 0) switchTimer -= 1;
       }
 
       drawBackground(now);
       drawWorld(now);
+      drawEnvironmentFlash();
       drawOverlayText();
       drawProgress();
 
@@ -802,8 +1166,11 @@
         paused = !paused;
         updateHud();
       }
-      if (key === " " || key === "w" || key === "arrowup") jump();
-      if (key === "j" || key === "f") attack();
+      if (!event.repeat && key === " ") {
+        switchEnvironment();
+      }
+      if (!event.repeat && key === "k") jump();
+      if (!event.repeat && key === "j") attack();
       if (key === "shift") dash();
       keys.add(key);
     });
@@ -813,6 +1180,8 @@
     });
 
     startButton.addEventListener("click", resetGame);
+    lightMark.addEventListener("click", () => switchEnvironment("light"));
+    shadowMark.addEventListener("click", () => switchEnvironment("shadow"));
     updateHud();
     requestAnimationFrame(loop);
   </script>
