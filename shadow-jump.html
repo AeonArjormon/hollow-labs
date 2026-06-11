@@ -1,0 +1,820 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shadow Jump</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #101416;
+      color: #eef4ee;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(77, 180, 169, 0.18), transparent 28rem),
+        radial-gradient(circle at 82% 12%, rgba(222, 170, 74, 0.15), transparent 24rem),
+        linear-gradient(160deg, #101416 0%, #151a1c 55%, #0d1012 100%);
+      overflow: hidden;
+    }
+
+    .shell {
+      width: min(100vw, 1180px);
+      height: min(100vh, 720px);
+      padding: 16px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 10px;
+    }
+
+    .topbar,
+    .bottombar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      min-height: 34px;
+      color: #dce7de;
+      font-size: 14px;
+      letter-spacing: 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 18px;
+      color: #fff7d8;
+    }
+
+    .mark {
+      width: 22px;
+      height: 22px;
+      border-radius: 5px;
+      background:
+        linear-gradient(135deg, transparent 0 45%, #0e1114 46% 54%, transparent 55%),
+        linear-gradient(135deg, #f3c95b, #4db4a9);
+      box-shadow: 0 0 18px rgba(243, 201, 91, 0.35);
+    }
+
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .pill {
+      min-width: 88px;
+      padding: 6px 10px;
+      border: 1px solid rgba(238, 244, 238, 0.16);
+      border-radius: 6px;
+      background: rgba(8, 11, 13, 0.42);
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .game-frame {
+      position: relative;
+      min-height: 0;
+      border: 1px solid rgba(238, 244, 238, 0.15);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #182022;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      image-rendering: auto;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgba(10, 13, 15, 0.64);
+      backdrop-filter: blur(4px);
+    }
+
+    .panel {
+      width: min(520px, 100%);
+      padding: 22px;
+      border: 1px solid rgba(238, 244, 238, 0.18);
+      border-radius: 8px;
+      background: rgba(18, 23, 25, 0.92);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+    }
+
+    .panel h1 {
+      margin: 0 0 8px;
+      color: #fff2bd;
+      font-size: clamp(28px, 5vw, 46px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .panel p {
+      margin: 8px 0;
+      color: #d8e2dc;
+      line-height: 1.55;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin: 16px 0;
+      font-size: 13px;
+      color: #ecf5ed;
+    }
+
+    .key {
+      padding: 8px 10px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    button {
+      appearance: none;
+      border: 0;
+      border-radius: 6px;
+      padding: 11px 16px;
+      background: #f3c95b;
+      color: #151613;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #ffd96c;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .hint {
+      color: #aebbb2;
+      font-size: 13px;
+      text-align: right;
+    }
+
+    @media (max-width: 760px) {
+      body {
+        overflow: auto;
+      }
+
+      .shell {
+        height: 100vh;
+        padding: 10px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .stats {
+        justify-content: flex-start;
+      }
+
+      .pill {
+        min-width: 72px;
+        font-size: 12px;
+      }
+
+      .controls {
+        grid-template-columns: 1fr;
+      }
+
+      .hint {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand"><span class="mark" aria-hidden="true"></span> Shadow Jump</div>
+      <div class="stats" aria-live="polite">
+        <div class="pill" id="hp">生命 3</div>
+        <div class="pill" id="crystals">晶石 0/5</div>
+        <div class="pill" id="state">准备</div>
+      </div>
+    </header>
+
+    <section class="game-frame" aria-label="Shadow Jump playable prototype">
+      <canvas id="game" width="1152" height="648"></canvas>
+      <div class="overlay" id="overlay">
+        <div class="panel">
+          <h1>Shadow Jump</h1>
+          <p>一个横版奇幻动作跑酷原型。你是影刃旅者，需要穿过森林遗迹，击败守卫，收集月辉晶石，并抵达传送门。</p>
+          <div class="controls">
+            <div class="key">A / D 或 方向键：移动</div>
+            <div class="key">W / 空格 / ↑：跳跃，空中可二段跳</div>
+            <div class="key">Shift：暗影冲刺</div>
+            <div class="key">J / F：近战攻击</div>
+          </div>
+          <button id="start">开始游戏</button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="bottombar">
+      <span>目标：收集 5 枚晶石，到达右侧传送门。</span>
+      <span class="hint">R 重开 · P 暂停</span>
+    </footer>
+  </main>
+
+  <script>
+    const canvas = document.getElementById("game");
+    const ctx = canvas.getContext("2d");
+    const hpEl = document.getElementById("hp");
+    const crystalsEl = document.getElementById("crystals");
+    const stateEl = document.getElementById("state");
+    const overlay = document.getElementById("overlay");
+    const startButton = document.getElementById("start");
+
+    const W = canvas.width;
+    const H = canvas.height;
+    const FLOOR = H - 82;
+    const GRAVITY = 0.82;
+    const keys = new Set();
+
+    let running = false;
+    let paused = false;
+    let won = false;
+    let lost = false;
+    let cameraX = 0;
+    let lastTime = performance.now();
+    let slashTimer = 0;
+    let dashCooldown = 0;
+    let shake = 0;
+    let messageTimer = 0;
+    let message = "";
+
+    const worldWidth = 3450;
+
+    const platforms = [
+      { x: 0, y: FLOOR, w: 520, h: 92, type: "ground" },
+      { x: 560, y: FLOOR - 52, w: 180, h: 24, type: "stone" },
+      { x: 825, y: FLOOR - 122, w: 190, h: 24, type: "stone" },
+      { x: 1100, y: FLOOR, w: 360, h: 92, type: "ground" },
+      { x: 1540, y: FLOOR - 72, w: 190, h: 24, type: "stone" },
+      { x: 1835, y: FLOOR - 142, w: 190, h: 24, type: "stone" },
+      { x: 2130, y: FLOOR - 48, w: 230, h: 24, type: "stone" },
+      { x: 2470, y: FLOOR, w: 410, h: 92, type: "ground" },
+      { x: 2920, y: FLOOR - 96, w: 210, h: 24, type: "stone" },
+      { x: 3180, y: FLOOR, w: 270, h: 92, type: "ground" }
+    ];
+
+    const hazards = [
+      { x: 760, y: FLOOR + 46, w: 260, h: 38 },
+      { x: 1468, y: FLOOR + 46, w: 250, h: 38 },
+      { x: 2370, y: FLOOR + 46, w: 120, h: 38 },
+      { x: 2878, y: FLOOR + 46, w: 190, h: 38 }
+    ];
+
+    const crystals = [
+      { x: 625, y: FLOOR - 94, taken: false },
+      { x: 905, y: FLOOR - 165, taken: false },
+      { x: 1620, y: FLOOR - 114, taken: false },
+      { x: 1910, y: FLOOR - 184, taken: false },
+      { x: 3005, y: FLOOR - 138, taken: false }
+    ];
+
+    const enemies = [
+      { x: 390, y: FLOOR - 32, w: 42, h: 32, hp: 2, min: 300, max: 500, vx: 0.9, hit: 0 },
+      { x: 1240, y: FLOOR - 36, w: 48, h: 36, hp: 3, min: 1120, max: 1410, vx: 1.2, hit: 0 },
+      { x: 2210, y: FLOOR - 84, w: 44, h: 36, hp: 2, min: 2140, max: 2330, vx: 1.0, hit: 0 },
+      { x: 2665, y: FLOOR - 42, w: 56, h: 42, hp: 4, min: 2495, max: 2840, vx: 1.35, hit: 0 }
+    ];
+
+    const portal = { x: 3330, y: FLOOR - 112, w: 76, h: 112 };
+
+    const playerStart = { x: 74, y: FLOOR - 58 };
+    const player = {
+      x: playerStart.x,
+      y: playerStart.y,
+      w: 34,
+      h: 58,
+      vx: 0,
+      vy: 0,
+      hp: 3,
+      facing: 1,
+      grounded: false,
+      jumps: 0,
+      invuln: 0,
+      dash: 0,
+      attack: 0,
+      checkpoint: { ...playerStart }
+    };
+
+    function resetGame() {
+      running = true;
+      paused = false;
+      won = false;
+      lost = false;
+      cameraX = 0;
+      slashTimer = 0;
+      dashCooldown = 0;
+      shake = 0;
+      messageTimer = 160;
+      message = "穿过遗迹，抵达传送门";
+      Object.assign(player, {
+        x: playerStart.x,
+        y: playerStart.y,
+        w: 34,
+        h: 58,
+        vx: 0,
+        vy: 0,
+        hp: 3,
+        facing: 1,
+        grounded: false,
+        jumps: 0,
+        invuln: 0,
+        dash: 0,
+        attack: 0,
+        checkpoint: { ...playerStart }
+      });
+      crystals.forEach(c => c.taken = false);
+      enemies[0] = { x: 390, y: FLOOR - 32, w: 42, h: 32, hp: 2, min: 300, max: 500, vx: 0.9, hit: 0 };
+      enemies[1] = { x: 1240, y: FLOOR - 36, w: 48, h: 36, hp: 3, min: 1120, max: 1410, vx: 1.2, hit: 0 };
+      enemies[2] = { x: 2210, y: FLOOR - 84, w: 44, h: 36, hp: 2, min: 2140, max: 2330, vx: 1.0, hit: 0 };
+      enemies[3] = { x: 2665, y: FLOOR - 42, w: 56, h: 42, hp: 4, min: 2495, max: 2840, vx: 1.35, hit: 0 };
+      overlay.classList.add("hidden");
+      updateHud();
+    }
+
+    function rectsOverlap(a, b) {
+      return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+    }
+
+    function jump() {
+      if (!running || paused || won || lost) return;
+      if (player.grounded || player.jumps < 2) {
+        player.vy = player.grounded ? -15.8 : -13.4;
+        player.grounded = false;
+        player.jumps += 1;
+      }
+    }
+
+    function attack() {
+      if (!running || paused || won || lost || player.attack > 0) return;
+      player.attack = 15;
+      slashTimer = 12;
+      const arc = {
+        x: player.facing > 0 ? player.x + player.w - 2 : player.x - 52,
+        y: player.y + 10,
+        w: 54,
+        h: 34
+      };
+      for (const enemy of enemies) {
+        if (enemy.hp > 0 && rectsOverlap(arc, enemy)) {
+          enemy.hp -= 1;
+          enemy.hit = 16;
+          enemy.vx += player.facing * 0.7;
+          shake = 8;
+          message = enemy.hp <= 0 ? "暗影斩击击倒了守卫" : "命中";
+          messageTimer = 42;
+        }
+      }
+    }
+
+    function dash() {
+      if (!running || paused || won || lost || dashCooldown > 0) return;
+      player.dash = 11;
+      dashCooldown = 72;
+      player.vx = player.facing * 14;
+      player.vy *= 0.35;
+    }
+
+    function hurt(amount = 1) {
+      if (player.invuln > 0 || won || lost) return;
+      player.hp -= amount;
+      player.invuln = 86;
+      shake = 14;
+      player.vx = -player.facing * 7;
+      player.vy = -8;
+      if (player.hp <= 0) {
+        lost = true;
+        running = false;
+        stateEl.textContent = "失败";
+        showEnd("影子消散", "你倒在森林遗迹中。按 R 或点击按钮重新挑战。", "重新开始");
+      } else {
+        message = "受伤，回到安全节奏";
+        messageTimer = 70;
+      }
+      updateHud();
+    }
+
+    function showEnd(title, body, buttonText) {
+      overlay.innerHTML = `
+        <div class="panel">
+          <h1>${title}</h1>
+          <p>${body}</p>
+          <p>已收集 ${crystals.filter(c => c.taken).length}/5 枚月辉晶石。</p>
+          <button id="restart">${buttonText}</button>
+        </div>`;
+      overlay.classList.remove("hidden");
+      document.getElementById("restart").addEventListener("click", resetGame);
+    }
+
+    function updateHud() {
+      hpEl.textContent = `生命 ${Math.max(0, player.hp)}`;
+      crystalsEl.textContent = `晶石 ${crystals.filter(c => c.taken).length}/5`;
+      stateEl.textContent = won ? "通关" : lost ? "失败" : paused ? "暂停" : running ? "冒险中" : "准备";
+    }
+
+    function updatePlayer() {
+      const left = keys.has("arrowleft") || keys.has("a");
+      const right = keys.has("arrowright") || keys.has("d");
+      const accel = player.grounded ? 0.92 : 0.62;
+      const friction = player.grounded ? 0.78 : 0.94;
+      const maxSpeed = player.dash > 0 ? 15 : 6.2;
+
+      if (left) {
+        player.vx -= accel;
+        player.facing = -1;
+      }
+      if (right) {
+        player.vx += accel;
+        player.facing = 1;
+      }
+      if (!left && !right && player.dash <= 0) player.vx *= friction;
+
+      player.vx = Math.max(-maxSpeed, Math.min(maxSpeed, player.vx));
+      player.vy += player.dash > 0 ? GRAVITY * 0.18 : GRAVITY;
+      if (player.vy > 18) player.vy = 18;
+
+      const prevY = player.y;
+      player.x += player.vx;
+      player.x = Math.max(0, Math.min(worldWidth - player.w, player.x));
+      player.y += player.vy;
+      player.grounded = false;
+
+      for (const platform of platforms) {
+        if (!rectsOverlap(player, platform)) continue;
+        const wasAbove = prevY + player.h <= platform.y + 5;
+        if (wasAbove && player.vy >= 0) {
+          player.y = platform.y - player.h;
+          player.vy = 0;
+          player.grounded = true;
+          player.jumps = 0;
+        } else if (player.x + player.w * 0.5 < platform.x + platform.w * 0.5) {
+          player.x = platform.x - player.w;
+          player.vx = Math.min(0, player.vx);
+        } else {
+          player.x = platform.x + platform.w;
+          player.vx = Math.max(0, player.vx);
+        }
+      }
+
+      for (const hazard of hazards) {
+        if (rectsOverlap(player, hazard)) hurt(1);
+      }
+
+      if (player.y > H + 140) {
+        hurt(1);
+        if (!lost) {
+          player.x = player.checkpoint.x;
+          player.y = player.checkpoint.y;
+          player.vx = 0;
+          player.vy = 0;
+        }
+      }
+
+      if (player.x > 2380 && player.checkpoint.x < 2460) {
+        player.checkpoint = { x: 2520, y: FLOOR - 58 };
+        message = "已激活遗迹中段的暗影印记";
+        messageTimer = 96;
+      }
+
+      for (const crystal of crystals) {
+        if (!crystal.taken && rectsOverlap(player, { x: crystal.x - 16, y: crystal.y - 16, w: 32, h: 32 })) {
+          crystal.taken = true;
+          message = "获得月辉晶石";
+          messageTimer = 62;
+          updateHud();
+        }
+      }
+
+      if (rectsOverlap(player, portal)) {
+        const count = crystals.filter(c => c.taken).length;
+        if (count >= 5) {
+          won = true;
+          running = false;
+          updateHud();
+          showEnd("传送门开启", "你完成了 Shadow Jump 的第一段旅程。这个原型已经包含移动、二段跳、冲刺、攻击、敌人、陷阱、收集与通关目标。", "再玩一次");
+        } else {
+          message = `还需要 ${5 - count} 枚晶石`;
+          messageTimer = 66;
+        }
+      }
+
+      if (player.invuln > 0) player.invuln -= 1;
+      if (player.dash > 0) player.dash -= 1;
+      if (player.attack > 0) player.attack -= 1;
+      if (dashCooldown > 0) dashCooldown -= 1;
+    }
+
+    function updateEnemies() {
+      for (const enemy of enemies) {
+        if (enemy.hp <= 0) continue;
+        enemy.x += enemy.vx;
+        if (enemy.x < enemy.min || enemy.x + enemy.w > enemy.max) {
+          enemy.vx *= -1;
+          enemy.x = Math.max(enemy.min, Math.min(enemy.max - enemy.w, enemy.x));
+        }
+        if (enemy.hit > 0) enemy.hit -= 1;
+        if (rectsOverlap(player, enemy)) {
+          player.facing = player.x < enemy.x ? 1 : -1;
+          hurt(1);
+        }
+      }
+    }
+
+    function updateCamera() {
+      const target = player.x + player.w / 2 - W * 0.42;
+      cameraX += (target - cameraX) * 0.08;
+      cameraX = Math.max(0, Math.min(worldWidth - W, cameraX));
+      if (shake > 0) shake -= 1;
+      if (messageTimer > 0) messageTimer -= 1;
+    }
+
+    function drawBackground(t) {
+      const sky = ctx.createLinearGradient(0, 0, 0, H);
+      sky.addColorStop(0, "#142127");
+      sky.addColorStop(0.52, "#1b2a2a");
+      sky.addColorStop(1, "#243222");
+      ctx.fillStyle = sky;
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.save();
+      ctx.translate(-cameraX * 0.18, 0);
+      for (let i = 0; i < 18; i++) {
+        const x = i * 260 + 40;
+        const y = 96 + Math.sin(i * 1.8 + t * 0.0005) * 9;
+        ctx.fillStyle = i % 3 === 0 ? "rgba(243, 201, 91, 0.82)" : "rgba(196, 229, 213, 0.5)";
+        ctx.beginPath();
+        ctx.arc(x, y, i % 3 === 0 ? 2.6 : 1.8, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+
+      ctx.save();
+      ctx.translate(-cameraX * 0.35, 0);
+      for (let i = -1; i < 12; i++) {
+        const x = i * 350;
+        ctx.fillStyle = "#172426";
+        ctx.beginPath();
+        ctx.moveTo(x, H);
+        ctx.lineTo(x + 90, 252);
+        ctx.lineTo(x + 170, 314);
+        ctx.lineTo(x + 260, 230);
+        ctx.lineTo(x + 370, H);
+        ctx.closePath();
+        ctx.fill();
+      }
+      ctx.restore();
+
+      ctx.save();
+      ctx.translate(-cameraX * 0.58, 0);
+      for (let i = -1; i < 16; i++) {
+        const x = i * 260 + 30;
+        ctx.fillStyle = "#1d342e";
+        ctx.fillRect(x + 88, 278, 18, 270);
+        ctx.beginPath();
+        ctx.arc(x + 96, 270, 74, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function drawWorld(t) {
+      ctx.save();
+      const sx = shake > 0 ? (Math.random() - 0.5) * shake : 0;
+      const sy = shake > 0 ? (Math.random() - 0.5) * shake : 0;
+      ctx.translate(-cameraX + sx, sy);
+
+      for (const platform of platforms) {
+        ctx.fillStyle = platform.type === "ground" ? "#36503d" : "#59605b";
+        ctx.fillRect(platform.x, platform.y, platform.w, platform.h);
+        ctx.fillStyle = platform.type === "ground" ? "#80a35f" : "#9fa9a1";
+        ctx.fillRect(platform.x, platform.y, platform.w, 8);
+        ctx.fillStyle = "rgba(0,0,0,0.16)";
+        for (let x = platform.x + 18; x < platform.x + platform.w; x += 54) {
+          ctx.fillRect(x, platform.y + 16, 28, 5);
+        }
+      }
+
+      for (const hazard of hazards) {
+        ctx.fillStyle = "#271719";
+        ctx.fillRect(hazard.x, hazard.y + hazard.h - 6, hazard.w, 8);
+        for (let x = hazard.x; x < hazard.x + hazard.w; x += 24) {
+          ctx.fillStyle = "#c85d4d";
+          ctx.beginPath();
+          ctx.moveTo(x, hazard.y + hazard.h);
+          ctx.lineTo(x + 12, hazard.y);
+          ctx.lineTo(x + 24, hazard.y + hazard.h);
+          ctx.closePath();
+          ctx.fill();
+          ctx.fillStyle = "#f3c95b";
+          ctx.fillRect(x + 10, hazard.y + 10, 4, 12);
+        }
+      }
+
+      for (const crystal of crystals) {
+        if (crystal.taken) continue;
+        const bob = Math.sin(t * 0.004 + crystal.x) * 5;
+        ctx.save();
+        ctx.translate(crystal.x, crystal.y + bob);
+        ctx.fillStyle = "rgba(77, 180, 169, 0.18)";
+        ctx.beginPath();
+        ctx.arc(0, 0, 22, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#6be5d0";
+        ctx.beginPath();
+        ctx.moveTo(0, -20);
+        ctx.lineTo(13, 0);
+        ctx.lineTo(0, 20);
+        ctx.lineTo(-13, 0);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = "#fff7d8";
+        ctx.fillRect(-3, -12, 6, 8);
+        ctx.restore();
+      }
+
+      for (const enemy of enemies) {
+        if (enemy.hp <= 0) continue;
+        const glow = enemy.hit > 0 ? "#ffd96c" : "#9b6be5";
+        ctx.fillStyle = "rgba(0,0,0,0.22)";
+        ctx.beginPath();
+        ctx.ellipse(enemy.x + enemy.w / 2, enemy.y + enemy.h + 4, enemy.w * 0.55, 7, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.roundRect(enemy.x, enemy.y, enemy.w, enemy.h, 14);
+        ctx.fill();
+        ctx.fillStyle = "#1c1823";
+        const eyeX = enemy.vx > 0 ? enemy.x + enemy.w * 0.64 : enemy.x + enemy.w * 0.28;
+        ctx.fillRect(eyeX, enemy.y + 11, 7, 6);
+        ctx.fillStyle = "#2d2036";
+        for (let i = 0; i < enemy.hp; i++) {
+          ctx.fillRect(enemy.x + 7 + i * 10, enemy.y - 10, 7, 4);
+        }
+      }
+
+      const portalPulse = 0.72 + Math.sin(t * 0.005) * 0.08;
+      ctx.fillStyle = "rgba(107, 229, 208, 0.14)";
+      ctx.beginPath();
+      ctx.ellipse(portal.x + portal.w / 2, portal.y + portal.h / 2, portal.w * portalPulse, portal.h * 0.58, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = crystals.every(c => c.taken) ? "#f3c95b" : "#6be5d0";
+      ctx.lineWidth = 7;
+      ctx.beginPath();
+      ctx.ellipse(portal.x + portal.w / 2, portal.y + portal.h / 2, portal.w * 0.42, portal.h * 0.48, 0, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.fillStyle = "#213036";
+      ctx.fillRect(portal.x + 4, portal.y + portal.h - 8, portal.w - 8, 18);
+
+      drawPlayer(t);
+      ctx.restore();
+    }
+
+    function drawPlayer(t) {
+      const flicker = player.invuln > 0 && Math.floor(t / 80) % 2 === 0;
+      if (flicker) return;
+      ctx.save();
+      ctx.translate(player.x + player.w / 2, player.y + player.h / 2);
+      ctx.scale(player.facing, 1);
+
+      ctx.fillStyle = "rgba(0,0,0,0.25)";
+      ctx.beginPath();
+      ctx.ellipse(0, player.h / 2 + 5, 24, 7, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      if (player.dash > 0) {
+        ctx.fillStyle = "rgba(77,180,169,0.3)";
+        for (let i = 1; i <= 4; i++) ctx.fillRect(-i * 20, -20, 15, 38);
+      }
+
+      ctx.fillStyle = "#151619";
+      ctx.beginPath();
+      ctx.roundRect(-15, -22, 30, 44, 7);
+      ctx.fill();
+      ctx.fillStyle = "#2d3134";
+      ctx.fillRect(-10, -28, 20, 16);
+      ctx.fillStyle = "#fff2bd";
+      ctx.fillRect(4, -22, 5, 5);
+      ctx.fillStyle = "#4db4a9";
+      ctx.fillRect(-11, -1, 22, 5);
+      ctx.fillStyle = "#151619";
+      ctx.fillRect(-12, 20, 8, 14);
+      ctx.fillRect(4, 20, 8, 14);
+
+      if (slashTimer > 0) {
+        ctx.strokeStyle = "rgba(243, 201, 91, 0.92)";
+        ctx.lineWidth = 7;
+        ctx.beginPath();
+        ctx.arc(20, -2, 34, -0.9, 0.85);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    function drawOverlayText() {
+      if (messageTimer <= 0) return;
+      ctx.save();
+      ctx.fillStyle = "rgba(8, 11, 13, 0.55)";
+      ctx.roundRect(W / 2 - 178, 34, 356, 38, 6);
+      ctx.fill();
+      ctx.fillStyle = "#fff7d8";
+      ctx.font = "700 17px system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(message, W / 2, 59);
+      ctx.restore();
+    }
+
+    function drawProgress() {
+      ctx.save();
+      const x = 28;
+      const y = H - 34;
+      const w = W - 56;
+      ctx.fillStyle = "rgba(8, 11, 13, 0.45)";
+      ctx.fillRect(x, y, w, 8);
+      ctx.fillStyle = "#4db4a9";
+      ctx.fillRect(x, y, w * ((player.x + player.w / 2) / worldWidth), 8);
+      ctx.fillStyle = "#f3c95b";
+      ctx.fillRect(x + w * (portal.x / worldWidth) - 3, y - 5, 6, 18);
+      ctx.restore();
+    }
+
+    function loop(now) {
+      const elapsed = Math.min(34, now - lastTime);
+      lastTime = now;
+      if (running && !paused && elapsed >= 0) {
+        updatePlayer();
+        updateEnemies();
+        updateCamera();
+      }
+
+      drawBackground(now);
+      drawWorld(now);
+      drawOverlayText();
+      drawProgress();
+
+      if (paused) {
+        ctx.fillStyle = "rgba(8,11,13,0.55)";
+        ctx.fillRect(0, 0, W, H);
+        ctx.fillStyle = "#fff7d8";
+        ctx.font = "800 42px system-ui, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText("暂停", W / 2, H / 2);
+      }
+
+      requestAnimationFrame(loop);
+    }
+
+    document.addEventListener("keydown", event => {
+      const key = event.key.toLowerCase();
+      if ([" ", "arrowup", "arrowdown", "arrowleft", "arrowright"].includes(key)) event.preventDefault();
+      if (key === "r") resetGame();
+      if (key === "p" && running) {
+        paused = !paused;
+        updateHud();
+      }
+      if (key === " " || key === "w" || key === "arrowup") jump();
+      if (key === "j" || key === "f") attack();
+      if (key === "shift") dash();
+      keys.add(key);
+    });
+
+    document.addEventListener("keyup", event => {
+      keys.delete(event.key.toLowerCase());
+    });
+
+    startButton.addEventListener("click", resetGame);
+    updateHud();
+    requestAnimationFrame(loop);
+  </script>
+</body>
+</html>
