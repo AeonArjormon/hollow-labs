@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>邦布语翻译器 // BANGBU TRANSLATOR</title>
+<style>
+  @import url('https://fonts.googleapis.cn/css2?family=Noto+Sans+SC:wght@400;700;900&family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
+  :root {
+    --bg: #0a0a12;
+    --bg2: #12121f;
+    --yellow: #e8ff2e;
+    --cyan: #00e5ff;
+    --magenta: #ff2d78;
+    --white: #f0f0f5;
+    --gray: #5a5a7a;
+    --dark-gray: #2a2a3a;
+    --panel-bg: rgba(18, 18, 31, 0.85);
+    --glow-yellow: 0 0 20px rgba(232, 255, 46, 0.3);
+    --glow-cyan: 0 0 20px rgba(0, 229, 255, 0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Noto Sans SC', 'JetBrains Mono', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* ── 背景网格 + 扫描线 ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,229,255,0.015) 2px, rgba(0,229,255,0.015) 4px),
+      repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(232,255,46,0.02) 60px, rgba(232,255,46,0.02) 61px),
+      repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(232,255,46,0.02) 60px, rgba(232,255,46,0.02) 61px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 1px,
+      rgba(0, 0, 0, 0.08) 1px,
+      rgba(0, 0, 0, 0.08) 2px
+    );
+    pointer-events: none;
+    z-index: 9999;
+    animation: scanline 8s linear infinite;
+  }
+
+  @keyframes scanline {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(4px); }
+  }
+
+  /* ── 主容器 ── */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── 标题区 ── */
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+  }
+
+  .header-tag {
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    letter-spacing: 6px;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    opacity: 0.8;
+  }
+
+  .header h1 {
+    font-family: 'Noto Sans SC', sans-serif;
+    font-weight: 900;
+    font-size: 48px;
+    letter-spacing: 4px;
+    color: var(--yellow);
+    text-shadow: var(--glow-yellow), 0 0 60px rgba(232,255,46,0.15);
+    position: relative;
+    display: inline-block;
+  }
+
+  .header h1::before,
+  .header h1::after {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 3px;
+    background: var(--yellow);
+  }
+  .header h1::before { left: -52px; top: 50%; transform: translateY(-50%); }
+  .header h1::after { right: -52px; top: 50%; transform: translateY(-50%); }
+
+  .header-sub {
+    font-family: 'Orbitron', monospace;
+    font-size: 13px;
+    color: var(--gray);
+    letter-spacing: 3px;
+    margin-top: 8px;
+  }
+
+  /* ── 模式切换 ── */
+  .mode-switch {
+    display: flex;
+    gap: 0;
+    margin-bottom: 24px;
+    border: 1px solid var(--dark-gray);
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    overflow: hidden;
+  }
+
+  .mode-btn {
+    flex: 1;
+    padding: 14px 20px;
+    background: var(--bg2);
+    color: var(--gray);
+    border: none;
+    font-family: 'Noto Sans SC', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.25s;
+    letter-spacing: 2px;
+    position: relative;
+  }
+
+  .mode-btn.active {
+    background: var(--yellow);
+    color: var(--bg);
+  }
+
+  .mode-btn:not(.active):hover {
+    background: var(--dark-gray);
+    color: var(--white);
+  }
+
+  .mode-btn .btn-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 10px;
+    display: block;
+    margin-top: 2px;
+    opacity: 0.6;
+  }
+
+  /* ── 面板 ── */
+  .panel {
+    background: var(--panel-bg);
+    border: 1px solid var(--dark-gray);
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--yellow), var(--cyan), transparent);
+  }
+
+  .panel-header {
+    padding: 16px 20px 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .panel-header .dot {
+    width: 8px; height: 8px;
+    background: var(--yellow);
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .panel-header span {
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--cyan);
+    text-transform: uppercase;
+  }
+
+  .panel-body {
+    padding: 0 20px 20px;
+  }
+
+  /* ── 输入区 ── */
+  textarea {
+    width: 100%;
+    min-height: 100px;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--dark-gray);
+    color: var(--white);
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 18px;
+    padding: 16px;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.3s;
+    line-height: 1.8;
+  }
+
+  textarea:focus {
+    border-color: var(--yellow);
+    box-shadow: inset 0 0 20px rgba(232,255,46,0.05);
+  }
+
+  textarea::placeholder {
+    color: var(--gray);
+    font-style: italic;
+  }
+
+  /* ── 按钮 ── */
+  .action-bar {
+    display: flex;
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .btn {
+    padding: 14px 32px;
+    border: none;
+    font-family: 'Noto Sans SC', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    letter-spacing: 2px;
+    transition: all 0.2s;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  }
+
+  .btn-primary {
+    background: var(--yellow);
+    color: var(--bg);
+  }
+
+  .btn-primary:hover {
+    background: #fff;
+    box-shadow: var(--glow-yellow);
+  }
+
+  .btn-primary:active {
+    transform: scale(0.97);
+  }
+
+  .btn-secondary {
+    background: var(--dark-gray);
+    color: var(--white);
+  }
+
+  .btn-secondary:hover {
+    background: #3a3a4a;
+  }
+
+  /* ── 输出区 ── */
+  .output-area {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid var(--dark-gray);
+    padding: 20px;
+    min-height: 60px;
+    position: relative;
+    word-break: break-all;
+    line-height: 2;
+  }
+
+  .output-text {
+    font-size: 20px;
+    letter-spacing: 1px;
+    color: var(--yellow);
+    text-shadow: 0 0 10px rgba(232,255,46,0.2);
+    min-height: 30px;
+  }
+
+  .output-text.decode-output {
+    color: var(--cyan);
+    text-shadow: 0 0 10px rgba(0,229,255,0.2);
+  }
+
+  .output-placeholder {
+    color: var(--gray);
+    font-style: italic;
+    font-size: 14px;
+  }
+
+  .copy-btn {
+    position: absolute;
+    top: 10px; right: 14px;
+    background: var(--dark-gray);
+    color: var(--gray);
+    border: none;
+    padding: 6px 14px;
+    font-family: 'Orbitron', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+    transition: all 0.2s;
+  }
+
+  .copy-btn:hover {
+    background: var(--cyan);
+    color: var(--bg);
+  }
+
+  /* ── 详情区 ── */
+  .detail-panel {
+    display: none;
+    margin-top: 16px;
+  }
+
+  .detail-panel.show { display: block; }
+
+  .detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  .detail-table th {
+    text-align: left;
+    padding: 8px 12px;
+    background: rgba(232,255,46,0.08);
+    color: var(--yellow);
+    font-family: 'Orbitron', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--dark-gray);
+  }
+
+  .detail-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(42,42,58,0.5);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--white);
+  }
+
+  .detail-table tr:hover td {
+    background: rgba(0,229,255,0.03);
+  }
+
+  .syllable-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    margin: 1px 2px;
+    border-radius: 2px;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .syl-0 { background: rgba(232,255,46,0.15); color: var(--yellow); }
+  .syl-1 { background: rgba(0,229,255,0.15); color: var(--cyan); }
+  .syl-2 { background: rgba(255,45,120,0.15); color: var(--magenta); }
+  .syl-3 { background: rgba(255,255,255,0.1); color: var(--white); }
+  .syl-tilde { background: rgba(255,45,120,0.2); color: var(--magenta); font-weight: 900; }
+
+  /* ── 映射表 ── */
+  .mapping-ref {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+
+  .mapping-chip {
+    padding: 4px 12px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--dark-gray);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--gray);
+  }
+
+  .mapping-chip .bit { color: var(--cyan); }
+  .mapping-chip .syl { color: var(--yellow); margin-left: 6px; }
+
+  /* ── 底部 ── */
+  .footer {
+    text-align: center;
+    padding: 30px 0 10px;
+    font-family: 'Orbitron', monospace;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--dark-gray);
+  }
+
+  /* ── Glitch 动画 ── */
+  @keyframes glitch {
+    0%, 100% { text-shadow: var(--glow-yellow); }
+    20% { text-shadow: -2px 0 var(--cyan), 2px 0 var(--magenta); }
+    40% { text-shadow: 2px 0 var(--cyan), -2px 0 var(--magenta); }
+    60% { text-shadow: var(--glow-yellow); }
+  }
+
+  .glitch-hover:hover {
+    animation: glitch 0.4s ease-in-out;
+  }
+
+  /* ── 字符跳动动画 ── */
+  @keyframes charIn {
+    0% { opacity: 0; transform: translateY(8px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  .char-animate {
+    display: inline-block;
+    animation: charIn 0.15s ease-out forwards;
+    opacity: 0;
+  }
+
+  /* ── 统计栏 ── */
+  .stats-bar {
+    display: flex;
+    gap: 20px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+
+  .stat-item {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gray);
+  }
+
+  .stat-item .stat-val {
+    color: var(--cyan);
+    font-weight: 700;
+    margin-left: 4px;
+  }
+
+  /* ── 响应式 ── */
+  @media (max-width: 600px) {
+    .header h1 { font-size: 32px; }
+    .header h1::before, .header h1::after { display: none; }
+    .container { padding: 20px 12px; }
+    textarea { font-size: 16px; }
+    .output-text { font-size: 17px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- 标题 -->
+  <div class="header">
+    <div class="header-tag">INTER-KNOT // HOLLOW DEEP DIVE SYSTEM</div>
+    <h1 class="glitch-hover">邦布语翻译器</h1>
+    <div class="header-sub">BANGBU LANGUAGE TRANSLATOR v2.0</div>
+  </div>
+
+  <!-- 映射参考 -->
+  <div style="margin-bottom:20px;">
+    <div class="mapping-ref">
+      <span class="mapping-chip"><span class="bit">00</span><span class="syl">哇</span></span>
+      <span class="mapping-chip"><span class="bit">01</span><span class="syl">哒</span></span>
+      <span class="mapping-chip"><span class="bit">10</span><span class="syl">嗯</span></span>
+      <span class="mapping-chip"><span class="bit">11</span><span class="syl">呢</span></span>
+      <span class="mapping-chip" style="border-color:var(--magenta);"><span class="syl">～</span><span style="color:var(--magenta);margin-left:4px;font-size:10px;">REPEAT</span></span>
+    </div>
+  </div>
+
+  <!-- 模式切换 -->
+  <div class="mode-switch">
+    <button class="mode-btn active" onclick="switchMode('encode')" id="btn-encode">
+      编 码<span class="btn-label">ENCODE</span>
+    </button>
+    <button class="mode-btn" onclick="switchMode('decode')" id="btn-decode">
+      解 码<span class="btn-label">DECODE</span>
+    </button>
+  </div>
+
+  <!-- 输入面板 -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="dot"></div>
+      <span id="input-label">INPUT // 输入文本</span>
+    </div>
+    <div class="panel-body">
+      <textarea id="input-text" placeholder="输入要翻译的文字..."></textarea>
+    </div>
+  </div>
+
+  <!-- 操作栏 -->
+  <div class="action-bar">
+    <button class="btn btn-primary" onclick="execute()" id="exec-btn">翻 译 ▸</button>
+    <button class="btn btn-secondary" onclick="toggleDetail()">详 情</button>
+    <button class="btn btn-secondary" onclick="clearAll()">清 空</button>
+  </div>
+
+  <!-- 输出面板 -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="dot" style="background:var(--cyan);"></div>
+      <span id="output-label">OUTPUT // 邦布语</span>
+    </div>
+    <div class="panel-body">
+      <div class="output-area">
+        <button class="copy-btn" onclick="copyOutput()">COPY</button>
+        <div class="output-text" id="output-text">
+          <span class="output-placeholder">翻译结果将显示在这里...</span>
+        </div>
+      </div>
+      <div class="stats-bar" id="stats-bar"></div>
+    </div>
+  </div>
+
+  <!-- 详情面板 -->
+  <div class="panel detail-panel" id="detail-panel">
+    <div class="panel-header">
+      <div class="dot" style="background:var(--magenta);"></div>
+      <span>DETAIL // 编码详情</span>
+    </div>
+    <div class="panel-body">
+      <table class="detail-table" id="detail-table">
+        <thead>
+          <tr>
+            <th>字符</th>
+            <th>码点</th>
+            <th>二进制</th>
+            <th>音节</th>
+          </tr>
+        </thead>
+        <tbody id="detail-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer">BANGBU TRANSLATOR // NEW ERIDU</div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+//  邦布语编解码引擎
+// ═══════════════════════════════════════════
+
+const CHAR_TO_BITS = { '哇': 0, '哒': 1, '嗯': 2, '呢': 3 };
+const BITS_TO_CHAR = { 0: '哇', 1: '哒', 2: '嗯', 3: '呢' };
+const SYLLABLE_CLASS = { '哇': 'syl-0', '哒': 'syl-1', '嗯': 'syl-2', '呢': 'syl-3' };
+const REPEAT = '～';
+const SYLLABLES_PER_CHAR = 8;
+
+function codepointToPairs(cp) {
+  const pairs = [];
+  for (let i = 7; i >= 0; i--) {
+    pairs.push((cp >> (i * 2)) & 0b11);
+  }
+  return pairs;
+}
+
+function pairsToCodepoint(pairs) {
+  let cp = 0;
+  for (const p of pairs) {
+    cp = (cp << 2) | p;
+  }
+  return cp & 0xFFFF;
+}
+
+function compress(syllables) {
+  if (!syllables.length) return [];
+  const result = [syllables[0]];
+  for (let i = 1; i < syllables.length; i++) {
+    result.push(syllables[i] === syllables[i - 1] ? REPEAT : syllables[i]);
+  }
+  return result;
+}
+
+function decompress(tokens) {
+  const result = [];
+  for (const t of tokens) {
+    if (t === REPEAT) {
+      if (!result.length) throw new Error('～ 不能出现在开头');
+      result.push(result[result.length - 1]);
+    } else {
+      result.push(t);
+    }
+  }
+  return result;
+}
+
+function encode(text) {
+  if (!text) return '';
+  const allPairs = [];
+  for (const ch of text) {
+    allPairs.push(...codepointToPairs(ch.codePointAt(0) & 0xFFFF));
+  }
+  const syllables = allPairs.map(p => BITS_TO_CHAR[p]);
+  return compress(syllables).join('');
+}
+
+function decode(bangbu) {
+  if (!bangbu) return '';
+  const tokens = [];
+  for (const ch of bangbu) {
+    if (ch in CHAR_TO_BITS) tokens.push(ch);
+    else if (ch === REPEAT) tokens.push(REPEAT);
+    else throw new Error(`无效字符: '${ch}'`);
+  }
+  const syllables = decompress(tokens);
+  if (syllables.length % SYLLABLES_PER_CHAR !== 0) {
+    throw new Error(`音节数 ${syllables.length} 不是 ${SYLLABLES_PER_CHAR} 的倍数`);
+  }
+  let result = '';
+  for (let i = 0; i < syllables.length; i += SYLLABLES_PER_CHAR) {
+    const group = syllables.slice(i, i + SYLLABLES_PER_CHAR);
+    const pairs = group.map(s => CHAR_TO_BITS[s]);
+    result += String.fromCodePoint(pairsToCodepoint(pairs));
+  }
+  return result;
+}
+
+// ═══════════════════════════════════════════
+//  UI 逻辑
+// ═══════════════════════════════════════════
+
+let currentMode = 'encode';
+let showDetail = false;
+
+function switchMode(mode) {
+  currentMode = mode;
+  document.getElementById('btn-encode').classList.toggle('active', mode === 'encode');
+  document.getElementById('btn-decode').classList.toggle('active', mode === 'decode');
+
+  const inputLabel = document.getElementById('input-label');
+  const outputLabel = document.getElementById('output-label');
+  const inputArea = document.getElementById('input-text');
+
+  if (mode === 'encode') {
+    inputLabel.textContent = 'INPUT // 输入文本';
+    outputLabel.textContent = 'OUTPUT // 邦布语';
+    inputArea.placeholder = '输入要翻译的文字...';
+  } else {
+    inputLabel.textContent = 'INPUT // 输入邦布语';
+    outputLabel.textContent = 'OUTPUT // 解码文本';
+    inputArea.placeholder = '输入邦布语（哇哒嗯呢～）...';
+  }
+
+  clearAll();
+}
+
+function execute() {
+  const input = document.getElementById('input-text').value.trim();
+  if (!input) return;
+
+  const outputEl = document.getElementById('output-text');
+  const statsEl = document.getElementById('stats-bar');
+
+  try {
+    if (currentMode === 'encode') {
+      const result = encode(input);
+      outputEl.innerHTML = '';
+      animateText(outputEl, result, false);
+
+      const rawCount = input.length * SYLLABLES_PER_CHAR;
+      const tildes = result.split('').filter(c => c === REPEAT).length;
+      statsEl.innerHTML = `
+        <span class="stat-item">原文 <span class="stat-val">${input.length}</span> 字</span>
+        <span class="stat-item">音节 <span class="stat-val">${rawCount}</span></span>
+        <span class="stat-item">压缩后 <span class="stat-val">${result.length}</span> 字符</span>
+        <span class="stat-item">～压缩 <span class="stat-val">${tildes}</span> 处</span>
+      `;
+      if (showDetail) buildDetailTable(input);
+    } else {
+      const result = decode(input);
+      outputEl.innerHTML = '';
+      outputEl.classList.add('decode-output');
+      animateText(outputEl, result, true);
+      statsEl.innerHTML = `
+        <span class="stat-item">解码 <span class="stat-val">${result.length}</span> 字</span>
+      `;
+      document.getElementById('detail-panel').classList.remove('show');
+    }
+  } catch (e) {
+    outputEl.innerHTML = `<span style="color:var(--magenta);">错误: ${e.message}</span>`;
+    statsEl.innerHTML = '';
+  }
+}
+
+function animateText(el, text, isDecode) {
+  const color = isDecode ? 'var(--cyan)' : 'var(--yellow)';
+  const shadow = isDecode ? 'rgba(0,229,255,0.2)' : 'rgba(232,255,46,0.2)';
+  for (let i = 0; i < text.length; i++) {
+    const span = document.createElement('span');
+    span.textContent = text[i];
+    span.className = 'char-animate';
+    span.style.animationDelay = `${i * 20}ms`;
+    span.style.color = text[i] === REPEAT ? 'var(--magenta)' : color;
+    span.style.textShadow = `0 0 10px ${shadow}`;
+    if (text[i] === REPEAT) span.style.fontWeight = '900';
+    el.appendChild(span);
+  }
+}
+
+function toggleDetail() {
+  showDetail = !showDetail;
+  document.getElementById('detail-panel').classList.toggle('show', showDetail);
+  if (showDetail && currentMode === 'encode') {
+    const input = document.getElementById('input-text').value.trim();
+    if (input) buildDetailTable(input);
+  }
+}
+
+function buildDetailTable(text) {
+  const tbody = document.getElementById('detail-body');
+  tbody.innerHTML = '';
+
+  for (const ch of text) {
+    const cp = ch.codePointAt(0) & 0xFFFF;
+    const hex = `U+${cp.toString(16).toUpperCase().padStart(4, '0')}`;
+    const pairs = codepointToPairs(cp);
+    const bitsStr = pairs.map(p => p.toString(2).padStart(2, '0')).join(' ');
+    const syllables = pairs.map(p => BITS_TO_CHAR[p]);
+
+    const sylHtml = syllables.map(s =>
+      `<span class="syllable-tag ${SYLLABLE_CLASS[s]}">${s}</span>`
+    ).join('');
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="font-size:18px;font-weight:700;">${ch}</td>
+      <td style="color:var(--cyan);">${hex}</td>
+      <td style="color:var(--gray);font-size:11px;letter-spacing:1px;">${bitsStr}</td>
+      <td>${sylHtml}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  document.getElementById('detail-panel').classList.add('show');
+  showDetail = true;
+}
+
+function copyOutput() {
+  const el = document.getElementById('output-text');
+  const text = el.textContent;
+  if (!text || text === '翻译结果将显示在这里...') return;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'OK!';
+    btn.style.background = 'var(--cyan)';
+    btn.style.color = 'var(--bg)';
+    setTimeout(() => {
+      btn.textContent = 'COPY';
+      btn.style.background = '';
+      btn.style.color = '';
+    }, 1200);
+  });
+}
+
+function clearAll() {
+  document.getElementById('input-text').value = '';
+  document.getElementById('output-text').innerHTML =
+    '<span class="output-placeholder">翻译结果将显示在这里...</span>';
+  document.getElementById('stats-bar').innerHTML = '';
+  document.getElementById('detail-body').innerHTML = '';
+  document.getElementById('output-text').classList.remove('decode-output');
+}
+
+// Enter 快捷键
+document.getElementById('input-text').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    execute();
+  }
+});
+</script>
+</body>
+</html>
