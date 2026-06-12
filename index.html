@@ -122,7 +122,36 @@
     margin-right: auto;
   }
 
-  /* ── Project Grid ── */
+  /* ── Top Nav ── */
+  .top-nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 50px;
+  }
+
+  .top-nav a {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--gray);
+    text-decoration: none;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border: 1px solid var(--dark-gray);
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    transition: all 0.2s;
+  }
+
+  .top-nav a:hover {
+    color: var(--yellow);
+    border-color: var(--yellow);
+  }
+
+  /* ── Section ── */
+  .section {
+    margin-bottom: 50px;
+  }
+
   .section-title {
     font-size: 11px;
     letter-spacing: 4px;
@@ -130,13 +159,22 @@
     text-transform: uppercase;
     margin-bottom: 20px;
     padding-left: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--dark-gray), transparent);
   }
 
   .project-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 20px;
-    margin-bottom: 60px;
   }
 
   .project-card {
@@ -251,49 +289,58 @@
     <h1>HOLLOW LABS</h1>
     <div class="header-sub">空洞实验室 // INTERACTIVE EXPERIMENTS</div>
     <p class="header-desc">
-      一些好玩的交互小工具。每个项目都是一个独立的单页面 HTML，无需安装，打开即用。
+      一些好玩的交互小工具和实验性小游戏。每个项目都是独立的单页面，无需安装，打开即用。
     </p>
   </div>
 
-  <div class="section-title">// PROJECTS</div>
+  <div class="top-nav">
+    <a href="https://aeonarjormon.github.io">BLOG</a>
+    <a href="https://github.com/AeonArjormon/hollow-labs">GITHUB</a>
+  </div>
 
-  <div class="project-grid">
+  <!-- ── 工具 ── -->
+  <div class="section">
+    <div class="section-title">// TOOLS</div>
+    <div class="project-grid">
 
-    <a class="project-card" href="bangbu.html">
-      <div class="card-body">
-        <span class="card-icon">🤖</span>
-        <div class="card-title">邦布语翻译器</div>
-        <div class="card-desc">把任意文字翻译成绝区零的邦布语。基于 2-bit 映射编码，支持编码和解码双向转换。</div>
-        <div class="card-tags">
-          <span class="card-tag active">绝区零</span>
-          <span class="card-tag">编码</span>
-          <span class="card-tag">交互</span>
+      <a class="project-card" href="bangbu.html" target="_blank" rel="noopener">
+        <div class="card-body">
+          <span class="card-icon">🤖</span>
+          <div class="card-title">邦布语翻译器</div>
+          <div class="card-desc">把任意文字翻译成绝区零的邦布语。基于 2-bit 映射编码，支持编码和解码双向转换。</div>
+          <div class="card-tags">
+            <span class="card-tag active">绝区零</span>
+            <span class="card-tag">编码</span>
+            <span class="card-tag">交互</span>
+          </div>
         </div>
-      </div>
-    </a>
+      </a>
 
-    <!-- 新项目在这里添加 -->
+    </div>
+  </div>
 
-    <a class="project-card" href="shadow-jump.html">
-      <div class="card-body">
-        <span class="card-icon">🎮</span>
-        <div class="card-title">Shadow Jump</div>
-        <div class="card-desc">一款基于 Canvas 的跳跃小游戏。暗影风格，操作简单，挑战你的反应力。</div>
-        <div class="card-tags">
-          <span class="card-tag active">游戏</span>
-          <span class="card-tag">Canvas</span>
-          <span class="card-tag">交互</span>
+  <!-- ── 实验性游戏 ── -->
+  <div class="section">
+    <div class="section-title">// EXPERIMENTS</div>
+    <div class="project-grid">
+
+      <a class="project-card" href="shadow-jump.html" target="_blank" rel="noopener">
+        <div class="card-body">
+          <span class="card-icon">🎮</span>
+          <div class="card-title">Shadow Jump</div>
+          <div class="card-desc">一款基于 Canvas 的跳跃小游戏。暗影风格，操作简单，挑战你的反应力。</div>
+          <div class="card-tags">
+            <span class="card-tag active">游戏</span>
+            <span class="card-tag">Canvas</span>
+            <span class="card-tag">实验</span>
+          </div>
         </div>
-      </div>
-    </a>
+      </a>
 
+    </div>
   </div>
 
   <div class="footer">
-    <a href="https://github.com/AeonArjormon/hollow-labs">GITHUB</a>
-    &nbsp;&middot;&nbsp;
-    <a href="https://aeonarjormon.github.io">BLOG</a>
-    <br><br>
     HOLLOW LABS // NEW ERIDU
   </div>
 
