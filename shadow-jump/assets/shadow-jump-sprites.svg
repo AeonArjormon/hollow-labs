@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="256" viewBox="0 0 512 256" role="img" aria-label="Shadow Jump sprite reference sheet">
+  <rect width="512" height="256" fill="#080a10"/>
+  <g transform="translate(24 24)">
+    <rect x="8" y="22" width="34" height="58" rx="12" fill="#fff1a8"/>
+    <ellipse cx="12" cy="55" rx="18" ry="32" fill="#fff" opacity=".72"/>
+    <ellipse cx="39" cy="55" rx="18" ry="32" fill="#fff" opacity=".72"/>
+    <circle cx="30" cy="43" r="3" fill="#64d9d2"/>
+    <text x="0" y="108" fill="#edf5ef" font-family="monospace" font-size="12">light form</text>
+  </g>
+  <g transform="translate(138 24)">
+    <rect x="8" y="22" width="34" height="58" rx="6" fill="#17070a"/>
+    <path d="M13 27 0 8l22 18M37 27 50 8 28 26" fill="#ff7048" opacity=".75"/>
+    <circle cx="30" cy="43" r="3" fill="#ff7048"/>
+    <text x="-4" y="108" fill="#edf5ef" font-family="monospace" font-size="12">shadow form</text>
+  </g>
+  <g transform="translate(260 34)">
+    <ellipse cx="26" cy="9" rx="26" ry="9" fill="#fff1a8"/>
+    <path d="M52 9 20 0l5 9-5 9Z" fill="#fff1a8"/>
+    <ellipse cx="28" cy="68" rx="56" ry="18" fill="#ff7048" opacity=".75"/>
+    <ellipse cx="36" cy="66" rx="38" ry="9" fill="#fff1a8" opacity=".65"/>
+    <text x="-22" y="118" fill="#edf5ef" font-family="monospace" font-size="12">attacks</text>
+  </g>
+  <g transform="translate(390 28)">
+    <rect x="0" y="8" width="58" height="42" rx="15" fill="#b48b3c"/>
+    <rect x="34" y="21" width="8" height="7" fill="#17151c"/>
+    <rect x="0" y="72" width="62" height="46" rx="14" fill="#bd2f2f"/>
+    <rect x="39" y="87" width="8" height="8" fill="#130609"/>
+    <text x="-2" y="150" fill="#edf5ef" font-family="monospace" font-size="12">enemies</text>
+  </g>
+</svg>
