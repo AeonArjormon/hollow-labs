@@ -136,8 +136,18 @@ class GameScene extends Phaser.Scene {
     this.load.svg("spriteReference", "assets/shadow-jump-sprites.svg", { width: 512, height: 256 });
     this.load.image("bg-light", "assets/raster/background-light.png");
     this.load.image("bg-shadow", "assets/raster/background-shadow.png");
-    this.load.image("hero-light", "assets/raster/hero-light.png");
-    this.load.image("hero-shadow", "assets/raster/hero-shadow.png");
+    this.load.spritesheet("hero-light", "assets/raster/hero-light.png", {
+      frameWidth: 256,
+      frameHeight: 170,
+      spacing: 0,
+      margin: 0
+    });
+    this.load.spritesheet("hero-shadow", "assets/raster/hero-shadow.png", {
+      frameWidth: 205,
+      frameHeight: 170,
+      spacing: 0,
+      margin: 0
+    });
     this.load.image("enemy-light", "assets/raster/enemy-light.png");
     this.load.image("enemy-shadow", "assets/raster/enemy-shadow.png");
     this.load.image("feather-light", "assets/raster/feather-light.png");
@@ -169,9 +179,12 @@ class GameScene extends Phaser.Scene {
     this.skillCooldown = 0;
     this.shieldTimer = 0;
     this.messageTimer = 0;
+    this.isAttacking = false;
+    this.isDashing = false;
     this.checkpoint = { ...this.level.start };
 
     this.createTextures();
+    this.createPlayerAnimations();
     this.createInput();
     this.createWorld();
     this.createHudHooks();
@@ -280,6 +293,96 @@ class GameScene extends Phaser.Scene {
     g.generateTexture("crystal-shadow", 32, 46);
 
     g.destroy();
+  }
+
+  createPlayerAnimations() {
+    // 光形态动画
+    this.anims.create({
+      key: "light-idle",
+      frames: this.anims.generateFrameNumbers("hero-light", { start: 0, end: 3 }),
+      frameRate: 6,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "light-walk",
+      frames: this.anims.generateFrameNumbers("hero-light", { start: 4, end: 7 }),
+      frameRate: 10,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "light-jump",
+      frames: this.anims.generateFrameNumbers("hero-light", { start: 8, end: 9 }),
+      frameRate: 5,
+      repeat: 0
+    });
+    this.anims.create({
+      key: "light-attack",
+      frames: this.anims.generateFrameNumbers("hero-light", { start: 10, end: 12 }),
+      frameRate: 12,
+      repeat: 0
+    });
+    this.anims.create({
+      key: "light-dash",
+      frames: this.anims.generateFrameNumbers("hero-light", { start: 13, end: 14 }),
+      frameRate: 8,
+      repeat: 0
+    });
+    this.anims.create({
+      key: "light-hurt",
+      frames: this.anims.generateFrameNumbers("hero-light", { start: 15, end: 16 }),
+      frameRate: 8,
+      repeat: 0
+    });
+    this.anims.create({
+      key: "light-switch",
+      frames: this.anims.generateFrameNumbers("hero-light", { start: 17, end: 20 }),
+      frameRate: 10,
+      repeat: 0
+    });
+
+    // 影形态动画
+    this.anims.create({
+      key: "shadow-idle",
+      frames: this.anims.generateFrameNumbers("hero-shadow", { start: 0, end: 3 }),
+      frameRate: 6,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "shadow-walk",
+      frames: this.anims.generateFrameNumbers("hero-shadow", { start: 4, end: 9 }),
+      frameRate: 10,
+      repeat: -1
+    });
+    this.anims.create({
+      key: "shadow-jump",
+      frames: this.anims.generateFrameNumbers("hero-shadow", { start: 10, end: 11 }),
+      frameRate: 5,
+      repeat: 0
+    });
+    this.anims.create({
+      key: "shadow-attack",
+      frames: this.anims.generateFrameNumbers("hero-shadow", { start: 12, end: 14 }),
+      frameRate: 12,
+      repeat: 0
+    });
+    this.anims.create({
+      key: "shadow-dash",
+      frames: this.anims.generateFrameNumbers("hero-shadow", { start: 15, end: 16 }),
+      frameRate: 8,
+      repeat: 0
+    });
+    this.anims.create({
+      key: "shadow-hurt",
+      frames: this.anims.generateFrameNumbers("hero-shadow", { start: 17, end: 18 }),
+      frameRate: 8,
+      repeat: 0
+    });
+    this.anims.create({
+      key: "shadow-switch",
+      frames: this.anims.generateFrameNumbers("hero-shadow", { start: 19, end: 22 }),
+      frameRate: 10,
+      repeat: 0
+    });
   }
 
   createInput() {
@@ -573,8 +676,11 @@ class GameScene extends Phaser.Scene {
     if (!this.player) return;
     const light = this.formMode === "light";
     this.player.setTexture(light ? "hero-light" : "hero-shadow");
-    this.player.setDisplaySize(light ? 56 : 58, light ? 74 : 82);
-    this.player.setSize(28, 54).setOffset(light ? 14 : 15, light ? 15 : 18);
+    this.player.setDisplaySize(light ? 80 : 64, 85);
+    this.player.setSize(32, 50).setOffset(16, 18);
+    this.isAttacking = false;
+    this.isDashing = false;
+    this.player.anims.play(`${this.formMode}-idle`, true);
   }
 
   getStats() {
@@ -728,6 +834,31 @@ class GameScene extends Phaser.Scene {
       this.player.setAlpha(Math.floor(this.time.now / 70) % 2 ? 0.45 : 1);
     } else {
       this.player.setAlpha(1);
+    }
+
+    // 动画状态机
+    const form = this.formMode;
+    if (this.lockTimer > 0 || (this.isAttacking && this.player.anims.currentAnim?.key !== `${form}-attack`)) {
+      if (!this.player.anims.isPlaying || !this.player.anims.currentAnim.key.endsWith("-hurt")) {
+        this.player.anims.play(`${form}-hurt`, true);
+      }
+    } else if (this.isAttacking && this.player.anims.currentAnim?.key !== `${form}-attack`) {
+      this.player.anims.play(`${form}-attack`, true);
+    } else if (this.isDashing && this.player.anims.currentAnim?.key !== `${form}-dash`) {
+      this.player.anims.play(`${form}-dash`, true);
+    } else if (!body.blocked.down) {
+      const animKey = body.velocity.y < 0 ? `${form}-jump` : `${form}-fall`;
+      if (!this.player.anims.isPlaying || this.player.anims.currentAnim.key !== animKey) {
+        this.player.anims.play(animKey, true);
+      }
+    } else if (Math.abs(body.velocity.x) > 10) {
+      if (this.player.anims.currentAnim?.key !== `${form}-walk`) {
+        this.player.anims.play(`${form}-walk`, true);
+      }
+    } else {
+      if (this.player.anims.currentAnim?.key !== `${form}-idle`) {
+        this.player.anims.play(`${form}-idle`, true);
+      }
     }
 
     this.shieldVisual.setPosition(this.player.x, this.player.y - 4);
@@ -889,18 +1020,23 @@ class GameScene extends Phaser.Scene {
     if (!this.canAct()) return;
     const target = nextMode || (this.formMode === "light" ? "shadow" : "light");
     if (target === this.formMode) return;
+    const oldForm = this.formMode;
     this.formMode = target;
-    this.applyPlayerArt();
-    const stats = this.getStats();
-    const targetForm = {
-      ...FORM[target],
-      speed: FORM[target].speed + (target === "shadow" ? stats.speedBonus : Math.floor(stats.speedBonus * 0.35))
-    };
-    this.player.body.setMaxVelocity(targetForm.speed, targetForm.maxFall);
-    this.player.body.setDragX(targetForm.drag);
-    this.burst(target);
-    this.audio.play("switch");
-    this.showMessage(target === "light" ? "光形态：高跳、缓降、圣羽" : "影形态：高速、长冲刺、斩击", 1100);
+    // 播放切换动画
+    this.player.anims.play(`${oldForm}-switch`, true);
+    this.time.delayedCall(400, () => {
+      this.applyPlayerArt();
+      const stats = this.getStats();
+      const targetForm = {
+        ...FORM[target],
+        speed: FORM[target].speed + (target === "shadow" ? stats.speedBonus : Math.floor(stats.speedBonus * 0.35))
+      };
+      this.player.body.setMaxVelocity(targetForm.speed, targetForm.maxFall);
+      this.player.body.setDragX(targetForm.drag);
+      this.burst(target);
+      this.audio.play("switch");
+      this.showMessage(target === "light" ? "光形态：高跳、缓降、圣羽" : "影形态：高速、长冲刺、斩击", 1100);
+    });
   }
 
   forceMatchingForm() {
@@ -927,18 +1063,24 @@ class GameScene extends Phaser.Scene {
   }
 
   dash() {
-    if (!this.canAct() || this.dashCooldown > 0) return;
+    if (!this.canAct() || this.dashCooldown > 0 || this.isDashing) return;
     const form = this.getFormStats();
     const dir = this.player.flipX ? -1 : 1;
+    this.isDashing = true;
+    this.player.anims.play(`${this.formMode}-dash`, true);
     this.player.body.setVelocityX(dir * form.dashSpeed);
     this.player.body.setVelocityY(this.player.body.velocity.y * 0.35);
     this.dashTimer = form.dashTime / 1000;
     this.dashCooldown = form.dashCooldown / 1000;
+    this.time.delayedCall(form.dashTime, () => { this.isDashing = false; });
     this.audio.play("slash");
   }
 
   attack() {
     if (!this.canAct() || this.attackCooldown > 0) return;
+    this.isAttacking = true;
+    this.player.anims.play(`${this.formMode}-attack`, true);
+    this.time.delayedCall(250, () => { this.isAttacking = false; });
     if (this.formMode === "light") {
       this.fireProjectile(false);
       this.attackCooldown = 0.24;
@@ -1225,10 +1367,10 @@ class GameScene extends Phaser.Scene {
 
   pushOutOfInactiveTerrain() {
     const playerBox = {
-      x: this.player.x - 14,
-      y: this.player.y - 27,
-      w: 28,
-      h: 54
+      x: this.player.x - 16,
+      y: this.player.y - 25,
+      w: 32,
+      h: 50
     };
     for (const platform of this.platforms) {
       if (!this.isActiveMode(platform)) continue;
