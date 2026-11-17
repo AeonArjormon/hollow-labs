@@ -312,7 +312,7 @@ kbd { display: inline-grid; place-items: center; min-width: 23px; padding: 3px 5
   .intro-controls { margin-top: 18px; padding-top: 15px; row-gap: 10px; }
   .touch-controls { gap: 8px; }
   .touch-controls > div { gap: 4px; }
-  .touch-controls button { min-width: 31px; height: 47px; padding: 0 7px; border-radius: 8px; }
+  .touch-controls button { min-width: 31px; height: 47px; padding: 0 5px; border-radius: 8px; }
   .touch-movement button { width: 35px; }
   .touch-controls .jump-button { min-width: 38px; }
   .touch-controls button b { font-size: 18px; }
@@ -422,7 +422,8 @@ body.reduce-motion *, body.reduce-motion *::before, body.reduce-motion *::after 
 .chapter-art-link { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 4px; min-height: 36px; font-size: 12px; }
 .link-context { margin-left: 6px; color: #8fa48b; font-size: 9px; }
 @media (max-width: 520px) {
-  .masthead { gap: 7px; }
+  .masthead { gap: 7px; flex-wrap: wrap; }
+  .settings { margin-left: auto; }
   .settings .art-preview-link { padding-inline: 4px; }
   .chapter-dialog { width: calc(100vw - 24px); padding: 21px 16px; max-height: calc(100dvh - 24px); }
   .chapter-options { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; margin-block: 16px; }

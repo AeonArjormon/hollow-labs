@@ -1,0 +1,2917 @@
+<!doctype html>
+<html lang="zh-CN" data-visualize-standalone>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com https://persistent.oaistatic.com/plugins/visualize/; style-src 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com https://persistent.oaistatic.com/plugins/visualize/charts/; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="description" content="两仪行六道轮回装备设计预览：翻转六边形阴阳盘，自由搭配十二生肖符文，比较六道效果。">
+<title>六道轮回 · 装备设计预览 | 两仪行</title>
+<style>
+:root{color-scheme:light dark;background:light-dark(#eceee4,#122622);color:light-dark(#263d35,#f2efdf);font:15px/1.65 "PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+*{box-sizing:border-box}body{margin:0;padding:24px 20px 40px}a{color:inherit;text-underline-offset:4px}a:focus-visible{outline:2px solid currentColor;outline-offset:4px}
+.preview-heading,main,.preview-footer{width:100%;max-width:1000px;margin:0 auto}.preview-heading{padding:0 0 20px}.preview-nav{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}.preview-nav a{display:inline-flex;align-items:center;min-height:44px}
+h1{font:500 clamp(23px,4vw,32px)/1.4 "Songti SC","SimSun",serif;letter-spacing:2px;margin:12px 0 8px}.preview-heading p{margin:0;color:light-dark(#526456,#b7c9b9)}.preview-footer{padding:18px 0;display:flex;gap:18px;flex-wrap:wrap;font-size:13px}.preview-footer a{display:inline-flex;align-items:center;min-height:44px}
+iframe{display:block;width:100%;height:1000px;border:0}noscript{display:block;padding:20px}
+@media(max-width:540px){body{padding:12px 10px 24px}.preview-heading{padding-bottom:14px}.preview-heading p{font-size:13px}}
+</style>
+
+</head>
+<body>
+<header class="preview-heading">
+  <nav class="preview-nav" aria-label="预览导航"><a href="index.html">← 返回两仪行</a><span>十二元辰 · 六道轮回</span></nav>
+  <h1>阴阳双面，自成一式</h1>
+  <p>点击中央太极翻面，选择道位与符文，预览后确认装备。这是设计试装，战斗效果尚未接入游戏。</p>
+</header>
+<main>
+<noscript>请启用 JavaScript 使用轮回盘。也可阅读下方的系统设计和完整效果目录。</noscript>
+<iframe id="codex-visualization" sandbox="allow-scripts" referrerpolicy="no-referrer" title="六道轮回 · 装备设计预览 | 两仪行" data-srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;zh-CN&quot; data-visualize-standalone&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#x27;none&#x27;; script-src &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; &#x27;wasm-unsafe-eval&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com https://persistent.oaistatic.com/plugins/visualize/; style-src &#x27;unsafe-inline&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com https://persistent.oaistatic.com/plugins/visualize/charts/; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src &#x27;none&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;&quot;&gt;
+&lt;title&gt;六道轮回 · 装备设计预览 | 两仪行&lt;/title&gt;
+&lt;style&gt;:root {
+  color-scheme: light dark;
+  background-color: var(
+    --background,
+    var(--color-background-primary, light-dark(rgb(255 255 255), rgb(24 24 24)))
+  ) !important;
+
+  /* Agent-facing contract; keep in sync with SKILL.md. */
+  --background: var(
+    --color-background-primary,
+    light-dark(rgb(255 255 255), rgb(24 24 24))
+  );
+  --foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --card: color-mix(in oklab, var(--foreground) 5%, var(--background));
+  --card-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --popover: var(
+    --color-background-secondary,
+    light-dark(rgb(255 255 255), rgb(45 45 45))
+  );
+  --popover-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --primary: var(
+    --color-text-info,
+    light-dark(rgb(51 156 255), rgb(131 195 255))
+  );
+  --primary-foreground: var(
+    --color-text-inverse,
+    light-dark(rgb(255 255 255), rgb(13 13 13))
+  );
+  --secondary: var(
+    --color-background-secondary,
+    light-dark(rgb(255 255 255 / 96%), rgb(54 54 54 / 96%))
+  );
+  --secondary-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --muted: color-mix(in srgb, var(--foreground) 10%, transparent);
+  --muted-foreground: var(
+    --color-text-secondary,
+    light-dark(rgb(26 28 31 / 49.4%), rgb(255 255 255 / 49.8%))
+  );
+  --accent: var(
+    --color-background-info,
+    light-dark(rgb(229 242 255), rgb(13 39 63))
+  );
+  --accent-foreground: var(
+    --color-text-info,
+    light-dark(rgb(51 156 255), rgb(131 195 255))
+  );
+  --destructive: var(
+    --color-text-warning,
+    light-dark(rgb(226 85 7), rgb(255 133 73))
+  );
+  --border: var(
+    --color-border-secondary,
+    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
+  );
+  --input: var(
+    --color-border-primary,
+    light-dark(
+      rgb(26 28 31 / 11.8%),
+      color-mix(in oklab, rgb(0 0 0) 10%, transparent)
+    )
+  );
+  --ring: var(
+    --color-ring-primary,
+    light-dark(rgb(51 156 255), rgb(131 195 255 / 76%))
+  );
+  --font-size-base: var(--font-text-md-size, 16px);
+  --blue: light-dark(rgb(51 156 255), rgb(51 156 255));
+  --orange: light-dark(rgb(226 85 7), rgb(251 106 34));
+  --green: light-dark(rgb(0 162 64), rgb(64 201 119));
+  --red: light-dark(rgb(224 46 42), rgb(255 103 100));
+  --purple: light-dark(rgb(146 79 247), rgb(173 123 249));
+  --yellow: light-dark(rgb(255 195 0), rgb(255 210 64));
+  --viz-series-1: var(--primary);
+  --viz-series-2: light-dark(rgb(243 136 59), rgb(245 154 86));
+  --viz-series-3: light-dark(rgb(93 201 119), rgb(116 213 139));
+  --viz-series-4: light-dark(rgb(235 119 177), rgb(240 143 192));
+  --viz-series-5: light-dark(rgb(155 121 236), rgb(170 145 239));
+  --viz-series-6: light-dark(rgb(58 185 177), rgb(90 203 194));
+
+  /* Internal implementation variables; not part of the agent contract. */
+  --font-sans:
+    -apple-system-body, ui-sans-serif, -apple-system, system-ui, &quot;Segoe UI&quot;,
+    Helvetica, &quot;Apple Color Emoji&quot;, Arial, sans-serif, &quot;Segoe UI Emoji&quot;,
+    &quot;Segoe UI Symbol&quot;;
+  --font-mono:
+    ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;,
+    monospace;
+  --font-size-normal: max(11px, var(--font-size-base));
+  --font-size-tooltip: calc(var(--font-size-base) - 1px);
+  --font-size-small: max(11px, calc(var(--font-size-base) - 2px));
+  --font-size-h1: calc(var(--font-size-normal) * 1.7142857143);
+  --font-size-h2: calc(var(--font-size-normal) * 1.4285714286);
+  --font-size-h3: calc(var(--font-size-normal) * 1.2857142857);
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --icon-size: 16px;
+  --line-height-normal: calc(var(--font-size-normal) * 1.5);
+  --line-height-tooltip: calc(var(--font-size-tooltip) * 1.4285714286);
+  --line-height-small: calc(var(--font-size-small) + 4px);
+  --corner-shape: round;
+  --radius: var(--border-radius-lg, 8px);
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-2xl: calc(var(--radius) * 2);
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px -1px rgb(0 0 0 / 8%);
+  --checkmark-image: url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 17 17&#x27;%3E%3Cpath d=&#x27;M12.8961 3.64101C13.1297 3.41418 13.4984 3.37523 13.7779 3.56581C14.0571 3.75635 14.1554 4.11331 14.0299 4.41347L13.9615 4.53847L7.71151 13.7045C7.59411 13.8767 7.4063 13.9877 7.19881 14.0072C6.99136 14.0267 6.78564 13.9533 6.63826 13.806L2.88826 10.056L2.79842 9.9457C2.6192 9.67407 2.64927 9.30496 2.88826 9.06581C3.12738 8.82669 3.49647 8.79676 3.76815 8.97597L3.8785 9.06581L7.03084 12.2182L12.8053 3.74941L12.8961 3.64101Z&#x27;/%3E%3C/svg%3E&quot;);
+
+  /* Legacy aliases; not part of the current agent contract. */
+  --viz-bg: transparent;
+  --viz-panel: var(--card);
+  --viz-border: var(--border);
+  --viz-text: var(--foreground);
+  --viz-muted: var(--muted-foreground);
+  --viz-accent: var(--primary);
+  --viz-accent-text: var(--primary-foreground);
+  --viz-accent-bg: var(--accent);
+  --viz-font-size: var(--font-size-base);
+  --viz-warning: var(--destructive);
+}
+
+:root[data-theme=&quot;light&quot;] {
+  color-scheme: light;
+}
+
+:root[data-theme=&quot;dark&quot;] {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html &gt; body {
+  /* Preserve MCP aliases for older inline renderers without creating :root cycles. */
+  --color-background-primary: var(
+    --background,
+    light-dark(rgb(255 255 255), rgb(24 24 24))
+  );
+  --color-text-primary: var(
+    --foreground,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --color-border-secondary: var(
+    --border,
+    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
+  );
+
+  margin: 0;
+  padding: var(--visualize-paint-gutter, 0px);
+  color: var(--foreground);
+  background: transparent !important;
+  font-family: var(--font-sans) !important;
+  -webkit-font-smoothing: antialiased;
+  font-size: var(--font-size-base);
+  line-height: calc(var(--font-size-base) * 1.625);
+  font-weight: var(--font-weight-normal);
+}
+
+.cursor-interaction {
+  cursor: var(--cursor-interaction, pointer);
+}
+
+a {
+  color: color-mix(in srgb, var(--viz-accent) 80%, var(--viz-text) 20%);
+  cursor: var(--cursor-interaction, pointer);
+  text-decoration: none;
+  text-underline-offset: 2px;
+  font-weight: inherit;
+}
+
+a:is(:hover, :focus-visible) {
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 0.5px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin-block: 0;
+}
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+li,
+.table {
+  font-family: var(--font-sans);
+}
+
+h1 {
+  font-size: calc(var(--font-size-base) * 1.5);
+  line-height: 1.3333333333;
+}
+
+h2 {
+  font-size: calc(var(--font-size-base) * 1.25);
+  line-height: 1.4;
+}
+h3 {
+  font-size: calc(var(--font-size-base) * 1.125);
+  line-height: 1.5555555556;
+}
+h4 {
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+}
+h5,
+h6 {
+  font-size: var(--font-size-base);
+  line-height: calc(var(--font-size-base) * 1.625);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+b,
+strong,
+th {
+  font-weight: 600;
+}
+
+code:not(pre code) {
+  display: inline;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  corner-shape: var(--corner-shape);
+  background: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  word-break: break-word;
+}
+pre,
+pre code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.table {
+  width: 100%;
+  color: var(--foreground);
+  font: inherit;
+  text-align: start;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: calc(var(--font-size-base) * 0.875);
+  line-height: calc(var(--font-size-base) * 1.625);
+  font-family: var(--font-sans);
+}
+
+.table :is(th, td) {
+  padding-block: 10px;
+  padding-inline: 0 24px;
+  overflow-wrap: anywhere;
+  border-bottom: 1px solid var(--border);
+  text-align: start;
+  vertical-align: top;
+  border-bottom-color: color-mix(in srgb, var(--foreground) 5%, transparent);
+}
+.table :is(th, td):not(:last-child) {
+  padding-inline-end: calc(var(--font-size-base) * 1.5);
+}
+
+.table-responsive &gt; .table :is(th, td) {
+  overflow-wrap: break-word;
+}
+
+.table :is(th, td):last-child {
+  padding-inline-end: 0;
+}
+
+.table :is(caption, thead th) {
+  font-weight: 600;
+}
+
+.table thead :is(th, td) {
+  border-bottom-color: var(--border-strong, var(--input));
+  padding-block: calc(var(--font-size-base) / 2);
+  line-height: var(--font-size-base);
+}
+
+.table tbody tr:last-child :is(th, td) {
+  border-bottom: 0;
+}
+.table tbody :is(th, td) {
+  padding-block: calc(var(--font-size-base) * 0.625);
+}
+
+.table.table-sm :is(th, td) {
+  padding-block: 8px;
+}
+
+.table.table-sm :is(th, td):not(:last-child) {
+  padding-inline-end: 16px;
+}
+
+.table :is(.text-end, [align=&quot;right&quot;]) {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.table :is(.text-center, [align=&quot;center&quot;]) {
+  text-align: center;
+}
+
+.table .text-nowrap {
+  white-space: nowrap;
+}
+
+#widget {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  background: transparent !important;
+}
+
+.card {
+  min-width: 0;
+  padding: 12px;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  border-radius: var(--radius-2xl);
+  corner-shape: var(--corner-shape);
+  color: var(--card-foreground);
+  background: var(--card);
+}
+
+.widget {
+  min-width: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-lg);
+  corner-shape: var(--corner-shape);
+  box-shadow: 0 0 0 0.5px var(--border-strong, var(--border));
+  color: var(--foreground);
+  background: var(--background);
+}
+
+#widget &gt; :not(.card, .widget, .progress) {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  width: max-content;
+  max-width: min(
+    20rem,
+    var(--tooltip-available-width, calc(100vw - 10px)),
+    calc(100vw - 10px)
+  );
+  max-height: min(
+    var(--tooltip-available-height, calc(100vh - 10px)),
+    calc(100vh - 10px)
+  );
+  border: 1px solid var(--border);
+  corner-shape: var(--corner-shape);
+  overflow-wrap: break-word;
+  white-space: normal;
+  pointer-events: none;
+  user-select: none;
+  font-family: var(--font-sans);
+  padding: 5px 12px;
+  border-color: color-mix(
+    in oklab,
+    light-dark(var(--primary-foreground), var(--foreground)) 5%,
+    transparent
+  );
+  border-radius: var(--radius-2xl);
+  color: light-dark(var(--primary-foreground), var(--foreground));
+  background: light-dark(var(--foreground), var(--popover));
+  box-shadow: 0 8px 18px rgb(15 23 42 / 20%);
+  letter-spacing: -0.15px;
+  font-size: calc(var(--font-size-base) * 14 / 16);
+  font-size: round(nearest, calc(var(--font-size-base) * 14 / 16), 1px);
+  font-weight: 600;
+  line-height: 18px;
+  text-align: center;
+}
+
+.viz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(max(180px, 24%), 1fr));
+  gap: 10px;
+}
+
+.viz-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.viz-stat-value {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+.viz-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+hr {
+  width: 100%;
+  height: 1px;
+  margin-block: 6px;
+  border: 0;
+  background: var(--border);
+}
+
+.nav {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 4px;
+}
+
+.progress {
+  display: flex;
+  height: 8px;
+  margin-block: calc((var(--line-height-normal, 1.5em) - 8px) / 2);
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+}
+
+.progress-bar:only-child {
+  border-radius: var(--radius-full);
+}
+
+.progress-bar {
+  height: 100%;
+  flex-shrink: 0;
+  border: 0;
+  background: var(--viz-series-1);
+}
+
+.viz-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  color: color-mix(in srgb, var(--foreground) 40%, var(--muted-foreground));
+  background: color-mix(in srgb, var(--foreground) 5%, transparent);
+  font-family: var(--font-sans);
+  font-size: calc(var(--font-size-base) * 14 / 16);
+  font-size: round(nearest, calc(var(--font-size-base) * 14 / 16), 1px);
+  font-weight: var(--font-weight-normal);
+  line-height: 1;
+}
+
+small,
+.text-small {
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+}
+
+.text-muted {
+  color: var(--muted-foreground);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.viz-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.viz-controls &gt; .form-label {
+  display: grid;
+  min-width: min(100%, 260px);
+  flex: 1 1 280px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 2px 12px;
+  margin-bottom: 0;
+}
+
+.viz-controls &gt; .form-label &gt; :is(.form-control, .form-range, .form-select) {
+  grid-column: 1 / -1;
+}
+
+.btn,
+.nav-link,
+.form-check-input,
+.form-control,
+.form-range,
+.form-select {
+  font: inherit;
+}
+
+/* Match inline alignment without overriding a containing flex or grid layout. */
+.btn,
+.nav-link,
+.form-control,
+.form-select,
+.form-range,
+.form-check {
+  vertical-align: middle;
+}
+
+.btn,
+.nav-link {
+  --btn-size: calc(12px + 2 * var(--control-spacing, 12px));
+  appearance: button;
+  display: inline-flex;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0 8px;
+  -webkit-app-region: no-drag;
+  border: 1px solid var(--input);
+  corner-shape: var(--corner-shape);
+  cursor: var(--cursor-interaction, pointer);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-font-smoothing: inherit;
+  font-family: var(--font-sans);
+  height: fit-content;
+  min-height: var(--btn-size);
+  padding-inline: var(--control-spacing, 12px);
+  border-color: transparent;
+  border-radius: var(--radius-full);
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--foreground) 5%, transparent);
+  font-size: calc(var(--font-size-base) * 14 / 16);
+  font-size: round(nearest, calc(var(--font-size-base) * 14 / 16), 1px);
+  font-weight: var(--font-weight-normal);
+  line-height: 18px;
+}
+
+.btn {
+  border-color: var(--border);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+}
+
+/* Codex Button size=&quot;compact&quot;; appearance stays with the button variant. */
+.btn-sm {
+  --btn-size: 24px;
+  padding-inline: 8px;
+  font-size: calc(var(--font-size-base) * 12 / 16);
+  font-size: round(nearest, calc(var(--font-size-base) * 12 / 16), 1px);
+  line-height: 16px;
+}
+
+.btn:is(.btn-block, .viz-tile) {
+  inline-size: 100%;
+}
+
+.btn.viz-tile {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+a.btn {
+  cursor: var(--cursor-interaction, pointer);
+  text-decoration: none;
+}
+
+.btn:not(:disabled):hover {
+  background: light-dark(
+    color-mix(in srgb, var(--foreground) 5.5%, transparent),
+    color-mix(in srgb, var(--foreground) 8%, transparent)
+  );
+}
+
+.nav-link:not(:disabled):not([aria-disabled=&quot;true&quot;]):hover {
+  background: color-mix(in srgb, var(--foreground) 10%, transparent);
+}
+
+.btn-primary {
+  border-color: var(--border);
+  color: var(--primary-foreground);
+  background: var(--foreground);
+  background-clip: border-box;
+}
+
+.btn-primary .text-muted {
+  color: color-mix(in srgb, var(--primary-foreground) 50%, transparent);
+}
+
+.btn-primary:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 80%, transparent);
+  background-clip: border-box;
+}
+
+.btn-ghost {
+  border-color: transparent;
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+.btn-ghost:not(:disabled):hover {
+  color: var(--muted-foreground);
+  background: light-dark(
+    color-mix(in srgb, var(--foreground) 5.5%, transparent),
+    color-mix(in srgb, var(--foreground) 8%, transparent)
+  );
+}
+
+.nav-pills .nav-link {
+  min-width: 0;
+  border-color: transparent;
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+.nav-justified .nav-link {
+  flex: 1 1 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.nav-pills .nav-link.active {
+  color: var(--foreground);
+  background: var(--muted);
+}
+
+/* Shared preview chrome; product styles stay inside each variant. */
+.viz-dotted-background {
+  background-image: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--foreground) 14%, transparent) 0.8px,
+    transparent 0.8px
+  );
+  background-position: center;
+  background-size: 16px 16px;
+}
+
+.viz-carousel {
+  position: relative;
+  min-width: 0;
+}
+
+.viz-carousel:has(&gt; .viz-carousel-controls) {
+  min-height: calc(60px + var(--viz-carousel-picker-height, 0px));
+  padding-bottom: 60px;
+}
+
+.viz-carousel &gt; [data-variant][hidden] {
+  display: none !important;
+}
+
+.viz-carousel &gt; [data-variant] {
+  isolation: isolate;
+}
+
+.viz-carousel-controls {
+  --viz-carousel-hover: light-dark(
+    color-mix(in srgb, var(--foreground) 5.4%, transparent),
+    color-mix(in srgb, var(--foreground) 7.8%, transparent)
+  );
+  position: absolute;
+  z-index: 2;
+  bottom: 8px;
+  left: 50%;
+  display: flex;
+  width: max-content;
+  /* Leave room for the host&#x27;s design-controls launcher at the trailing edge. */
+  max-width: calc(100% - 96px);
+  align-items: center;
+  gap: 0;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-sans);
+  /* Match the settings dropdown chrome independently of the content font size. */
+  font-size: 13px;
+  font-weight: var(--font-weight-normal);
+  line-height: 18px;
+  transform: translateX(-50%);
+  user-select: none;
+}
+
+/* Keep authored mockup button styles out of the shared carousel chrome. */
+.viz-carousel-controls button,
+.viz-carousel-picker &gt; summary {
+  display: flex !important;
+  height: auto !important;
+  min-height: 30px;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 4px;
+  padding: 0 6px !important;
+  -webkit-app-region: no-drag;
+  border: 0 !important;
+  border-radius: 14px !important;
+  color: inherit !important;
+  background: transparent !important;
+  font: inherit !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.viz-carousel-controls &gt; button,
+.viz-carousel-picker &gt; summary {
+  position: relative;
+  isolation: isolate;
+}
+
+.viz-carousel-controls &gt; button {
+  --icon-size: 16px;
+  width: 30px !important;
+  padding: 0 !important;
+}
+
+.viz-carousel-picker &gt; summary {
+  padding-inline: 12px !important;
+}
+
+.viz-carousel-controls .viz-carousel-caret {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  margin: 0;
+  color: inherit;
+  transform: rotate(180deg);
+}
+
+.viz-carousel-controls &gt; button &gt; svg,
+.viz-carousel-controls .viz-carousel-caret,
+.viz-carousel-count {
+  opacity: 0.5;
+}
+
+.viz-carousel-controls &gt; button::before,
+.viz-carousel-picker &gt; summary::before {
+  position: absolute;
+  z-index: -1;
+  inset: 3px;
+  border-radius: 12px;
+  content: &quot;&quot;;
+  pointer-events: none;
+}
+
+.viz-carousel-controls &gt; button:hover::before,
+.viz-carousel-picker &gt; summary:hover::before {
+  background: var(--viz-carousel-hover);
+}
+
+.viz-carousel-controls &gt; button,
+.viz-carousel-controls [data-lucide],
+.viz-carousel-controls .lucide {
+  flex-shrink: 0;
+}
+
+.viz-carousel-picker {
+  min-width: 0;
+}
+
+.viz-carousel-picker &gt; summary {
+  min-width: 0;
+  list-style: none;
+}
+
+.viz-carousel-picker &gt; summary::-webkit-details-marker {
+  display: none;
+}
+
+.viz-carousel-count {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.viz-carousel-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.viz-carousel-options {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 4px);
+  left: 0;
+  display: flex;
+  max-height: 240px;
+  flex-direction: column;
+  gap: 2px;
+  overflow: auto;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--background);
+  box-shadow: 0 4px 12px light-dark(rgb(0 0 0 / 6%), rgb(0 0 0 / 25%));
+}
+
+.viz-carousel-options &gt; button {
+  border-radius: max(0px, calc(var(--radius-lg) - 5px)) !important;
+  width: 100% !important;
+  min-height: 28px;
+  justify-content: flex-start !important;
+  padding: 4px 8px !important;
+  font-size: var(--font-size-small) !important;
+  text-align: start;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.viz-carousel-options &gt; [aria-current=&quot;true&quot;],
+.viz-carousel-options &gt; button:hover {
+  background: var(--viz-carousel-hover) !important;
+}
+
+.btn:disabled,
+.nav-link:disabled,
+.nav-link[aria-disabled=&quot;true&quot;] {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+[data-lucide] {
+  stroke-width: 1.6;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--foreground);
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  corner-shape: var(--corner-shape);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  height: calc(12px + 2 * var(--control-spacing, 12px));
+  min-height: calc(12px + 2 * var(--control-spacing, 12px));
+  padding-inline: calc(4px + var(--control-spacing, 12px) / 2);
+  border-color: var(--input);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--popover) 96%, transparent);
+  font-size: calc(var(--font-size-base) * 14 / 16);
+  font-size: round(nearest, calc(var(--font-size-base) * 14 / 16), 1px);
+  font-weight: var(--font-weight-normal);
+  line-height: 1.4285714286;
+}
+.form-control:is(
+  [type=&quot;file&quot;],
+  [type=&quot;date&quot;],
+  [type=&quot;datetime-local&quot;],
+  [type=&quot;month&quot;],
+  [type=&quot;week&quot;],
+  [type=&quot;color&quot;]
+) {
+  height: calc(12px + 2 * var(--control-spacing, 12px));
+  min-height: calc(12px + 2 * var(--control-spacing, 12px));
+  line-height: 18px;
+}
+.form-control:is(
+  [type=&quot;date&quot;],
+  [type=&quot;datetime-local&quot;],
+  [type=&quot;month&quot;],
+  [type=&quot;week&quot;]
+) {
+  padding-inline: var(--control-spacing, 12px);
+}
+
+.form-control::placeholder {
+  color: var(--muted-foreground);
+}
+
+.form-control[type=&quot;file&quot;] {
+  overflow: hidden;
+  cursor: var(--cursor-interaction, pointer);
+  padding: 0;
+}
+
+.form-control[type=&quot;file&quot;]::file-selector-button {
+  padding: 0 8px;
+  border: 0;
+  border-right: 1px solid var(--input);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: inherit;
+  font: inherit;
+  min-height: calc(10px + 2 * var(--control-spacing, 12px));
+  padding-inline: var(--control-spacing, 12px);
+  margin-inline-end: var(--control-spacing, 12px);
+}
+
+.form-control[type=&quot;file&quot;]:not(:disabled):hover::file-selector-button {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-control-color[type=&quot;color&quot;] {
+  width: 40px;
+  height: calc(12px + 2 * var(--control-spacing, 12px));
+  padding: 3px;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch {
+  border: 0;
+  border-radius: calc(var(--radius-lg) - 4px);
+  corner-shape: var(--corner-shape);
+}
+
+textarea.form-control {
+  height: auto;
+  resize: vertical;
+  min-height: 96px;
+  padding: 8px 10px;
+}
+
+.form-control:focus-visible {
+  border-color: var(--ring);
+  box-shadow: none;
+}
+.form-control:disabled {
+  color: var(--muted-foreground);
+  background: color-mix(in srgb, var(--foreground) 5%, transparent);
+  opacity: 1;
+}
+.form-control[aria-invalid=&quot;true&quot;] {
+  border-color: var(--red);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--red) 20%, transparent);
+}
+
+.form-control:disabled,
+.form-select:disabled {
+  cursor: not-allowed;
+}
+
+.form-select {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: fit-content;
+  min-height: calc(12px + 2 * var(--control-spacing, 12px));
+  margin: 0;
+  /* The secondary icon role is 14px at compact density and 16px at web density. */
+  --icon-size: calc(10px + var(--control-spacing, 12px) / 2);
+  /* Settings dropdowns retain a 12px inset and a 4px text-to-chevron gap. */
+  padding: 0 calc(16px + var(--icon-size)) 0 12px;
+  outline: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  corner-shape: var(--corner-shape);
+  color: var(--foreground);
+  background-color: var(--secondary);
+  background-image:
+    linear-gradient(
+      45deg,
+      transparent calc(50% - 0.6px),
+      var(--muted-foreground) calc(50% - 0.6px) calc(50% + 0.6px),
+      transparent calc(50% + 0.6px)
+    ),
+    linear-gradient(
+      135deg,
+      transparent calc(50% - 0.6px),
+      var(--muted-foreground) calc(50% - 0.6px) calc(50% + 0.6px),
+      transparent calc(50% + 0.6px)
+    );
+  background-position:
+    calc(100% - 12px - var(--icon-size) / 2) 50%,
+    calc(100% - 12px - var(--icon-size) * 0.18) 50%;
+  background-repeat: no-repeat;
+  background-size: calc(var(--icon-size) * 0.32) calc(var(--icon-size) * 0.32);
+  cursor: var(--cursor-interaction, default);
+  font-size: calc(var(--font-size-base) * 14 / 16);
+  font-size: round(nearest, calc(var(--font-size-base) * 14 / 16), 1px);
+  font-weight: var(--font-weight-normal);
+  line-height: 18px;
+}
+
+.form-select :is(option, optgroup) {
+  color: var(--popover-foreground);
+  background-color: var(--popover);
+}
+
+.form-select :is(option, optgroup):disabled {
+  color: var(--muted-foreground);
+}
+
+.form-select:not(:disabled):hover {
+  background-color: light-dark(
+    color-mix(in srgb, var(--foreground) 5.5%, transparent),
+    color-mix(in srgb, var(--foreground) 8%, transparent)
+  );
+}
+
+.form-select:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+.form-select:disabled {
+  opacity: 0.4;
+}
+
+.form-check {
+  display: flex;
+  min-height: calc(12px + 2 * var(--control-spacing, 12px));
+  align-items: center;
+  gap: 6px;
+}
+
+.form-check-input {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  margin: 0;
+  border: 1px solid var(--input);
+  color: var(--primary-foreground);
+  background-color: transparent;
+  cursor: var(--cursor-interaction, default);
+  transition:
+    background-color 150ms,
+    border-color 150ms,
+    box-shadow 150ms;
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;] {
+  corner-shape: round;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  width: calc(10px + var(--control-spacing, 12px) / 2);
+  height: calc(10px + var(--control-spacing, 12px) / 2);
+  border-color: var(--border-strong, var(--input));
+  border-radius: calc(var(--radius-sm) / 2);
+  background-color: transparent;
+  color: var(--foreground);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input:not(:disabled):not(:checked):hover {
+  background-color: var(--card);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input[type=&quot;checkbox&quot;]:is(:checked, :indeterminate) {
+  border-color: var(--border-strong, var(--input));
+  background-color: color-mix(in srgb, var(--popover) 96%, transparent);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input[type=&quot;checkbox&quot;]:checked::before {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-foreground);
+  content: &quot;&quot;;
+  mask: var(--checkmark-image) center / 12px 12px no-repeat;
+  background-color: var(--foreground);
+}
+.form-check:not(.form-switch)
+  .form-check-input[type=&quot;checkbox&quot;]:indeterminate::before {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 65%;
+  height: 6.65%;
+  margin: auto;
+  border-radius: var(--radius-full);
+  background: var(--foreground);
+  mask: none;
+  content: &quot;&quot;;
+}
+
+.form-check-input[type=&quot;radio&quot;] {
+  border-radius: var(--radius-full);
+  width: 16px;
+  height: 16px;
+  border: 0;
+  box-shadow: inset 0 0 0 1px var(--input);
+}
+
+.form-check-input[type=&quot;radio&quot;]:checked {
+  border: 0;
+  background: radial-gradient(
+    circle,
+    var(--primary-foreground) 0 3px,
+    var(--foreground) 3px
+  );
+  box-shadow: none;
+}
+
+.form-check:not(.form-switch) .form-check-input:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;]:focus-visible {
+  border-color: var(--ring);
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+}
+.form-check:not(.form-switch) .form-check-input[type=&quot;radio&quot;]:disabled,
+.form-check:not(.form-switch)
+  .form-check-input[type=&quot;radio&quot;]:disabled
+  + .form-check-label {
+  opacity: 0.5;
+}
+
+.form-switch .form-check-input:disabled,
+.form-switch .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.form-check-label {
+  color: var(--foreground);
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-switch .form-check-input {
+  position: relative;
+  width: 32px;
+  height: 20px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+  box-shadow: none;
+  transition: background-color 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border: 1px solid light-dark(var(--primary-foreground), var(--foreground));
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-sm);
+  content: &quot;&quot;;
+  transform: translate(2px, -50%);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+  border-color: #fff;
+  background: #fff;
+}
+
+.form-switch .form-check-input:checked {
+  background: var(--blue);
+}
+
+.form-switch .form-check-input:checked::before {
+  transform: translate(14px, -50%);
+}
+
+.form-switch .form-check-input:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring);
+  outline: none;
+}
+
+.form-range {
+  appearance: none;
+  display: block;
+  width: 100%;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  accent-color: var(--primary);
+  height: calc(12px + 2 * var(--control-spacing, 12px));
+  min-height: calc(12px + 2 * var(--control-spacing, 12px));
+  outline: none;
+  border-radius: var(--radius-full);
+  color: var(--foreground);
+  background: transparent;
+}
+
+.form-range::-webkit-slider-runnable-track {
+  background: var(--form-range-track, var(--border));
+  height: 2px;
+  border-radius: var(--radius-full);
+}
+
+.form-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  margin-top: -9px;
+  border-color: transparent;
+  background: currentColor;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Outline the native track and thumb, preserving the larger input hit area. */
+.form-range:focus-visible::-webkit-slider-runnable-track {
+  outline: 2px auto Highlight;
+  outline-color: -webkit-focus-ring-color;
+}
+
+.form-range::-moz-range-track {
+  background: var(--form-range-track, var(--border));
+  height: 2px;
+  border-radius: var(--radius-full);
+}
+
+.form-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  border-color: transparent;
+  background: currentColor;
+  box-shadow: var(--shadow-sm);
+}
+
+.form-range:focus-visible::-moz-range-thumb {
+  outline: 2px solid Highlight;
+  outline-offset: 2px;
+}
+
+.form-range:disabled {
+  opacity: 1;
+  cursor: default;
+}
+
+.btn:not(.btn-primary, .viz-tile):is(
+  [aria-pressed=&quot;true&quot;],
+  [aria-selected=&quot;true&quot;],
+  .is-selected
+) {
+  border-color: transparent;
+  color: var(--primary-foreground);
+  background: var(--blue);
+}
+
+.btn.viz-tile:is([aria-pressed=&quot;true&quot;], [aria-selected=&quot;true&quot;], .is-selected) {
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.btn:focus-visible,
+.nav-link:focus-visible {
+  outline-offset: 2px;
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.viz-carousel-controls :is(button, summary):focus-visible {
+  outline: 2px solid var(--ring) !important;
+  outline-offset: 2px !important;
+}
+
+/* Web recipes are the default, including on renderers without inline style queries. */
+@supports (border-radius: if(style(--corner-shape: round): 1px; else: 2px)) {
+  /* Match the host&#x27;s proportional text-sm scale at every text preference. */
+  .tooltip,
+  .viz-badge,
+  .btn,
+  .nav-link,
+  .form-control,
+  .form-select {
+    font-size: if(
+      style(--corner-shape: round): round(
+          nearest,
+          calc(var(--font-size-base) * 14 / 16),
+          1px
+        );
+        else: round(nearest, calc(var(--font-size-base) * 13 / 14), 1px)
+    );
+  }
+
+  .btn-sm {
+    font-size: if(
+      style(--corner-shape: round): round(
+          nearest,
+          calc(var(--font-size-base) * 12 / 16),
+          1px
+        );
+        else: round(nearest, calc(var(--font-size-base) * 12 / 14), 1px)
+    );
+  }
+
+  .btn,
+  .nav-link,
+  .form-select {
+    border-radius: if(
+      style(--corner-shape: round): var(--radius-full); else: var(--radius-lg)
+    );
+  }
+
+  .form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;] {
+    border-radius: if(
+      style(--corner-shape: round): calc(var(--radius-sm) / 2);
+        else: calc(var(--radius-lg) * 0.4)
+    );
+  }
+
+  .tooltip {
+    font-weight: if(
+      style(--corner-shape: round): 600; else: var(--font-weight-normal)
+    );
+  }
+}
+
+@media (pointer: coarse) {
+  .viz-carousel:has(&gt; .viz-carousel-controls) {
+    min-height: calc(76px + var(--viz-carousel-picker-height, 0px));
+    padding-bottom: 76px;
+  }
+
+  .btn,
+  .nav-link,
+  .viz-carousel-controls button,
+  .viz-carousel-picker &gt; summary,
+  .form-control,
+  .form-select {
+    --btn-size: 44px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Keep small-screen WebKit from zooming when a text field receives focus. */
+  .form-control,
+  .form-select {
+    font-size: max(16px, calc(var(--font-size-base) * 14 / 16));
+    font-size: max(
+      16px,
+      round(nearest, calc(var(--font-size-base) * 14 / 16), 1px)
+    );
+  }
+  .form-control:is(
+    [type=&quot;file&quot;],
+    [type=&quot;date&quot;],
+    [type=&quot;datetime-local&quot;],
+    [type=&quot;month&quot;],
+    [type=&quot;week&quot;],
+    [type=&quot;time&quot;],
+    [type=&quot;color&quot;]
+  ) {
+    height: 44px;
+    min-height: 44px;
+    font-size: max(16px, calc(var(--font-size-base) * 14 / 16));
+    font-size: max(
+      16px,
+      round(nearest, calc(var(--font-size-base) * 14 / 16), 1px)
+    );
+  }
+
+  .form-control[type=&quot;file&quot;]::file-selector-button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .form-control-color[type=&quot;color&quot;] {
+    width: 44px;
+    height: 44px;
+  }
+
+  .form-control:is(
+    [type=&quot;date&quot;],
+    [type=&quot;datetime-local&quot;],
+    [type=&quot;month&quot;],
+    [type=&quot;time&quot;],
+    [type=&quot;week&quot;]
+  ) {
+    min-width: 0;
+    max-width: 100%;
+    padding-block: 8px;
+  }
+
+  .form-check {
+    min-height: 44px;
+    padding-inline: 15px;
+  }
+
+  .form-check-input {
+    position: relative;
+  }
+
+  .form-check-input::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 44px;
+    height: 44px;
+    content: &quot;&quot;;
+    transform: translate(-50%, -50%);
+  }
+
+  .form-check-label {
+    display: inline-flex;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .form-range {
+    height: 44px;
+    touch-action: pan-y;
+  }
+}
+
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+#widget &gt; svg {
+  width: 100%;
+}
+
+/* Model-authored chart rules can otherwise stretch icons after these styles load. */
+svg.lucide {
+  display: block;
+  width: var(--icon-size) !important;
+  height: var(--icon-size) !important;
+  flex: none;
+  margin: 0 !important;
+  stroke-width: 1.6;
+}
+
+.text-warning,
+.text-destructive {
+  color: var(--destructive);
+}
+
+html&gt;body{padding:0}&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;script type=&quot;application/json&quot; id=&quot;codex-visualization-widget-state&quot;&gt;__CODEX_VISUALIZATION_WIDGET_STATE__&lt;/script&gt;
+&lt;script&gt;(() =&gt; {
+  const root = document.documentElement;
+  const mediaQuery = globalThis.matchMedia(&quot;(prefers-color-scheme: dark)&quot;);
+  const apply = Reflect.apply;
+  const isArray = Array.isArray;
+  const hasOwn = Object.hasOwn;
+  const parentWindow = globalThis.parent;
+  const stringify = JSON.stringify;
+  const parse = JSON.parse;
+  const encode = TextEncoder.prototype.encode.bind(new TextEncoder());
+  const initialStateElement = document.getElementById(
+    &quot;codex-visualization-widget-state&quot;,
+  );
+  const initialGlobals = parse(initialStateElement?.textContent ?? &quot;{}&quot;);
+  initialStateElement?.remove();
+  /** @type {Record&lt;string, unknown&gt; | null} */
+  let state = initialGlobals.widgetState ?? null;
+  const statePersistence = initialGlobals.statePersistence ?? &quot;none&quot;;
+  let nextStateRequestId = 0;
+  /** @type {Map&lt;number, { resolve: () =&gt; void; reject: (error: Error) =&gt; void; timeout: ReturnType&lt;typeof globalThis.setTimeout&gt;; serializedState: string }&gt;} */
+  const pendingStateWrites = new Map();
+  const persistenceError = () =&gt;
+    Object.assign(
+      new Error(&quot;The host could not persist the widget state update&quot;),
+      {
+        code: -32000,
+        data: { code: &quot;widget_state_persistence_failed&quot;, retryable: false },
+      },
+    );
+  /**
+   * @param {object} prototype
+   * @param {string} property
+   */
+  const getPrototypeGetter = (prototype, property) =&gt; {
+    // oxlint-disable-next-line typescript/unbound-method -- invoked through captured Reflect.apply
+    const getter = Object.getOwnPropertyDescriptor(prototype, property)?.get;
+    if (getter == null) {
+      throw new Error(`Missing ${property} getter`);
+    }
+    return getter;
+  };
+  const getMessageData = getPrototypeGetter(MessageEvent.prototype, &quot;data&quot;);
+  const getMessagePorts = getPrototypeGetter(MessageEvent.prototype, &quot;ports&quot;);
+  const getMessageSource = getPrototypeGetter(MessageEvent.prototype, &quot;source&quot;);
+  // oxlint-disable-next-line typescript/unbound-method -- captured before the untrusted fragment runs
+  const addHostMessageListener = MessagePort.prototype.addEventListener;
+  // oxlint-disable-next-line typescript/unbound-method -- captured before the untrusted fragment runs
+  const postHostMessage = MessagePort.prototype.postMessage;
+  // oxlint-disable-next-line typescript/unbound-method -- captured before the untrusted fragment runs
+  const startHostPort = MessagePort.prototype.start;
+  // oxlint-disable-next-line typescript/unbound-method -- captured before the untrusted fragment runs
+  const stopMessagePropagation = Event.prototype.stopImmediatePropagation;
+  /** @type {MessagePort | null} */
+  let hostPort = null;
+  const postToHost = (type, payload) =&gt; {
+    if (hostPort != null) {
+      apply(postHostMessage, hostPort, [{ type, ...payload }]);
+    }
+  };
+  const openExternal = ({ href }) =&gt; {
+    if (globalThis.navigator.userActivation?.isActive === true) {
+      postToHost(&quot;open-external&quot;, { href });
+    }
+  };
+  const sendFollowUpMessage = ({ context, prompt, title }) =&gt; {
+    if (globalThis.navigator.userActivation?.isActive === true) {
+      postToHost(&quot;follow-up&quot;, { context, prompt, title });
+    }
+    return Promise.resolve();
+  };
+  /**
+   * @param {Record&lt;string, unknown&gt; | ((previous: Record&lt;string, unknown&gt; | null) =&gt; Record&lt;string, unknown&gt;)} next
+   * @returns {Promise&lt;void&gt;}
+   */
+  const setWidgetState = async (next) =&gt; {
+    const nextState = typeof next === &quot;function&quot; ? next(state) : next;
+    if (
+      nextState == null ||
+      typeof nextState !== &quot;object&quot; ||
+      isArray(nextState)
+    ) {
+      throw new TypeError(&quot;Widget state must be a JSON object&quot;);
+    }
+    const inputState = stringify(
+      nextState,
+      (_key, /** @type {unknown} */ value) =&gt; {
+        if (
+          typeof value === &quot;undefined&quot; ||
+          typeof value === &quot;function&quot; ||
+          typeof value === &quot;symbol&quot; ||
+          (typeof value === &quot;number&quot; &amp;&amp; !Number.isFinite(value))
+        ) {
+          throw new TypeError(&quot;Widget state must be a JSON object&quot;);
+        }
+        return value;
+      },
+    );
+    const parsedState = parse(inputState);
+    if (
+      parsedState == null ||
+      typeof parsedState !== &quot;object&quot; ||
+      isArray(parsedState)
+    ) {
+      throw new TypeError(&quot;Widget state must be a JSON object&quot;);
+    }
+    const storedState = {
+      modelContent: null,
+      privateContent: null,
+      ...parsedState,
+    };
+    const serializedState = stringify(storedState);
+    if (encode(serializedState).length &gt; 16 * 1024) {
+      throw new TypeError(
+        &quot;Widget state must be a JSON object of at most 16 KiB&quot;,
+      );
+    }
+    if (
+      hasOwn(storedState, &quot;imageIds&quot;) &amp;&amp;
+      (!isArray(storedState.imageIds) ||
+        storedState.imageIds.some(
+          (/** @type {unknown} */ id) =&gt; typeof id !== &quot;string&quot;,
+        ))
+    ) {
+      throw new TypeError(&quot;Widget state imageIds must be an array of strings&quot;);
+    }
+    if (storedState.imageIds?.length &gt; 0) {
+      throw Object.assign(
+        new TypeError(&quot;Visualization state does not support image attachments&quot;),
+        { code: -32602, data: { code: &quot;images_unsupported&quot; } },
+      );
+    }
+    state = storedState;
+    globalThis.openai.widgetState = state;
+    globalThis.dispatchEvent(
+      new CustomEvent(&quot;openai:set_globals&quot;, {
+        detail: { globals: { widgetState: state } },
+      }),
+    );
+    if (statePersistence === &quot;none&quot;) {
+      throw persistenceError();
+    }
+    const id = ++nextStateRequestId;
+    return new Promise((resolve, reject) =&gt; {
+      const timeout = globalThis.setTimeout(() =&gt; {
+        pendingStateWrites.delete(id);
+        reject(persistenceError());
+      }, 30_000);
+      pendingStateWrites.set(id, { resolve, reject, timeout, serializedState });
+      postToHost(&quot;widget-state-write&quot;, { id, state: serializedState });
+    });
+  };
+  const bindingElement = document.getElementById(&quot;codex-visualization-bindings&quot;);
+  const mockElement = document.getElementById(&quot;codex-connector-mocks&quot;);
+  const fileElement = document.getElementById(&quot;codex-preview-files&quot;);
+  const connectorGlobals = {};
+  if (bindingElement != null || mockElement != null || fileElement != null) {
+    const bindings = parse(bindingElement?.textContent ?? &quot;{}&quot;);
+    bindingElement?.remove();
+    const values = new Map();
+    for (const [name, binding] of Object.entries(bindings)) {
+      if (binding.type === &quot;json&quot;) values.set(name, structuredClone(binding.value));
+    }
+    const pending = [bindings];
+    while (pending.length) {
+      const object = pending.pop();
+      Object.freeze(object);
+      for (const child of Object.values(object)) {
+        if (child !== null &amp;&amp; typeof child === &quot;object&quot;) pending.push(child);
+      }
+    }
+    const updates = [];
+    if (mockElement != null) {
+      const mocks = Object.entries(parse(mockElement.textContent));
+      mockElement.remove();
+      for (const [name, value] of mocks) {
+        values.set(name, value);
+        updates.push({ name, revision: 1, state: &quot;ready&quot;, value: { type: &quot;json&quot;, value } });
+      }
+    }
+    if (fileElement != null) {
+      const files = parse(fileElement.textContent);
+      fileElement.remove();
+      const blobs = new Map();
+      const urls = [];
+      for (const [name, binding] of Object.entries(bindings)) {
+        if (binding.type !== &quot;file&quot; || !hasOwn(files, binding.path)) continue;
+        const file = files[binding.path];
+        let blob = blobs.get(binding.path);
+        if (blob == null) {
+          const bytes = Uint8Array.fromBase64?.(file.base64) ??
+            Uint8Array.from(atob(file.base64), (char) =&gt; char.charCodeAt(0));
+          blob = new Blob([bytes], { type: file.mimeType });
+          blobs.set(binding.path, blob);
+        }
+        const url = URL.createObjectURL(blob);
+        urls.push(url);
+        values.set(name, { name: file.name, blob, url });
+        updates.push({ name, revision: 1, state: &quot;ready&quot;, value: { type: &quot;file&quot;, ...file } });
+      }
+      globalThis.addEventListener(&quot;pagehide&quot;, (event) =&gt; {
+        // A persisted pagehide can restore this same document and its subscriptions.
+        if (event.persisted) return;
+        for (const url of urls) URL.revokeObjectURL(url);
+        urls.length = 0;
+      });
+    }
+    if (mockElement != null || fileElement != null) connectorGlobals.visualizationData = { updates };
+    connectorGlobals.visualization = {
+      get bindings() {
+        return bindings;
+      },
+      /** @param {string} name @param {(value: unknown) =&gt; void} callback */
+      onData(name, callback) {
+        if (typeof callback !== &quot;function&quot;) {
+          throw new TypeError(&quot;onData requires a callback&quot;);
+        }
+        try {
+          callback(values.get(name));
+        } catch (error) {
+          // oxlint-disable-next-line no-console -- Keep authored callback failures local.
+          console.error(&quot;Live visualization data callback failed&quot;, error);
+        }
+        // A static preview delivers the current value once per subscription.
+        return () =&gt; {};
+      },
+    };
+  }
+  const syncTheme = () =&gt; {
+    const theme = mediaQuery.matches ? &quot;dark&quot; : &quot;light&quot;;
+    root.dataset.theme = theme;
+    globalThis.openai = {
+      ...globalThis.openai,
+      ...connectorGlobals,
+      openExternal,
+      sendFollowUpMessage,
+      setWidgetState,
+      theme,
+      visualizationStyleVariables: {},
+      visualizationTheme: theme,
+      widgetState: state,
+      statePersistence,
+      stateModelContext: &quot;none&quot;,
+    };
+    globalThis.dispatchEvent(
+      new CustomEvent(&quot;openai:set_globals&quot;, {
+        detail: { globals: globalThis.openai },
+      }),
+    );
+  };
+  const sendHeight = () =&gt; {
+    postToHost(&quot;height&quot;, {
+      height: Math.ceil(
+        Math.max(
+          document.body.scrollHeight,
+          document.body.getBoundingClientRect().height,
+        ),
+      ),
+    });
+  };
+
+  globalThis.addEventListener(
+    &quot;message&quot;,
+    (event) =&gt; {
+      const data = apply(getMessageData, event, []);
+      const ports = apply(getMessagePorts, event, []);
+      const source = apply(getMessageSource, event, []);
+      if (
+        hostPort != null ||
+        source !== parentWindow ||
+        typeof data !== &quot;object&quot; ||
+        data?.type !== &quot;codex-visualization-initialize&quot; ||
+        !isArray(ports) ||
+        ports.length !== 1
+      ) {
+        return;
+      }
+      apply(stopMessagePropagation, event, []);
+      const nextHostPort = ports[0];
+      try {
+        apply(addHostMessageListener, nextHostPort, [
+          &quot;message&quot;,
+          (event) =&gt; {
+            const data = apply(getMessageData, event, []);
+            if (typeof data === &quot;object&quot; &amp;&amp; data?.type === &quot;measure&quot;) {
+              sendHeight();
+            } else if (
+              typeof data === &quot;object&quot; &amp;&amp;
+              data?.type === &quot;widget-state-result&quot;
+            ) {
+              /** @type {unknown} */
+              const id = data.id;
+              if (typeof id !== &quot;number&quot;) {
+                return;
+              }
+              const pending = pendingStateWrites.get(id);
+              if (pending != null) {
+                pendingStateWrites.delete(id);
+                globalThis.clearTimeout(pending.timeout);
+                if (data.ok === true) {
+                  pending.resolve();
+                } else {
+                  pending.reject(persistenceError());
+                }
+              }
+            }
+          },
+        ]);
+        apply(startHostPort, nextHostPort, []);
+      } catch {
+        return;
+      }
+      hostPort = nextHostPort;
+      for (const [id, { serializedState }] of pendingStateWrites) {
+        postToHost(&quot;widget-state-write&quot;, { id, state: serializedState });
+      }
+      sendHeight();
+    },
+    { capture: true },
+  );
+  document.currentScript?.remove();
+  mediaQuery.addEventListener(&quot;change&quot;, syncTheme);
+  globalThis.addEventListener(&quot;click&quot;, (event) =&gt; {
+    if (event.defaultPrevented) {
+      return;
+    }
+    let element = null;
+    if (event.target instanceof globalThis.Element) {
+      element = event.target;
+    } else if (event.target instanceof globalThis.Node) {
+      element = event.target.parentElement;
+    }
+    const link = element?.closest(&quot;a[href]&quot;);
+    const href = link?.getAttribute(&quot;href&quot;);
+    if (href == null) {
+      return;
+    }
+    if (href.startsWith(&quot;#&quot;)) {
+      let id;
+      try {
+        id = decodeURIComponent(href.slice(1));
+      } catch {
+        return;
+      }
+      const target = id.length === 0 ? root : document.getElementById(id);
+      if (
+        target == null ||
+        globalThis.navigator.userActivation?.isActive !== true
+      ) {
+        return;
+      }
+      event.preventDefault();
+      postToHost(&quot;scroll-to&quot;, {
+        top: target.getBoundingClientRect().top + globalThis.scrollY,
+      });
+      return;
+    }
+    event.preventDefault();
+    openExternal({ href });
+  });
+  new ResizeObserver(sendHeight).observe(document.body);
+  syncTheme();
+})();
+&lt;/script&gt;
+&lt;div class=&quot;viz-dotted-background&quot;&gt;
+  &lt;section id=&quot;liangyi-rune-workbench&quot; aria-label=&quot;六道轮回双面装备设计预览&quot; data-side=&quot;yang&quot;&gt;
+    &lt;header class=&quot;rune-head&quot;&gt;
+      &lt;div class=&quot;rune-kicker&quot;&gt;两仪行 · 十二元辰&lt;/div&gt;
+      &lt;h2&gt;六道轮回&lt;/h2&gt;
+      &lt;span class=&quot;rune-draft&quot;&gt;装备设计预览 · 演武试装&lt;/span&gt;
+    &lt;/header&gt;
+    &lt;div class=&quot;rune-tools&quot;&gt;
+      &lt;label for=&quot;rune-preset&quot;&gt;示范配装
+        &lt;select id=&quot;rune-preset&quot;&gt;
+          &lt;option value=&quot;moon&quot;&gt;月轮蚀魂&lt;/option&gt;
+          &lt;option value=&quot;rider&quot;&gt;踏云雷骑&lt;/option&gt;
+          &lt;option value=&quot;guard&quot;&gt;镇岳归元&lt;/option&gt;
+          &lt;option value=&quot;custom&quot; disabled&gt;自定义搭配&lt;/option&gt;
+        &lt;/select&gt;
+      &lt;/label&gt;
+      &lt;div class=&quot;rune-current&quot;&gt;
+        &lt;span id=&quot;rune-active-label&quot;&gt;&lt;/span&gt;
+        &lt;strong id=&quot;rune-current-weapon&quot;&gt;&lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;rune-stage&quot; id=&quot;rune-stage&quot; aria-label=&quot;可翻转的六边形轮回盘&quot;&gt;
+      &lt;div class=&quot;rune-dial&quot; id=&quot;rune-dial&quot;&gt;
+        &lt;div class=&quot;rune-face&quot; id=&quot;rune-face-yang&quot; data-side=&quot;yang&quot; role=&quot;group&quot; aria-label=&quot;阳面六道装备槽&quot;&gt;
+          &lt;div class=&quot;rune-hex&quot; aria-hidden=&quot;true&quot;&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;div class=&quot;rune-spokes&quot; aria-hidden=&quot;true&quot;&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;rune-face&quot; id=&quot;rune-face-yin&quot; data-side=&quot;yin&quot; role=&quot;group&quot; aria-label=&quot;阴面六道装备槽&quot; aria-hidden=&quot;true&quot; inert&gt;
+          &lt;div class=&quot;rune-hex&quot; aria-hidden=&quot;true&quot;&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;
+          &lt;div class=&quot;rune-spokes&quot; aria-hidden=&quot;true&quot;&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;button id=&quot;rune-flip&quot; type=&quot;button&quot; class=&quot;rune-flip cursor-interaction&quot; aria-label=&quot;翻至阴面&quot;&gt;
+        &lt;span class=&quot;rune-taiji&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+        &lt;span id=&quot;rune-flip-label&quot;&gt;翻至阴面&lt;/span&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;rune-dial-caption&quot;&gt;&lt;span id=&quot;rune-face-count&quot;&gt;&lt;/span&gt;&lt;span&gt;点选道位 · 中央翻面&lt;/span&gt;&lt;/div&gt;
+    &lt;section class=&quot;rune-detail&quot; aria-label=&quot;所选槽位与生肖效果&quot;&gt;
+      &lt;div class=&quot;rune-detail-top&quot;&gt;
+        &lt;div&gt;&lt;span class=&quot;rune-effect-label&quot; id=&quot;rune-slot-function&quot;&gt;&lt;/span&gt;&lt;h3 id=&quot;rune-slot-title&quot;&gt;&lt;/h3&gt;&lt;/div&gt;
+        &lt;label for=&quot;rune-picker&quot;&gt;装备符文&lt;select id=&quot;rune-picker&quot;&gt;&lt;/select&gt;&lt;/label&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;rune-effect-grid&quot; id=&quot;rune-effect-grid&quot;&gt;
+        &lt;div class=&quot;rune-effect-current&quot;&gt;
+          &lt;span class=&quot;rune-effect-label&quot; id=&quot;rune-effect-label&quot;&gt;&lt;/span&gt;
+          &lt;h4 id=&quot;rune-effect-name&quot;&gt;&lt;/h4&gt;
+          &lt;p id=&quot;rune-effect-description&quot;&gt;&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;rune-effect-candidate&quot; id=&quot;rune-candidate&quot; hidden&gt;
+          &lt;span class=&quot;rune-effect-label&quot;&gt;确认装备后&lt;/span&gt;
+          &lt;h4 id=&quot;rune-candidate-name&quot;&gt;&lt;/h4&gt;
+          &lt;p id=&quot;rune-candidate-description&quot;&gt;&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;rune-tags&quot; id=&quot;rune-tags&quot;&gt;&lt;/div&gt;
+      &lt;p class=&quot;rune-tradeoff&quot; id=&quot;rune-tradeoff&quot;&gt;&lt;/p&gt;
+      &lt;details class=&quot;rune-alternate&quot;&gt;
+        &lt;summary class=&quot;cursor-interaction&quot; id=&quot;rune-alternate-label&quot;&gt;&lt;/summary&gt;
+        &lt;h4 id=&quot;rune-alternate-name&quot;&gt;&lt;/h4&gt;
+        &lt;p id=&quot;rune-alternate-description&quot;&gt;&lt;/p&gt;
+      &lt;/details&gt;
+      &lt;div class=&quot;rune-actions&quot;&gt;
+        &lt;p id=&quot;rune-change-note&quot; role=&quot;status&quot;&gt;&lt;/p&gt;
+        &lt;div&gt;&lt;button id=&quot;rune-cancel&quot; type=&quot;button&quot; class=&quot;cursor-interaction&quot; hidden&gt;取消预览&lt;/button&gt;&lt;button id=&quot;rune-equip&quot; type=&quot;button&quot; class=&quot;rune-confirm cursor-interaction&quot; disabled&gt;已装备&lt;/button&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/section&gt;
+    &lt;footer class=&quot;rune-footer&quot;&gt;&lt;span id=&quot;rune-count&quot;&gt;&lt;/span&gt;&lt;span&gt;试装库存：每种 2 枚&lt;/span&gt;&lt;/footer&gt;
+    &lt;p id=&quot;rune-announcement&quot; role=&quot;status&quot;&gt;&lt;/p&gt;
+  &lt;/section&gt;
+&lt;/div&gt;
+&lt;style&gt;
+#liangyi-rune-workbench {
+  --rune-bg: light-dark(#f4f1e7, #172b29);
+  --rune-fg: light-dark(#263d35, #f2efdf);
+  --rune-muted: light-dark(#5b685b, #bac8b9);
+  --rune-line: light-dark(#c8cbb7, #4d6659);
+  --rune-panel: light-dark(#e8eadb, #223d34);
+  --rune-surface: light-dark(#f9f7ef, #1d332e);
+  --rune-yang: light-dark(#786025, #e9cf89);
+  --rune-yin: light-dark(#904934, #f0b69a);
+  --rune-ink: light-dark(#254a3e, #c5dfc0);
+  --rune-ink-text: light-dark(#faf8ee, #172c24);
+  --rune-gold-line: light-dark(#bca66e, #8e8051);
+  --rune-shadow: light-dark(#26493218, #00000030);
+  --rune-accent: var(--rune-yang);
+  background: var(--rune-bg);
+  color: var(--rune-fg);
+  padding: 22px;
+  border: 1px solid var(--rune-line);
+  border-radius: 8px;
+  font: 14px/1.65 &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, system-ui, sans-serif;
+}
+#liangyi-rune-workbench[data-side=&quot;yin&quot;] { --rune-accent: var(--rune-yin); }
+#liangyi-rune-workbench * { box-sizing: border-box; }
+#liangyi-rune-workbench [hidden] { display: none !important; }
+#liangyi-rune-workbench h2, #liangyi-rune-workbench h3, #liangyi-rune-workbench h4, #liangyi-rune-workbench p { margin: 0; font-weight: 400; }
+#liangyi-rune-workbench .rune-head { padding-right: 92px; margin-bottom: 16px; }
+#liangyi-rune-workbench .rune-kicker { font-size: 12px; color: var(--rune-muted); letter-spacing: 2px; }
+#liangyi-rune-workbench h2 { font: 30px/1.5 &quot;Songti SC&quot;, &quot;SimSun&quot;, serif; letter-spacing: 5px; }
+#liangyi-rune-workbench .rune-draft { font-size: 12px; color: var(--rune-muted); }
+#liangyi-rune-workbench .rune-tools { display: flex; align-items: end; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+#liangyi-rune-workbench label { display: grid; gap: 4px; color: var(--rune-muted); font-size: 12px; min-width: 0; }
+#liangyi-rune-workbench select, #liangyi-rune-workbench button { font: inherit; color: var(--rune-fg); background: var(--rune-panel); border: 1px solid var(--rune-line); border-radius: 4px; min-height: 44px; }
+#liangyi-rune-workbench select { max-width: 100%; padding: 7px 28px 7px 10px; font-size: 14px; }
+#liangyi-rune-workbench button { padding: 8px 13px; }
+#liangyi-rune-workbench button:hover:not(:disabled) { border-color: var(--rune-accent); }
+#liangyi-rune-workbench button:disabled { cursor: default; }
+#liangyi-rune-workbench .rune-current { display: grid; text-align: right; min-width: 0; }
+#liangyi-rune-workbench .rune-current span { font-size: 12px; color: var(--rune-accent); }
+#liangyi-rune-workbench .rune-current strong { font-weight: 500; }
+#liangyi-rune-workbench .rune-stage { position: relative; width: 100%; max-width: 464px; aspect-ratio: 1; margin: 12px auto 0; perspective: 1100px; }
+#liangyi-rune-workbench .rune-dial { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform 620ms cubic-bezier(.22,.7,.22,1); }
+#liangyi-rune-workbench .rune-dial.is-yin { transform: rotateY(180deg); }
+#liangyi-rune-workbench .rune-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; transform-style: preserve-3d; --face-accent: var(--rune-yang); }
+#liangyi-rune-workbench .rune-face[data-side=&quot;yin&quot;] { transform: rotateY(180deg); --face-accent: var(--rune-yin); }
+#liangyi-rune-workbench .rune-face[inert] { pointer-events: none; }
+#liangyi-rune-workbench .rune-hex { position: absolute; inset: 3%; clip-path: polygon(50% 0,93.3% 25%,93.3% 75%,50% 100%,6.7% 75%,6.7% 25%); background: var(--rune-gold-line); pointer-events: none; }
+#liangyi-rune-workbench .rune-hex::before { content: &quot;&quot;; position: absolute; inset: 1px; clip-path: inherit; background: var(--rune-surface); }
+#liangyi-rune-workbench .rune-hex div { position: absolute; inset: 13%; clip-path: inherit; background: var(--rune-line); }
+#liangyi-rune-workbench .rune-hex div::after { content: &quot;&quot;; position: absolute; inset: 1px; clip-path: inherit; background: radial-gradient(circle, var(--rune-panel), var(--rune-surface)); }
+#liangyi-rune-workbench .rune-spokes { position: absolute; inset: 15%; pointer-events: none; }
+#liangyi-rune-workbench .rune-spokes i { position: absolute; left: calc(50% - .5px); top: 0; bottom: 0; width: 1px; background: var(--rune-line); }
+#liangyi-rune-workbench .rune-spokes i:nth-child(2) { transform: rotate(60deg); }
+#liangyi-rune-workbench .rune-spokes i:nth-child(3) { transform: rotate(-60deg); }
+#liangyi-rune-workbench .rune-slot { position: absolute; width: 25%; height: 24%; padding: 8px 3px; transform: translate(-50%, -50%) translateZ(1px); background: transparent; border: 0; border-radius: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; isolation: isolate; }
+#liangyi-rune-workbench .rune-slot::before, #liangyi-rune-workbench .rune-slot::after { content: &quot;&quot;; position: absolute; clip-path: polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%); pointer-events: none; }
+#liangyi-rune-workbench .rune-slot::before { inset: 0; background: var(--rune-gold-line); z-index: -2; }
+#liangyi-rune-workbench .rune-slot::after { inset: 1px; background: var(--rune-surface); z-index: -1; }
+#liangyi-rune-workbench .rune-slot[aria-pressed=&quot;true&quot;]::before { background: var(--face-accent); }
+#liangyi-rune-workbench .rune-slot[aria-pressed=&quot;true&quot;]::after { inset: 3px; background: var(--rune-panel); }
+#liangyi-rune-workbench .rune-slot:hover:not(:disabled)::after { background: var(--rune-panel); }
+#liangyi-rune-workbench .rune-slot[data-index=&quot;0&quot;] { left: 50%; top: 15%; }
+#liangyi-rune-workbench .rune-slot[data-index=&quot;1&quot;] { left: 80.31%; top: 32.5%; }
+#liangyi-rune-workbench .rune-slot[data-index=&quot;2&quot;] { left: 80.31%; top: 67.5%; }
+#liangyi-rune-workbench .rune-slot[data-index=&quot;3&quot;] { left: 50%; top: 85%; }
+#liangyi-rune-workbench .rune-slot[data-index=&quot;4&quot;] { left: 19.69%; top: 67.5%; }
+#liangyi-rune-workbench .rune-slot[data-index=&quot;5&quot;] { left: 19.69%; top: 32.5%; }
+#liangyi-rune-workbench .rune-slot-role { font: 15px/1.5 &quot;Songti SC&quot;, &quot;SimSun&quot;, serif; }
+#liangyi-rune-workbench .rune-slot-name { font-size: 18px; line-height: 1.5; color: var(--face-accent); font-weight: 500; letter-spacing: 2px; }
+#liangyi-rune-workbench .rune-slot small { color: var(--rune-muted); font-size: 11px; line-height: 1.4; }
+#liangyi-rune-workbench .rune-flip { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; padding: 8px 0; width: 24%; aspect-ratio: 1; display: flex; flex-direction: column; gap: 5px; align-items: center; justify-content: center; background: var(--rune-bg); border-color: var(--rune-gold-line); box-shadow: 0 3px 20px var(--rune-shadow); font-size: 12px; }
+#liangyi-rune-workbench .rune-taiji { width: 36%; aspect-ratio: 1; display: block; border: 1px solid var(--rune-ink); border-radius: 50%; background: radial-gradient(circle at 50% 25%,var(--rune-ink) 0 7%,transparent 7.5%), radial-gradient(circle at 50% 75%,var(--rune-bg) 0 7%,transparent 7.5%), radial-gradient(circle at 50% 25%,var(--rune-bg) 0 24%,transparent 24.5%), radial-gradient(circle at 50% 75%,var(--rune-ink) 0 24%,transparent 24.5%), linear-gradient(90deg,var(--rune-bg) 50%,var(--rune-ink) 50%); transition: transform 620ms ease; }
+#liangyi-rune-workbench[data-side=&quot;yin&quot;] .rune-taiji { transform: rotate(180deg); }
+#liangyi-rune-workbench .rune-dial-caption { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; color: var(--rune-muted); font-size: 12px; margin: 4px 0 16px; }
+#liangyi-rune-workbench .rune-dial-caption span:first-child { color: var(--rune-accent); }
+#liangyi-rune-workbench .rune-detail { border-top: 1px solid var(--rune-line); padding-top: 16px; }
+#liangyi-rune-workbench .rune-detail-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+#liangyi-rune-workbench h3 { font: 20px/1.5 &quot;Songti SC&quot;, &quot;SimSun&quot;, serif; }
+#liangyi-rune-workbench h4 { font-size: 15px; font-weight: 500; }
+#liangyi-rune-workbench .rune-effect-grid { display: grid; gap: 20px; margin-top: 14px; }
+#liangyi-rune-workbench .rune-effect-grid[data-comparing=&quot;true&quot;] { grid-template-columns: 1fr 1fr; }
+#liangyi-rune-workbench .rune-effect-label { font-size: 12px; color: var(--rune-muted); }
+#liangyi-rune-workbench .rune-effect-grid p { margin-top: 5px; overflow-wrap: anywhere; }
+#liangyi-rune-workbench .rune-effect-candidate h4 { color: var(--rune-accent); }
+#liangyi-rune-workbench .rune-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; color: var(--rune-accent); font-size: 12px; }
+#liangyi-rune-workbench .rune-tradeoff { margin-top: 6px; font-size: 12px; color: var(--rune-muted); }
+#liangyi-rune-workbench .rune-alternate { margin-top: 12px; font-size: 13px; }
+#liangyi-rune-workbench .rune-alternate summary { padding: 8px 0; min-height: 40px; color: var(--rune-accent); }
+#liangyi-rune-workbench .rune-alternate p { margin-top: 4px; }
+#liangyi-rune-workbench .rune-actions { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+#liangyi-rune-workbench .rune-actions p { flex: 1 1 220px; color: var(--rune-muted); font-size: 12px; }
+#liangyi-rune-workbench .rune-actions&gt;div { display: flex; flex-wrap: wrap; gap: 8px; }
+#liangyi-rune-workbench button.rune-confirm { background: var(--rune-ink); color: var(--rune-ink-text); border-color: var(--rune-ink); }
+#liangyi-rune-workbench button.rune-confirm:disabled { background: var(--rune-panel); color: var(--rune-muted); border-color: var(--rune-line); }
+#liangyi-rune-workbench .rune-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--rune-muted); border-top: 1px solid var(--rune-line); padding-top: 12px; margin-top: 15px; }
+#liangyi-rune-workbench #rune-announcement { font-size: 12px; color: var(--rune-muted); margin-top: 6px; }
+@media (max-width: 480px) {
+  #liangyi-rune-workbench { padding: 12px; }
+  #liangyi-rune-workbench .rune-head { padding-right: 74px; }
+  #liangyi-rune-workbench .rune-tools { gap: 8px; }
+  #liangyi-rune-workbench .rune-current { text-align: left; flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  #liangyi-rune-workbench .rune-stage { margin-top: 8px; }
+  #liangyi-rune-workbench .rune-slot { width: 28%; height: 28%; gap: 0; }
+  #liangyi-rune-workbench .rune-slot-role { font-size: 12px; }
+  #liangyi-rune-workbench .rune-slot-name { font-size: 16px; letter-spacing: 0; }
+  #liangyi-rune-workbench .rune-flip { width: 25%; font-size: 11px; gap: 3px; }
+  #liangyi-rune-workbench .rune-effect-grid[data-comparing=&quot;true&quot;] { grid-template-columns: 1fr; gap: 12px; }
+  #liangyi-rune-workbench .rune-detail-top label { width: 100%; }
+  #liangyi-rune-workbench .rune-dial-caption { gap: 8px; }
+}
+@media (pointer: coarse) {
+  #liangyi-rune-workbench select { font-size: 16px; }
+  #liangyi-rune-workbench .rune-alternate summary { min-height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #liangyi-rune-workbench .rune-dial, #liangyi-rune-workbench .rune-taiji { transition: none; }
+}
+&lt;/style&gt;
+&lt;script type=&quot;application/json&quot; id=&quot;liangyi-rune-catalog&quot;&gt;{&quot;version&quot;:1,&quot;status&quot;:&quot;design&quot;,&quot;note&quot;:&quot;装备设计提案，尚未接入游戏；数值为调试起点。共同规则见 reincarnation-runes-design.md。&quot;,&quot;runes&quot;:[{&quot;id&quot;:&quot;rat&quot;,&quot;name&quot;:&quot;子鼠&quot;,&quot;theme&quot;:&quot;引灯穿隙，借灵巧走位追索游魂。&quot;,&quot;tradeoff&quot;:&quot;短距攻击需要主动接近目标，追索切入前应确认退路。&quot;,&quot;yang&quot;:{&quot;weapon&quot;:{&quot;name&quot;:&quot;灯火双匕&quot;,&quot;description&quot;:&quot;按住 J 连续快速短刺，连段末掷出一盏追魂灯，追向前方近处目标。双匕适合贴身游斗；追魂灯属于衍生伤害，不再触发符文。&quot;,&quot;tags&quot;:[&quot;双匕&quot;,&quot;快攻&quot;,&quot;短距&quot;]},&quot;skill&quot;:{&quot;name&quot;:&quot;引灯照夜&quot;,&quot;description&quot;:&quot;按 U 消耗 25 灵力放出引魂灯，追击前方最近敌人，冷却 8 秒。首次碰撞算直接术法命中，随后爆炸为衍生伤害；每次仅一盏灯，爆炸不连锁触发符文。&quot;,&quot;tags&quot;:[&quot;主动&quot;,&quot;追踪&quot;,&quot;范围&quot;]},&quot;mobility&quot;:{&quot;name&quot;:&quot;穿隙步&quot;,&quot;description&quot;:&quot;现有冲刺可穿过小怪身体，结束时短暂降低被小怪锁定的优先级。不能穿墙或穿越封闭地形，也不延长无敌时间、刷新冲刺或增加跳跃次数。&quot;,&quot;tags&quot;:[&quot;冲刺&quot;,&quot;穿敌&quot;,&quot;身法&quot;]},&quot;companion&quot;:{&quot;name&quot;:&quot;提灯灵鼠&quot;,&quot;description&quot;:&quot;召出一只提灯灵鼠，优先扑咬玩家最近直接普攻命中的敌人，每四秒攻击一次。全程仅保留一只主灵契，其攻击不触发附伤、回灵或其他符文。&quot;,&quot;tags&quot;:[&quot;灵契&quot;,&quot;追击&quot;,&quot;灯火&quot;]},&quot;resource&quot;:{&quot;name&quot;:&quot;初见拾魂&quot;,&quot;description&quot;:&quot;直接 J 普攻首次命中新目标时回复 6 灵力，同一目标每场战斗只计算一次。不同目标间至少间隔 0.75 秒；衍生攻击、灵契和持续伤害不计，受命中回灵总上限约束。&quot;,&quot;tags&quot;:[&quot;回灵&quot;,&quot;新目标&quot;,&quot;节流&quot;]},&quot;affliction&quot;:{&quot;name&quot;:&quot;灯芯印&quot;,&quot;description&quot;:&quot;直接 J 普攻给目标留下灯芯印，下一次直接普攻消耗印记并造成一次灯火附伤。每个目标最多一个印记，附伤不重复挂印，多段攻击按一次合并。&quot;,&quot;tags&quot;:[&quot;命中&quot;,&quot;印记&quot;,&quot;消耗&quot;]}},&quot;yin&quot;:{&quot;weapon&quot;:{&quot;name&quot;:&quot;引魂索刃&quot;,&quot;description&quot;:&quot;按住 J 挥索挂住前方目标，下一段将自身拉近并回斩，牵引途中遇墙即停。只移动玩家，不拉动 Boss；没有可挂目标时改为身前基础索斩。&quot;,&quot;tags&quot;:[&quot;索刃&quot;,&quot;切入&quot;,&quot;回斩&quot;]},&quot;skill&quot;:{&quot;name&quot;:&quot;影灯疑兵&quot;,&quot;description&quot;:&quot;按 U 消耗 25 灵力在身前放置持续 3 秒的影灯，吸引普通小怪，随后炸开，冷却 10 秒。影灯不改变 Boss 仇恨与站位，最多一盏，爆炸不触发其他符文。&quot;,&quot;tags&quot;:[&quot;主动&quot;,&quot;诱敌&quot;,&quot;影灯&quot;]},&quot;mobility&quot;:{&quot;name&quot;:&quot;留影潜行&quot;,&quot;description&quot;:&quot;现有冲刺起点留下短命鼠影，吸引近处普通小怪一次攻击后消失。Boss 不被强制转向；鼠影不造成伤害，且不会重置冲刺冷却或空中跳跃次数。&quot;,&quot;tags&quot;:[&quot;冲刺&quot;,&quot;诱饵&quot;,&quot;鼠影&quot;]},&quot;companion&quot;:{&quot;name&quot;:&quot;窃影鼠&quot;,&quot;description&quot;:&quot;召出一只影鼠，每四秒扑向玩家最近直接普攻命中的敌人，造成伤害并短暂减速。Boss 只受轻微减速；影鼠伤害不能触发任何符文或回灵。&quot;,&quot;tags&quot;:[&quot;灵契&quot;,&quot;减速&quot;,&quot;追击&quot;]},&quot;resource&quot;:{&quot;name&quot;:&quot;隙间取息&quot;,&quot;description&quot;:&quot;用现有冲刺穿过敌人身体后回复 6 灵力，同次冲刺最多触发一次，触发间隔 4 秒。无敌帧持续时间不变；穿过灵契、机关或残影不产生收益。&quot;,&quot;tags&quot;:[&quot;回灵&quot;,&quot;穿敌&quot;,&quot;冲刺&quot;]},&quot;affliction&quot;:{&quot;name&quot;:&quot;幽灯系魂&quot;,&quot;description&quot;:&quot;直接 J 普攻为目标施加短暂幽灯印，降低其移动速度，重复命中只刷新持续时间。Boss 减速幅度降低；印记不会冻结行动，也不触发额外符文。&quot;,&quot;tags&quot;:[&quot;命中&quot;,&quot;减速&quot;,&quot;魂印&quot;]}}},{&quot;id&quot;:&quot;ox&quot;,&quot;name&quot;:&quot;丑牛&quot;,&quot;theme&quot;:&quot;负岳镇门，以稳重招架压出反击窗口。&quot;,&quot;tradeoff&quot;:&quot;攻击收招较慢，蓄力与正面招架都需要提前判断敌招。&quot;,&quot;yang&quot;:{&quot;weapon&quot;:{&quot;name&quot;:&quot;青铜盾枪&quot;,&quot;description&quot;:&quot;按住 J 连续盾枪刺击，只有新按下 J 的起手提供短暂正面招架窗；精准挡住后追加反刺，末段长刺破势。持续按住不会反复获得招架窗口。&quot;,&quot;tags&quot;:[&quot;盾枪&quot;,&quot;防反&quot;,&quot;破势&quot;]},&quot;skill&quot;:{&quot;name&quot;:&quot;负岳立壁&quot;,&quot;description&quot;:&quot;按 U 消耗 30 灵力立起持续 3 秒的岩盾，至多拦截三枚前方普通弹丸，冷却 12 秒。岩盾不阻挡 Boss 的范围震击；同一来源最多一面，切面不补次数。&quot;,&quot;tags&quot;:[&quot;主动&quot;,&quot;挡弹&quot;,&quot;岩盾&quot;]},&quot;mobility&quot;:{&quot;name&quot;:&quot;牛步镇身&quot;,&quot;description&quot;:&quot;现有地面冲刺起步时获得短暂正面减伤，持续时间覆盖部分冲刺过程。背后与地面范围伤害照常结算，不新增无敌帧，也不刷新任何移动冷却。&quot;,&quot;tags&quot;:[&quot;冲刺&quot;,&quot;正面&quot;,&quot;减伤&quot;]},&quot;companion&quot;:{&quot;name&quot;:&quot;青犊门卫&quot;,&quot;description&quot;:&quot;召出一只青犊跟随前方，每四秒可撞散一枚近处普通弹丸，成功后进入休整。它无法拦截激光、范围地火或 Boss 大招，拦弹行为不触发回灵。&quot;,&quot;tags&quot;:[&quot;灵契&quot;,&quot;挡弹&quot;,&quot;守卫&quot;]},&quot;resource&quot;:{&quot;name&quot;:&quot;稳阵调息&quot;,&quot;description&quot;:&quot;站在地面时，直接 J 普攻连段终结命中敌人回复 8 灵力，触发间隔 6 秒。同次终结攻击命中多名敌人仍只计算一次，召唤与衍生伤害不计。&quot;,&quot;tags&quot;:[&quot;回灵&quot;,&quot;地面&quot;,&quot;终结&quot;]},&quot;affliction&quot;:{&quot;name&quot;:&quot;镇门重击&quot;,&quot;description&quot;:&quot;直接 J 普攻连段终结命中时追加一次破势积累；同一攻击的多段命中只结算一次。对普通敌人与 Boss 都有效，不牵引、不击飞，衍生伤害不触发。&quot;,&quot;tags&quot;:[&quot;命中&quot;,&quot;终结&quot;,&quot;破势&quot;]}},&quot;yin&quot;:{&quot;weapon&quot;:{&quot;name&quot;:&quot;镇岳重锤&quot;,&quot;description&quot;:&quot;按住 J 蓄力，松手落锤并发出贴地震波；蓄力越充分，锤击范围越大。震波遇墙停止且属于衍生伤害，挥空有明显收招，可用已有冲刺取消蓄力。&quot;,&quot;tags&quot;:[&quot;重锤&quot;,&quot;蓄力&quot;,&quot;震波&quot;]},&quot;skill&quot;:{&quot;name&quot;:&quot;幽岳裂地&quot;,&quot;description&quot;:&quot;按 U 消耗 35 灵力向前轰出地裂震波，沿地面逐段爆开，冷却 12 秒；遇断崖或墙壁终止。每目标同次术法最多直接命中一次，Boss 只受伤害与有限破势。&quot;,&quot;tags&quot;:[&quot;主动&quot;,&quot;地裂&quot;,&quot;范围&quot;]},&quot;mobility&quot;:{&quot;name&quot;:&quot;沉蹄落阵&quot;,&quot;description&quot;:&quot;现有地面冲刺结束时踏出小范围震荡，稍微推开普通小怪；Boss 只受伤害。震荡有四秒内置冷却，属于衍生伤害，不刷新冲刺或触发其他符文。&quot;,&quot;tags&quot;:[&quot;冲刺&quot;,&quot;落点&quot;,&quot;震荡&quot;]},&quot;companion&quot;:{&quot;name&quot;:&quot;幽牛冲阵&quot;,&quot;description&quot;:&quot;召出一只幽牛，每五秒向玩家最近直接普攻命中的敌人短程冲撞，遇墙停止。普通小怪轻微后退，Boss 不位移；冲撞属于灵契伤害，不能触发符文。&quot;,&quot;tags&quot;:[&quot;灵契&quot;,&quot;冲撞&quot;,&quot;推敌&quot;]},&quot;resource&quot;:{&quot;name&quot;:&quot;负重归息&quot;,&quot;description&quot;:&quot;连续三次直接 J 普攻命中同一目标时回复 8 灵力，并清空该目标计数，触发间隔 6 秒。同次攻击多段命中仅记一次，衍生与持续伤害不计；切面清除未兑现计数。&quot;,&quot;tags&quot;:[&quot;回灵&quot;,&quot;单体&quot;,&quot;连续命中&quot;]},&quot;affliction&quot;:{&quot;name&quot;:&quot;山阴重滞&quot;,&quot;description&quot;:&quot;直接 J 普攻附加短暂重滞，使普通敌人的移动速度下降，重复命中只刷新时间。Boss 仅受较弱减速，效果不能叠成定身，衍生攻击不会刷新重滞。&quot;,&quot;tags&quot;:[&quot;命中&quot;,&quot;减速&quot;,&quot;重滞&quot;]}}},{&quot;id&quot;:&quot;tiger&quot;,&quot;name&quot;:&quot;寅虎&quot;,&quot;theme&quot;:&quot;破军追猎，以扑近和撕裂追击敌方破绽。&quot;,&quot;tradeoff&quot;:&quot;强行切入后退路有限，扑空或打错朝向会留下明显破绽。&quot;,&quot;yang&quot;:{&quot;weapon&quot;:{&quot;name&quot;:&quot;虎牙双刀&quot;,&quot;description&quot;:&quot;按住 J 交替挥动双刀，前两段短促斩击，第三段以宽扫收尾，适合逼近后连续压制。第三段后有清晰收招窗口，空挥不会自动追向远处敌人。&quot;,&quot;tags&quot;:[&quot;双刀&quot;,&quot;连击&quot;,&quot;宽扫&quot;]},&quot;skill&quot;:{&quot;name&quot;:&quot;破军风爪&quot;,&quot;description&quot;:&quot;按 U 消耗 30 灵力向面前扇形区域挥出三道风爪，冷却 10 秒；同目标最多承受两道，共用施法编号。首道直接命中可触发适用附效，后续命中不重复；Boss 不受强制位移。&quot;,&quot;tags&quot;:[&quot;主动&quot;,&quot;扇形&quot;,&quot;破势&quot;]},&quot;mobility&quot;:{&quot;name&quot;:&quot;猛虎越隙&quot;,&quot;description&quot;:&quot;现有地面冲刺改为低矮扑跃，可越过低处的小范围障碍，仍受墙壁与平台阻挡。空中冲刺保持原规则，不增加跳跃次数，也不延长冲刺无敌时间。&quot;,&quot;tags&quot;:[&quot;冲刺&quot;,&quot;扑跃&quot;,&quot;地面&quot;]},&quot;companion&quot;:{&quot;name&quot;:&quot;白额虎灵&quot;,&quot;description&quot;:&quot;召出一只虎灵，每四秒追击玩家最近直接普攻命中的敌人，优先攻击已破势目标。场上只保留一只主灵契，扑击不造成强制位移，也不触发其他符文。&quot;,&quot;tags&quot;:[&quot;灵契&quot;,&quot;追猎&quot;,&quot;破势&quot;]},&quot;resource&quot;:{&quot;name&quot;:&quot;破军饮息&quot;,&quot;description&quot;:&quot;直接 J 普攻击杀敌人或命中处于破势状态的目标时回复 8 灵力，触发间隔 6 秒。同次攻击同时满足两项仍只触发一次，灵契击杀与持续伤害不计。&quot;,&quot;tags&quot;:[&quot;回灵&quot;,&quot;破势&quot;,&quot;击杀&quot;]},&quot;affliction&quot;:{&quot;name&quot;:&quot;虎牙血痕&quot;,&quot;description&quot;:&quot;直接 J 普攻为敌人叠加血痕，最多三层，造成短时持续伤害，重复命中刷新持续时间。持续伤害不能再挂血痕、触发回灵或产生任何其他符文效果。&quot;,&quot;tags&quot;:[&quot;命中&quot;,&quot;持续伤害&quot;,&quot;叠层&quot;]}},&quot;yin&quot;:{&quot;weapon&quot;:{&quot;name&quot;:&quot;幽虎爪&quot;,&quot;description&quot;:&quot;按住 J 向身前短扑爪击，命中背面或破势目标时追加一次撕裂。扑击遇墙停止，Boss 不被牵动；追加撕裂属于衍生伤害，扑空后的收招明显。&quot;,&quot;tags&quot;:[&quot;虎爪&quot;,&quot;扑击&quot;,&quot;背击&quot;]},&quot;skill&quot;:{&quot;name&quot;:&quot;伏影猎杀&quot;,&quot;description&quot;:&quot;按 U 消耗 25 灵力扑向前方有限距离内最近敌人并落爪，冷却 8 秒；无目标时向前短扑。路径遇墙停止，不改变 Boss 位置；落爪算一次直接术法命中。&quot;,&quot;tags&quot;:[&quot;主动&quot;,&quot;切入&quot;,&quot;扑击&quot;]},&quot;mobility&quot;:{&quot;name&quot;:&quot;夜虎下山&quot;,&quot;description&quot;:&quot;空中使用现有 Shift 冲刺时改为朝面向方向斜下扑，接触地面立即结束。沿用原冲刺冷却与次数，不重置二段跳，不提供额外攻击或持续无敌。&quot;,&quot;tags&quot;:[&quot;冲刺&quot;,&quot;空中&quot;,&quot;斜下&quot;]},&quot;companion&quot;:{&quot;name&quot;:&quot;伏影虎&quot;,&quot;description&quot;:&quot;召出一只影虎，每五秒从玩家最近直接命中敌人的侧面扑击一次，空闲时跟随。扑击只造成灵契伤害，不触发背击回灵、附伤、持续伤害或额外召唤。&quot;,&quot;tags&quot;:[&quot;灵契&quot;,&quot;伏击&quot;,&quot;侧击&quot;]},&quot;resource&quot;:{&quot;name&quot;:&quot;背隙取魂&quot;,&quot;description&quot;:&quot;直接 J 普攻从敌人背面命中时回复 6 灵力，触发间隔 4 秒，同次攻击最多一次。背面以敌人实际朝向判断，镜像、召唤与持续伤害不参与计算。&quot;,&quot;tags&quot;:[&quot;回灵&quot;,&quot;背击&quot;,&quot;节流&quot;]},&quot;affliction&quot;:{&quot;name&quot;:&quot;破绽撕裂&quot;,&quot;description&quot;:&quot;直接 J 普攻命中敌人背面或破势状态时附加一次撕裂伤害，同目标冷却三秒。未满足条件时仍保留基础攻击伤害，附加撕裂不能再次触发其他符文。&quot;,&quot;tags&quot;:[&quot;命中&quot;,&quot;背击&quot;,&quot;破势&quot;]}}},{&quot;id&quot;:&quot;rabbit&quot;,&quot;name&quot;:&quot;卯兔&quot;,&quot;theme&quot;:&quot;月华往复，以回旋轨迹和轻盈身法创造安全距离。&quot;,&quot;tradeoff&quot;:&quot;伤害需要预判走位与回收路线，远距单发爆发较为温和。&quot;,&quot;yang&quot;:{&quot;weapon&quot;:{&quot;name&quot;:&quot;望舒月轮&quot;,&quot;description&quot;:&quot;按住 J 抛出回旋月轮，去程和回程各可命中一次，移动可改变回收路线。每轮视为同次普攻，回灵按攻击编号合并；只有月轮回手后才可再次投出。&quot;,&quot;tags&quot;:[&quot;月轮&quot;,&quot;回旋&quot;,&quot;去回&quot;]},&quot;skill&quot;:{&quot;name&quot;:&quot;月露祈安&quot;,&quot;description&quot;:&quot;按 U 消耗 30 灵力引下月露，获得最大生命 15% 的护盾，持续 3 秒，并清除一个可净化负面状态，冷却 12 秒。同源不叠加，总护盾不超 25%，不治疗或回灵。&quot;,&quot;tags&quot;:[&quot;主动术法&quot;,&quot;护盾净化&quot;,&quot;12 秒冷却&quot;]},&quot;mobility&quot;:{&quot;name&quot;:&quot;玉兔踏月&quot;,&quot;description&quot;:&quot;使用已有二段跳后缓降最多 0.4 秒，按下方向键可提前结束。保持原跳跃高度，不刷新冲刺；额外效果间隔 5 秒，需触地且冷却结束才能再用，空中次数跨面共享。&quot;,&quot;tags&quot;:[&quot;二段跳&quot;,&quot;缓降&quot;,&quot;身法&quot;]},&quot;companion&quot;:{&quot;name&quot;:&quot;捣药玉兔&quot;,&quot;description&quot;:&quot;召出一只玉兔，每八秒在玩家受到伤害后提供一层短暂小护盾，同种护盾不叠加。遵守护盾总量上限，灵契不直接治疗，护盾生效不触发回灵效果。&quot;,&quot;tags&quot;:[&quot;灵契&quot;,&quot;护盾&quot;,&quot;受击&quot;]},&quot;resource&quot;:{&quot;name&quot;:&quot;静月调息&quot;,&quot;description&quot;:&quot;战斗中连续 6 秒未受伤后，下一次直接 J 普攻命中回复 6 灵力并重新计时。脱战或切面清除待兑现收益；灵契与持续伤害不计，月轮往返按同次攻击处理。&quot;,&quot;tags&quot;:[&quot;回灵&quot;,&quot;未受伤&quot;,&quot;命中&quot;]},&quot;affliction&quot;:{&quot;name&quot;:&quot;月华留痕&quot;,&quot;description&quot;:&quot;直接 J 普攻给目标附上短暂月痕，轻微降低其移动速度；同次攻击多段命中只刷新一次。Boss 减速减半，不影响攻击计时，月痕不能触发其他符文。&quot;,&quot;tags&quot;:[&quot;命中&quot;,&quot;减速&quot;,&quot;月痕&quot;]}},&quot;yin&quot;:{&quot;weapon&quot;:{&quot;name&quot;:&quot;残月短弓&quot;,&quot;description&quot;:&quot;按住 J 短暂蓄力，松手射出月矢，命中后留下短命月影缓行区。月影只降低区域内普通敌人的移速，Boss 减效；缓行区无额外伤害，不触发符文。&quot;,&quot;tags&quot;:[&quot;短弓&quot;,&quot;蓄力&quot;,&quot;缓行&quot;]},&quot;skill&quot;:{&quot;name&quot;:&quot;广寒月域&quot;,&quot;description&quot;:&quot;按 U 消耗 30 灵力展开持续 3 秒的月域，减慢普通敌人移动与普通弹丸飞行，冷却 12 秒。Boss 仅受较弱移动减速，攻击计时不变；同一来源最多一个月域。&quot;,&quot;tags&quot;:[&quot;主动&quot;,&quot;月域&quot;,&quot;减速&quot;]},&quot;mobility&quot;:{&quot;name&quot;:&quot;残月轻身&quot;,&quot;description&quot;:&quot;现有空中冲刺结束后缓降最多 0.4 秒，按下方向键可提前结束。沿用冲刺冷却，不重置二段跳；额外效果间隔 5 秒，需触地且冷却结束再用，空中次数跨面共享。&quot;,&quot;tags&quot;:[&quot;冲刺&quot;,&quot;空中&quot;,&quot;缓降&quot;]},&quot;companion&quot;:{&quot;name&quot;:&quot;蚀月影兔&quot;,&quot;description&quot;:&quot;召出一只影兔，每四秒向玩家最近直接普攻命中的敌人发射一枚月弹，遇墙消散。场上仅保留一只主灵契，月弹属于衍生伤害，不能触发任何符文。&quot;,&quot;tags&quot;:[&quot;灵契&quot;,&quot;月弹&quot;,&quot;远程&quot;]},&quot;resource&quot;:{&quot;name&quot;:&quot;落月归息&quot;,&quot;description&quot;:&quot;在空中直接 J 普攻命中后，安全落地时回复 8 灵力，每次滞空最多一次，触发间隔 6 秒。落地前受伤或切面失去本次收益，衍生攻击不计。&quot;,&quot;tags&quot;:[&quot;回灵&quot;,&quot;空中&quot;,&quot;落地&quot;]},&quot;affliction&quot;:{&quot;name&quot;:&quot;蚀月迟响&quot;,&quot;description&quot;:&quot;直接 J 普攻留下蚀月印，一秒后消耗印记造成一次小范围月爆，每目标冷却三秒。重复命中不会提前引爆或叠加，月爆属于衍生伤害，不触发其他符文。&quot;,&quot;tags&quot;:[&quot;命中&quot;,&quot;延迟&quot;,&quot;月爆&quot;]}}},{&quot;id&quot;:&quot;dragon&quot;,&quot;name&quot;:&quot;辰龙&quot;,&quot;theme&quot;:&quot;行云布雷：拉开目标间距，利用多目标导雷和雾场创造窗口。&quot;,&quot;tradeoff&quot;:&quot;对群体与直线阵型有优势；单个 Boss 没有额外弹跳收益，雾场也不能强拉 Boss。&quot;,&quot;yang&quot;:{&quot;weapon&quot;:{&quot;name&quot;:&quot;盘龙长枪&quot;,&quot;description&quot;:&quot;按住 J 直刺连攻，以枪尖控制距离；末段从命中目标向另外最多两名敌人导雷。雷链不回跳，不触发附伤与回灵；只有单个目标时不追加雷击。&quot;,&quot;tags&quot;:[&quot;长柄&quot;,&quot;连段&quot;,&quot;导雷&quot;]},&quot;skill&quot;:{&quot;name&quot;:&quot;九霄雷阵&quot;,&quot;description&quot;:&quot;按 U 消耗 30 灵力，在前方落下持续 3 秒的雷阵，冷却 10 秒；首道落雷算直接术法命中，后续落雷为衍生伤害，每次施法只保留一个雷阵。&quot;,&quot;tags&quot;:[&quot;主动术法&quot;,&quot;定点压制&quot;,&quot;30 灵力&quot;]},&quot;mobility&quot;:{&quot;name&quot;:&quot;踏云行&quot;,&quot;description&quot;:&quot;空中按 Shift 后短暂减缓下落 0.35 秒，便于枪尖调整高度；每次离地只能触发一次，触地且 5 秒冷却结束才恢复，切面不能补回次数。&quot;,&quot;tags&quot;:[&quot;空中调整&quot;,&quot;缓降&quot;,&quot;共享空中次数&quot;]},&quot;companion&quot;:{&quot;name&quot;:&quot;青霆幼龙&quot;,&quot;description&quot;:&quot;跟随一只幼龙；玩家直接攻击命中后，幼龙向附近另一目标吐雷，间隔 3 秒。无第二目标则不协击，吐雷不触发其他附伤或回灵，切面保留间隔。&quot;,&quot;tags&quot;:[&quot;灵契&quot;,&quot;群攻&quot;,&quot;有限协击&quot;]},&quot;resource&quot;:{&quot;name&quot;:&quot;聚雷归息&quot;,&quot;description&quot;:&quot;同一次直接攻击命中至少两名不同敌人时回复 6 灵力，间隔 1.5 秒；每个攻击编号只结算一次，导雷与召唤不计入，仍受命中回灵每秒 10 点上限。&quot;,&quot;tags&quot;:[&quot;多目标回灵&quot;,&quot;1.5 秒间隔&quot;,&quot;直接攻击&quot;]},&quot;affliction&quot;:{&quot;name&quot;:&quot;雷脉连引&quot;,&quot;description&quot;:&quot;直接普攻的连段末尾命中后，向附近另外最多两名敌人导雷，间隔 1 秒；同一雷链不重复命中，不回跳单体，也不能继续触发附伤或回灵。&quot;,&quot;tags&quot;:[&quot;终结附效&quot;,&quot;导雷&quot;,&quot;群体破势&quot;]}},&quot;yin&quot;:{&quot;weapon&quot;:{&quot;name&quot;:&quot;云龙软鞭&quot;,&quot;description&quot;:&quot;按住 J 交替弧形扫鞭，末段轻拉普通小怪并收鞭放出一次雾雷。Boss 免疫拉扯；雾雷为衍生伤害，不能重复触发附伤与回灵，收鞭有明确后摇。&quot;,&quot;tags&quot;:[&quot;软鞭&quot;,&quot;弧形覆盖&quot;,&quot;轻型聚怪&quot;]},&quot;skill&quot;:{&quot;name&quot;:&quot;玄云归涡&quot;,&quot;description&quot;:&quot;按 U 消耗 30 灵力，在前方制造持续 2.5 秒的雾涡，冷却 12 秒；缓慢牵引轻型小怪，结束时雾爆。Boss 只承受伤害与破势，不被位移。&quot;,&quot;tags&quot;:[&quot;主动术法&quot;,&quot;雾涡&quot;,&quot;30 灵力&quot;]},&quot;mobility&quot;:{&quot;name&quot;:&quot;云隐错步&quot;,&quot;description&quot;:&quot;地面按 Shift 留下持续 0.6 秒的雾影，附近普通敌人短暂朝雾影方向瞄准，间隔 5 秒；已发出的攻击不改道，Boss 不受诱导，也不额外增加无敌帧。&quot;,&quot;tags&quot;:[&quot;地面冲刺&quot;,&quot;诱导&quot;,&quot;5 秒间隔&quot;]},&quot;companion&quot;:{&quot;name&quot;:&quot;玄雾盘龙&quot;,&quot;description&quot;:&quot;一只雾龙环身，最多拦下一发普通弹幕，消耗后 8 秒恢复；不能挡红色攻击、激光或碰撞伤害。切面停用但保留充能，不提供治疗或额外无敌。&quot;,&quot;tags&quot;:[&quot;灵契&quot;,&quot;弹幕拦截&quot;,&quot;保留充能&quot;]},&quot;resource&quot;:{&quot;name&quot;:&quot;云息回流&quot;,&quot;description&quot;:&quot;精准闪避获得一层云息，最多一层且持续 6 秒；下一次实际支付灵力施放 U 后返还 6 灵力。获取间隔 2 秒，切面不能刷新，返还不超过本次支出。&quot;,&quot;tags&quot;:[&quot;精准闪避&quot;,&quot;施术返还&quot;,&quot;2 秒间隔&quot;]},&quot;affliction&quot;:{&quot;name&quot;:&quot;雾印凝雷&quot;,&quot;description&quot;:&quot;直接攻击每秒最多为同一目标增加一层雾印，最多三层；叠满时消耗全部雾印，在其位置产生一次小范围雾雷，衍生伤害不再叠印或回灵。&quot;,&quot;tags&quot;:[&quot;雾印&quot;,&quot;定点爆发&quot;,&quot;禁止递归&quot;]}}},{&quot;id&quot;:&quot;snake&quot;,&quot;name&quot;:&quot;巳蛇&quot;,&quot;theme&quot;:&quot;青绫侵蚀：持续铺伤，选择保留侵蚀还是提前结算。&quot;,&quot;tradeoff&quot;:&quot;爆发依赖铺伤与命中；收割会消耗已有侵蚀，离场或净化会削弱收益。&quot;,&quot;yang&quot;:{&quot;weapon&quot;:{&quot;name&quot;:&quot;青绫剑&quot;,&quot;description&quot;:&quot;按住 J 以伸展软剑连续穿刺狭长区域，末段施加一层侵蚀。每个攻击编号对同目标只加一层，侵蚀最多三层，持续伤害不能继续触发附伤与回灵。&quot;,&quot;tags&quot;:[&quot;软剑&quot;,&quot;持续铺伤&quot;,&quot;侵蚀&quot;]},&quot;skill&quot;:{&quot;name&quot;:&quot;碧绫封径&quot;,&quot;description&quot;:&quot;按 U 消耗 25 灵力，向前铺出持续 3 秒的蛇纹带，冷却 9 秒；首次触及敌人施加一层侵蚀，后续仅造成衍生伤害，不重复刷层或回灵。&quot;,&quot;tags&quot;:[&quot;主动术法&quot;,&quot;区域铺伤&quot;,&quot;25 灵力&quot;]},&quot;mobility&quot;:{&quot;name&quot;:&quot;游鳞滑步&quot;,&quot;description&quot;:&quot;地面按 Shift 时冲刺后半段身形压低，可穿过普通小怪但不能穿墙；结束后仍按基础冲刺规则受击，不增加无敌帧，额外穿怪效果间隔 4 秒。&quot;,&quot;tags&quot;:[&quot;地面机动&quot;,&quot;穿越小怪&quot;,&quot;4 秒间隔&quot;]},&quot;companion&quot;:{&quot;name&quot;:&quot;碧鳞灵蛇&quot;,&quot;description&quot;:&quot;跟随一条灵蛇；玩家直接命中带侵蚀的目标后，它向该目标扑击一次，间隔 3 秒。扑击不添加侵蚀，不触发附伤与回灵，也不会追击离开范围的目标。&quot;,&quot;tags&quot;:[&quot;灵契&quot;,&quot;侵蚀协击&quot;,&quot;3 秒间隔&quot;]},&quot;resource&quot;:{&quot;name&quot;:&quot;蚀息归流&quot;,&quot;description&quot;:&quot;直接攻击命中已有侵蚀的敌人时回复 3 灵力，间隔 1 秒；每个攻击编号只结算一次。侵蚀跳伤、钩镰结算与灵契攻击不触发，受每秒 10 点命中回灵上限。&quot;,&quot;tags&quot;:[&quot;侵蚀回灵&quot;,&quot;1 秒间隔&quot;,&quot;直接攻击&quot;]},&quot;affliction&quot;:{&quot;name&quot;:&quot;青蚀蛇印&quot;,&quot;description&quot;:&quot;直接普攻或术法命中施加一层侵蚀，每层持续 4 秒，最多三层；同一攻击编号对同目标只添加一次，添加间隔 0.75 秒，持续伤害不能再次附伤或回灵。&quot;,&quot;tags&quot;:[&quot;侵蚀&quot;,&quot;持续伤害&quot;,&quot;三层上限&quot;]}},&quot;yin&quot;:{&quot;weapon&quot;:{&quot;name&quot;:&quot;蜕影钩镰&quot;,&quot;description&quot;:&quot;按 J 出钩，再次按 J 回收；按住会自动衔接。回收命中可提前结算目标剩余侵蚀伤害的至多 50%，并等量扣除待结算伤害；没有侵蚀也能正常钩斩。&quot;,&quot;tags&quot;:[&quot;钩镰&quot;,&quot;回收&quot;,&quot;侵蚀收割&quot;]},&quot;skill&quot;:{&quot;name&quot;:&quot;伏影蜕爆&quot;,&quot;description&quot;:&quot;按 U 消耗 25 灵力，在脚下放置持续 3 秒的蛇蜕，冷却 10 秒；敌人靠近后只爆发一次，并轻退普通小怪。Boss 只受伤害与破势，不会被强制后退。&quot;,&quot;tags&quot;:[&quot;主动术法&quot;,&quot;延迟陷阱&quot;,&quot;25 灵力&quot;]},&quot;mobility&quot;:{&quot;name&quot;:&quot;蜕鳞回避&quot;,&quot;description&quot;:&quot;精准闪避后 1 秒内的地面移动速度增加 15%，额外效果间隔 4 秒；仅奖励实际躲过攻击的冲刺，不叠加无敌或刷新冲刺，不能靠反复切面续时。&quot;,&quot;tags&quot;:[&quot;精准闪避&quot;,&quot;短时加速&quot;,&quot;4 秒间隔&quot;]},&quot;companion&quot;:{&quot;name&quot;:&quot;玄鳞伏蛇&quot;,&quot;description&quot;:&quot;一条伏蛇跟随；玩家直接攻击命中后，它在目标脚下留下一次延迟蛇牙，间隔 3 秒。蛇牙不追踪移动目标，不触发侵蚀、其他附伤或回灵。&quot;,&quot;tags&quot;:[&quot;灵契&quot;,&quot;延迟伤害&quot;,&quot;定点协击&quot;]},&quot;resource&quot;:{&quot;name&quot;:&quot;蜕息蓄纳&quot;,&quot;description&quot;:&quot;精准闪避后记录一层蜕息，持续 4 秒；下一次直接攻击命中消耗它回复 5 灵力。获取与兑现均有 1 秒间隔，最多一层，不由衍生攻击兑现或刷新。&quot;,&quot;tags&quot;:[&quot;精准闪避&quot;,&quot;命中兑现&quot;,&quot;1 秒间隔&quot;]},&quot;affliction&quot;:{&quot;name&quot;:&quot;缚影蛇痕&quot;,&quot;description&quot;:&quot;直接攻击命中令普通小怪移动减速 15%，持续 2 秒，同一目标间隔 2 秒；不减慢攻击预警。Boss 免疫减速，改为一次少量破势，衍生伤害不能触发。&quot;,&quot;tags&quot;:[&quot;减速&quot;,&quot;Boss 转破势&quot;,&quot;直接攻击&quot;]}}},{&quot;id&quot;:&quot;horse&quot;,&quot;name&quot;:&quot;午马&quot;,&quot;theme&quot;:&quot;踏火逐日：让前进、后撤和折返成为攻击节奏的一部分。&quot;,&quot;tradeoff&quot;:&quot;位移攻击容易越过目标，必须判断地形与收招；额外身法不能越过实体碰撞。&quot;,&quot;yang&quot;:{&quot;weapon&quot;:{&quot;name&quot;:&quot;烈曜骑枪&quot;,&quot;description&quot;:&quot;按住 J 连续向前突刺，连续奔跑 0.6 秒后首刺距离增加 20%，连段带少量前进。遇实体碰撞停止位移，空中不累计奔跑增益，不能穿墙追击。&quot;,&quot;tags&quot;:[&quot;骑枪&quot;,&quot;奔跑起手&quot;,&quot;位移连段&quot;]},&quot;skill&quot;:{&quot;name&quot;:&quot;逐日踏阵&quot;,&quot;description&quot;:&quot;按 U 消耗 25 灵力，向前发动一段可被墙体阻挡的火蹄冲击，冷却 9 秒；沿途轻推普通小怪。Boss 只受伤害与破势，施法不会刷新冲刺或额外无敌。&quot;,&quot;tags&quot;:[&quot;主动术法&quot;,&quot;直线冲击&quot;,&quot;25 灵力&quot;]},&quot;mobility&quot;:{&quot;name&quot;:&quot;疾蹄余势&quot;,&quot;description&quot;:&quot;地面冲刺结束后获得 1.2 秒的 15% 移速增益，间隔 3 秒；起跳可保留余时但不刷新，增益受总移速上限约束，切面停用且不返还冲刺冷却。&quot;,&quot;tags&quot;:[&quot;冲刺加速&quot;,&quot;追击&quot;,&quot;3 秒间隔&quot;]},&quot;companion&quot;:{&quot;name&quot;:&quot;赤蹄灵驹&quot;,&quot;description&quot;:&quot;一只灵驹跟随；地面冲刺后下一次直接命中令其向前踏击一次，间隔 4 秒。踏击遇墙停止，不触发附伤与回灵，切面不重新获得待命踏击。&quot;,&quot;tags&quot;:[&quot;灵契&quot;,&quot;冲刺协击&quot;,&quot;直线覆盖&quot;]},&quot;resource&quot;:{&quot;name&quot;:&quot;奔息归元&quot;,&quot;description&quot;:&quot;连续地面移动 1 秒后，下一次直接攻击命中回复 4 灵力，间隔 1.5 秒；每次兑现后需重新移动蓄势，同一攻击只回一次，站立连打与衍生伤害无效。&quot;,&quot;tags&quot;:[&quot;移动回灵&quot;,&quot;1.5 秒间隔&quot;,&quot;主动走位&quot;]},&quot;affliction&quot;:{&quot;name&quot;:&quot;逐火蹄印&quot;,&quot;description&quot;:&quot;冲刺结束后 1 秒内的下一次直接命中附加一次小范围踏火，间隔 2 秒；踏火只造成衍生伤害，不继续附伤、回灵或刷新冲刺，落空则失去机会。&quot;,&quot;tags&quot;:[&quot;冲刺后附效&quot;,&quot;范围伤害&quot;,&quot;2 秒间隔&quot;]}},&quot;yin&quot;:{&quot;weapon&quot;:{&quot;name&quot;:&quot;踏影双镰&quot;,&quot;description&quot;:&quot;按 J 后撤挥镰并留下蹄印，再次按 J 向蹄印折返回斩，按住则自动衔接。折返只沿合法碰撞路径，蹄印最多一个且两秒消失，落空仍需完成收招。&quot;,&quot;tags&quot;:[&quot;双镰&quot;,&quot;后撤折返&quot;,&quot;双阶段&quot;]},&quot;skill&quot;:{&quot;name&quot;:&quot;夜蹄回阵&quot;,&quot;description&quot;:&quot;按 U 消耗 25 灵力，在当前位置展开持续 3 秒的蹄影阵，冷却 10 秒；首次进入的敌人受到一次夹斩，每名敌人只触发一次，阵法不追随玩家移动。&quot;,&quot;tags&quot;:[&quot;主动术法&quot;,&quot;守点夹斩&quot;,&quot;25 灵力&quot;]},&quot;mobility&quot;:{&quot;name&quot;:&quot;踏影收势&quot;,&quot;description&quot;:&quot;地面按 Shift 可将轻重武器收招的可取消点提前最多 0.08 秒并冲刺，但不越过强制锁定段、不跳过蓄力阈值；额外效果间隔 4 秒，不返灵力或冲刺冷却。&quot;,&quot;tags&quot;:[&quot;收招调整&quot;,&quot;地面冲刺&quot;,&quot;4 秒间隔&quot;]},&quot;companion&quot;:{&quot;name&quot;:&quot;墨蹄驹影&quot;,&quot;description&quot;:&quot;一只驹影跟随；玩家地面冲刺后，它在冲刺起点延迟踏出一圈伤害，间隔 4 秒。只覆盖起点附近，不追踪目标，不触发附伤或回灵，切面暂停协击。&quot;,&quot;tags&quot;:[&quot;灵契&quot;,&quot;后方掩护&quot;,&quot;延迟踏击&quot;]},&quot;resource&quot;:{&quot;name&quot;:&quot;回缰纳息&quot;,&quot;description&quot;:&quot;精准闪避后下一次实际支付灵力的 U 术法返还 5 灵力，窗口 4 秒，间隔 2 秒；最多储存一次返还，不超过本次消耗，失败闪避和无消耗操作不生成收益。&quot;,&quot;tags&quot;:[&quot;精准闪避&quot;,&quot;术法返还&quot;,&quot;2 秒间隔&quot;]},&quot;affliction&quot;:{&quot;name&quot;:&quot;追影蹄痕&quot;,&quot;description&quot;:&quot;直接攻击命中正在远离玩家的普通敌人时，增加 15% 本次破势，间隔 1 秒；Boss 仅在自身主动位移阶段符合条件，不改变其位置，衍生攻击无法触发。&quot;,&quot;tags&quot;:[&quot;追击破势&quot;,&quot;位置判断&quot;,&quot;直接攻击&quot;]}}},{&quot;id&quot;:&quot;goat&quot;,&quot;name&quot;:&quot;未羊&quot;,&quot;theme&quot;:&quot;祈岁护生：用有限保护换取稳定施术与站位时间。&quot;,&quot;tradeoff&quot;:&quot;保护有持续时间和容量，不能替代闪避；瞬间爆发较低，移出区域会失去阵地收益。&quot;,&quot;yang&quot;:{&quot;weapon&quot;:{&quot;name&quot;:&quot;云纹法杖&quot;,&quot;description&quot;:&quot;按住 J 发射慢速符环，末段生成持续 0.8 秒的护身圈，使圈内玩家减伤 10%。同源护身圈只保留一个，受持续减伤总上限约束，不回血也不额外回灵。&quot;,&quot;tags&quot;:[&quot;法杖&quot;,&quot;符环&quot;,&quot;有限减伤&quot;]},&quot;skill&quot;:{&quot;name&quot;:&quot;祈岁护愿&quot;,&quot;description&quot;:&quot;按 U 消耗 30 灵力，展开持续 3 秒的护愿区域，冷却 12 秒；首次施放给予最大生命 15% 的护盾，区域内减伤 10%。不治疗，总护盾不超过最大生命 25%。&quot;,&quot;tags&quot;:[&quot;主动术法&quot;,&quot;护愿区域&quot;,&quot;30 灵力&quot;]},&quot;mobility&quot;:{&quot;name&quot;:&quot;云絮缓落&quot;,&quot;description&quot;:&quot;二段跳后短暂减缓下落 0.4 秒，方便修正落点；每次离地只能触发一次，触地且 5 秒冷却结束才恢复，不增加跳跃次数，也不允许切面刷新。&quot;,&quot;tags&quot;:[&quot;二段跳辅助&quot;,&quot;缓降&quot;,&quot;5 秒冷却&quot;]},&quot;companion&quot;:{&quot;name&quot;:&quot;青绒灵羊&quot;,&quot;description&quot;:&quot;跟随一只灵羊；玩家直接命中后，它为玩家提供持续 2 秒、最大生命 5% 的护盾，间隔 8 秒。同源护盾取高值，总量不超过 25%，不提供任何治疗。&quot;,&quot;tags&quot;:[&quot;灵契&quot;,&quot;有限护盾&quot;,&quot;8 秒间隔&quot;]},&quot;resource&quot;:{&quot;name&quot;:&quot;静愿归息&quot;,&quot;description&quot;:&quot;连续 2 秒未受到伤害且未施放 U 时，自然回灵额外增加每秒 2 点；受击或施术即中断，最多每秒结算一次，与其他自然恢复合计不超过每秒 8 点。&quot;,&quot;tags&quot;:[&quot;条件自然恢复&quot;,&quot;1 秒结算&quot;,&quot;站位收益&quot;]},&quot;affliction&quot;:{&quot;name&quot;:&quot;护愿镇邪&quot;,&quot;description&quot;:&quot;护盾仍存在时，直接攻击命中额外增加 10% 本次破势，同一攻击编号只结算一次；护盾消失后停用，间隔 1 秒，不额外产生护盾、治疗或衍生触发。&quot;,&quot;tags&quot;:[&quot;护盾联动&quot;,&quot;破势&quot;,&quot;直接攻击&quot;]}},&quot;yin&quot;:{&quot;weapon&quot;:{&quot;name&quot;:&quot;幽祈铜铃&quot;,&quot;description&quot;:&quot;按住 J 近距震铃，末段在原位置留下 0.5 秒后爆发的回响；敌人走出范围便可避开。回响是衍生伤害，不再触发附效或回灵，铃击本身可正常命中。&quot;,&quot;tags&quot;:[&quot;铜铃&quot;,&quot;近距震击&quot;,&quot;延迟回响&quot;]},&quot;skill&quot;:{&quot;name&quot;:&quot;回愿铃域&quot;,&quot;description&quot;:&quot;按 U 消耗 25 灵力，在脚下展开持续 2 秒的铃域，冷却 10 秒；期间首次直接命中记录目标，结束时对仍在范围内的目标回响一次，不复制整次攻击附效。&quot;,&quot;tags&quot;:[&quot;主动术法&quot;,&quot;定点回响&quot;,&quot;25 灵力&quot;]},&quot;mobility&quot;:{&quot;name&quot;:&quot;避厄轻步&quot;,&quot;description&quot;:&quot;精准闪避后获得持续 1 秒的 15% 受击减伤，额外效果间隔 5 秒；这不是无敌或治疗，受持续减伤上限约束，切面停用且不延长已经发生的冲刺。&quot;,&quot;tags&quot;:[&quot;精准闪避&quot;,&quot;短时减伤&quot;,&quot;5 秒间隔&quot;]},&quot;companion&quot;:{&quot;name&quot;:&quot;玄铃祈羊&quot;,&quot;description&quot;:&quot;一只祈羊跟随，最多替玩家拦下一发普通弹幕，消耗后 9 秒恢复；不能挡红色攻击、激光或接触伤害。切面保留充能，既不回血也不免费补护盾。&quot;,&quot;tags&quot;:[&quot;灵契&quot;,&quot;弹幕保护&quot;,&quot;9 秒恢复&quot;]},&quot;resource&quot;:{&quot;name&quot;:&quot;余愿收息&quot;,&quot;description&quot;:&quot;U 术法实际消耗灵力后，若 3 秒内没有受到伤害，则返还 5 灵力，触发间隔 4 秒；每次施法最多返还一次，不超过本次支出，切面清除未兑现收益。&quot;,&quot;tags&quot;:[&quot;无伤施术&quot;,&quot;延迟返还&quot;,&quot;4 秒间隔&quot;]},&quot;affliction&quot;:{&quot;name&quot;:&quot;离愿余音&quot;,&quot;description&quot;:&quot;直接攻击每秒最多在一个目标上留下持续 2 秒的余音印；再次直接命中消耗该印，延迟产生一次小范围回响，回响不继续加印、附伤或回灵。&quot;,&quot;tags&quot;:[&quot;二次命中&quot;,&quot;延迟附伤&quot;,&quot;禁止递归&quot;]}}},{&quot;id&quot;:&quot;monkey&quot;,&quot;name&quot;:&quot;申猴&quot;,&quot;theme&quot;:&quot;弄影借势&quot;,&quot;tradeoff&quot;:&quot;擅长空中变向与延迟追击；残影停在原处，移动目标可能离开攻击范围。&quot;,&quot;yang&quot;:{&quot;weapon&quot;:{&quot;name&quot;:&quot;盘云长棍&quot;,&quot;description&quot;:&quot;按住 J 依次扫、挑、劈，末段小幅前移。挑击可抬起轻型小怪，Boss 只累积破势；冲刺可取消末段后的收招。&quot;,&quot;tags&quot;:[&quot;近战&quot;,&quot;三段连击&quot;,&quot;挑击&quot;]},&quot;skill&quot;:{&quot;name&quot;:&quot;借势翻云&quot;,&quot;description&quot;:&quot;按 U 消耗25灵力腾身后落棍，落点受平台碰撞约束；命中轻型敌人可短暂挑起，Boss 只增加破势。冷却10秒。&quot;,&quot;tags&quot;:[&quot;主动术法&quot;,&quot;腾身落击&quot;]},&quot;mobility&quot;:{&quot;name&quot;:&quot;云阶踏步&quot;,&quot;description&quot;:&quot;空中按 Shift 可做一次短距离水平踏步，不能穿墙。额外空中次数跨阴阳共享，触地且4秒冷却结束才恢复。&quot;,&quot;tags&quot;:[&quot;空中变向&quot;,&quot;共享次数&quot;]},&quot;companion&quot;:{&quot;name&quot;:&quot;金睛灵猿&quot;,&quot;description&quot;:&quot;灵猿跟随，每2秒可在主攻击连段末尾补一次近身棍击；只攻击主人附近敌人。协击为衍生伤害，不触发附效或回灵。&quot;,&quot;tags&quot;:[&quot;主灵契&quot;,&quot;近身协击&quot;]},&quot;resource&quot;:{&quot;name&quot;:&quot;腾挪采息&quot;,&quot;description&quot;:&quot;空中直接攻击命中后返还4灵力，触发间隔1.5秒。必须命中有效敌人，同一攻击往返或多段只计一次，遵守命中回灵总上限。&quot;,&quot;tags&quot;:[&quot;空中命中&quot;,&quot;条件回灵&quot;]},&quot;affliction&quot;:{&quot;name&quot;:&quot;破隙挑锋&quot;,&quot;description&quot;:&quot;主攻击连段末尾额外增加少量破势；对已破势目标改为一次小额附伤。每次连段只触发一次，附伤不能再次触发其他效果。&quot;,&quot;tags&quot;:[&quot;终结技&quot;,&quot;破势&quot;]}},&quot;yin&quot;:{&quot;weapon&quot;:{&quot;name&quot;:&quot;镜影双短棍&quot;,&quot;description&quot;:&quot;按住 J 连续短棍轻击，第三击在原位留下残影，0.4秒后补一次重击。残影不追踪、不触发附效与回灵，同源最多一个。&quot;,&quot;tags&quot;:[&quot;近战&quot;,&quot;延迟重击&quot;,&quot;残影&quot;]},&quot;skill&quot;:{&quot;name&quot;:&quot;替身照影&quot;,&quot;description&quot;:&quot;按 U 消耗25灵力原地留影并后撤，残影0.8秒后爆散。小怪短暂转向影子，Boss 不强制转向；不额外给无敌。冷却10秒。&quot;,&quot;tags&quot;:[&quot;主动术法&quot;,&quot;后撤&quot;,&quot;诱敌&quot;]},&quot;mobility&quot;:{&quot;name&quot;:&quot;镜步回身&quot;,&quot;description&quot;:&quot;地面冲刺结束后1秒内再次按 Shift，可返回本次起点附近的合法落点；只回一次，冷却6秒。不穿墙、不增加无敌时长。&quot;,&quot;tags&quot;:[&quot;折返&quot;,&quot;落点检查&quot;]},&quot;companion&quot;:{&quot;name&quot;:&quot;墨影灵猿&quot;,&quot;description&quot;:&quot;灵猿在主人完成连段后留下一个原位棍影，0.5秒后攻击前方；每2.5秒一次，切面后不再新增。棍影不触发附效或回灵。&quot;,&quot;tags&quot;:[&quot;主灵契&quot;,&quot;延迟协击&quot;]},&quot;resource&quot;:{&quot;name&quot;:&quot;借空藏息&quot;,&quot;description&quot;:&quot;精准闪避后2秒内首个直接命中返还7灵力；每次闪避最多奖励一次，间隔2秒。打空不会兑现，切面保留间隔但清除待兑现奖励。&quot;,&quot;tags&quot;:[&quot;精准闪避&quot;,&quot;条件回灵&quot;]},&quot;affliction&quot;:{&quot;name&quot;:&quot;隔影追击&quot;,&quot;description&quot;:&quot;直接攻击可在敌人原位置留下短棍影，0.5秒后造成一次小范围附伤，间隔1.5秒；敌人离开即可躲避，棍影不递归触发。&quot;,&quot;tags&quot;:[&quot;延迟附伤&quot;,&quot;定点&quot;]}}},{&quot;id&quot;:&quot;rooster&quot;,&quot;name&quot;:&quot;酉鸡&quot;,&quot;theme&quot;:&quot;丹羽破晓&quot;,&quot;tradeoff&quot;:&quot;扇羽擅长近处覆盖，羽弩擅长直线压制；多羽不会对同一目标叠出成倍伤害，两侧夹击时需要走位。&quot;,&quot;yang&quot;:{&quot;weapon&quot;:{&quot;name&quot;:&quot;丹羽战扇&quot;,&quot;description&quot;:&quot;按住 J 向前展开近距离扇形飞羽；同批飞羽共享攻击编号，对单体总伤害封顶为一轮攻击。扇幅宽，但射程短于羽弩。&quot;,&quot;tags&quot;:[&quot;扇形远攻&quot;,&quot;群体覆盖&quot;]},&quot;skill&quot;:{&quot;name&quot;:&quot;破晓羽阵&quot;,&quot;description&quot;:&quot;按 U 消耗30灵力向前发射两波交错羽阵，每波对单体均有伤害上限；两波共用施法编号，不能多次刷回灵。冷却10秒。&quot;,&quot;tags&quot;:[&quot;主动术法&quot;,&quot;扇形压制&quot;]},&quot;mobility&quot;:{&quot;name&quot;:&quot;振羽轻落&quot;,&quot;description&quot;:&quot;二段跳后按住跳跃键可减缓下落最多0.7秒，松开即结束；每次离地仅一次，跨侧共享额外空中次数，不增加跳跃高度。&quot;,&quot;tags&quot;:[&quot;缓落&quot;,&quot;空中控制&quot;]},&quot;companion&quot;:{&quot;name&quot;:&quot;丹羽灵禽&quot;,&quot;description&quot;:&quot;灵禽悬停肩侧，每2秒随一次直接命中射出一枚短程羽刃；不会自行追出屏幕，羽刃属衍生伤害，不触发附效或回灵。&quot;,&quot;tags&quot;:[&quot;主灵契&quot;,&quot;羽刃协击&quot;]},&quot;resource&quot;:{&quot;name&quot;:&quot;破晓采光&quot;,&quot;description&quot;:&quot;同一次直接攻击命中两个不同敌人后返还6灵力，间隔1.5秒；单体 Boss 不额外判多目标，多弹与往返合并计数。&quot;,&quot;tags&quot;:[&quot;多目标&quot;,&quot;条件回灵&quot;]},&quot;affliction&quot;:{&quot;name&quot;:&quot;灼羽留痕&quot;,&quot;description&quot;:&quot;直接攻击给敌人附一枚灼羽，持续3秒、缓慢造成小额伤害；同源只保留一枚，间隔1秒才能施加，刷新不立即结算旧伤。&quot;,&quot;tags&quot;:[&quot;持续附伤&quot;,&quot;不叠层&quot;]}},&quot;yin&quot;:{&quot;weapon&quot;:{&quot;name&quot;:&quot;司晨羽弩&quot;,&quot;description&quot;:&quot;按住 J 连发高速直线羽矢，每发最多穿透三个不同敌人，穿透后伤害递减。不能弯转，换向有短暂抬弩动作。&quot;,&quot;tags&quot;:[&quot;远程&quot;,&quot;直线穿透&quot;]},&quot;skill&quot;:{&quot;name&quot;:&quot;定更穿羽&quot;,&quot;description&quot;:&quot;按 U 消耗25灵力短暂定身瞄准后发射贯穿羽矢，对沿途敌人增加破势；起手可闪避取消但不返灵力。冷却8秒。&quot;,&quot;tags&quot;:[&quot;主动术法&quot;,&quot;穿线&quot;,&quot;定身起手&quot;]},&quot;mobility&quot;:{&quot;name&quot;:&quot;敛羽退步&quot;,&quot;description&quot;:&quot;地面冲刺改为朝输入方向短滑步；结束后0.6秒内首次普攻的起手缩短10%。不缩短收招、不刷新冲刺冷却。&quot;,&quot;tags&quot;:[&quot;滑步&quot;,&quot;攻击衔接&quot;]},&quot;companion&quot;:{&quot;name&quot;:&quot;夜羽灵禽&quot;,&quot;description&quot;:&quot;灵禽每2.5秒发一枚定向穿羽，目标为主人最近直接命中的敌人；最多穿透两名敌人，羽矢不触发附效或回灵。&quot;,&quot;tags&quot;:[&quot;主灵契&quot;,&quot;定向穿透&quot;]},&quot;resource&quot;:{&quot;name&quot;:&quot;静更凝息&quot;,&quot;description&quot;:&quot;站定且连续1.5秒未受击后，每秒额外恢复2灵力；移动或受击立即停止，计入自然恢复8灵力/秒上限，不按每帧奖励。&quot;,&quot;tags&quot;:[&quot;站定蓄息&quot;,&quot;自然恢复&quot;]},&quot;affliction&quot;:{&quot;name&quot;:&quot;穿心羽印&quot;,&quot;description&quot;:&quot;直接攻击给目标留羽印，持续4秒；下一次不同攻击编号的直接命中消耗羽印，追加少量破势。触发间隔1秒，不叠加印记。&quot;,&quot;tags&quot;:[&quot;两次命中&quot;,&quot;破势&quot;]}}},{&quot;id&quot;:&quot;dog&quot;,&quot;name&quot;:&quot;戌犬&quot;,&quot;theme&quot;:&quot;守夜追踪&quot;,&quot;tradeoff&quot;:&quot;擅长持续追击同一目标和面前截击；锁定不能替代瞄准，背后敌人与不可格挡攻击仍需闪避。&quot;,&quot;yang&quot;:{&quot;weapon&quot;:{&quot;name&quot;:&quot;巡关剑&quot;,&quot;description&quot;:&quot;按住 J 挥出短程剑气；首个直接命中标记追猎目标4秒，后续剑气可小角度偏向该目标。不会绕墙，远处目标不自动吸附。&quot;,&quot;tags&quot;:[&quot;剑气&quot;,&quot;单体追猎&quot;]},&quot;skill&quot;:{&quot;name&quot;:&quot;守关剑阵&quot;,&quot;description&quot;:&quot;按 U 消耗25灵力在面前布置持续3秒的剑阵，至多阻挡两枚普通弹幕并对接近者反击一次；红色攻击不拦截。冷却10秒。&quot;,&quot;tags&quot;:[&quot;主动术法&quot;,&quot;定点防守&quot;]},&quot;mobility&quot;:{&quot;name&quot;:&quot;巡影追步&quot;,&quot;description&quot;:&quot;朝最近命中的敌人冲刺时，地面冲刺距离增加15%；到墙边或敌人身前停止，不强制锁定、不增加无敌时长。&quot;,&quot;tags&quot;:[&quot;追击&quot;,&quot;地面位移&quot;]},&quot;companion&quot;:{&quot;name&quot;:&quot;镇关灵犬&quot;,&quot;description&quot;:&quot;灵犬跟随并攻击主人最近直接命中的目标，每1.8秒一次；追击距离有限，切侧即停止行动。咬击不触发附效与回灵。&quot;,&quot;tags&quot;:[&quot;主灵契&quot;,&quot;目标追击&quot;]},&quot;resource&quot;:{&quot;name&quot;:&quot;守望回息&quot;,&quot;description&quot;:&quot;连续直接攻击同一敌人时，每第三个不同攻击编号返还5灵力，触发间隔1秒；更换目标重计，召唤和持续伤害不计数。&quot;,&quot;tags&quot;:[&quot;持续追击&quot;,&quot;条件回灵&quot;]},&quot;affliction&quot;:{&quot;name&quot;:&quot;追猎剑印&quot;,&quot;description&quot;:&quot;直接攻击给目标施加持续4秒的追猎印；下一次主攻击连段终结消耗它，追加小额伤害。至多标记一名敌人，不形成递归。&quot;,&quot;tags&quot;:[&quot;追猎印&quot;,&quot;终结消耗&quot;]}},&quot;yin&quot;:{&quot;weapon&quot;:{&quot;name&quot;:&quot;锁魂链镰&quot;,&quot;description&quot;:&quot;新一次 J 起手在面前布链，0.12秒内精准截住可格挡攻击便反甩链镰；持续按住按普通挥链节奏连攻，不反复生成格挡窗口。&quot;,&quot;tags&quot;:[&quot;链刃&quot;,&quot;精准截击&quot;]},&quot;skill&quot;:{&quot;name&quot;:&quot;锁关伏阵&quot;,&quot;description&quot;:&quot;按 U 消耗30灵力在前方设置持续3秒的伏链，首次有敌人经过时收紧。轻型小怪被短拉，Boss 只增加破势。冷却12秒。&quot;,&quot;tags&quot;:[&quot;主动术法&quot;,&quot;陷阱&quot;,&quot;短拉&quot;]},&quot;mobility&quot;:{&quot;name&quot;:&quot;守界侧闪&quot;,&quot;description&quot;:&quot;地面冲刺结束后获得0.6秒的正面15%减伤，受击一次即结束；不阻止背后伤害，遵守减伤上限，切侧不保留常驻增益。&quot;,&quot;tags&quot;:[&quot;闪避衔接&quot;,&quot;方向防护&quot;]},&quot;companion&quot;:{&quot;name&quot;:&quot;幽关灵犬&quot;,&quot;description&quot;:&quot;灵犬每4秒可替主人拦下一枚迎面的普通弹幕，红色攻击无效；拦截次数和冷却跨侧保留，不治疗、不替挡近身重击。&quot;,&quot;tags&quot;:[&quot;主灵契&quot;,&quot;弹幕拦截&quot;]},&quot;resource&quot;:{&quot;name&quot;:&quot;听险纳息&quot;,&quot;description&quot;:&quot;精准防反或精准闪避成功后返还6灵力，每2秒最多一次；同一攻击同时满足两条件只奖励一次，必须有有效敌方攻击。&quot;,&quot;tags&quot;:[&quot;精准应对&quot;,&quot;条件回灵&quot;]},&quot;affliction&quot;:{&quot;name&quot;:&quot;缚行链痕&quot;,&quot;description&quot;:&quot;直接攻击可使普通敌人移速降低15%、持续2秒，间隔2秒；Boss 不减速，改为小额破势。同源只刷新时长，不叠强度。&quot;,&quot;tags&quot;:[&quot;减速&quot;,&quot;Boss破势替代&quot;]}}},{&quot;id&quot;:&quot;pig&quot;,&quot;name&quot;:&quot;亥猪&quot;,&quot;theme&quot;:&quot;藏锋归元&quot;,&quot;tradeoff&quot;:&quot;宽扫与重击擅长打开空间，但动作较慢；强化重刃消耗灵力，会挤占术法资源，打空没有返还。&quot;,&quot;yang&quot;:{&quot;weapon&quot;:{&quot;name&quot;:&quot;玄坛九齿耙&quot;,&quot;description&quot;:&quot;按住 J 宽幅横扫，连段末尾将面前轻型小怪推聚后下压。Boss 不被强移，只增加破势；背后仍有空隙，收招较慢。&quot;,&quot;tags&quot;:[&quot;宽幅近战&quot;,&quot;推聚&quot;,&quot;重终结&quot;]},&quot;skill&quot;:{&quot;name&quot;:&quot;归仓护身&quot;,&quot;description&quot;:&quot;按 U 消耗25灵力获得最大生命15%的护盾，持续3秒；同源取较高剩余值、不叠加，总护盾不超25%。冷却12秒。&quot;,&quot;tags&quot;:[&quot;主动术法&quot;,&quot;有限护盾&quot;]},&quot;mobility&quot;:{&quot;name&quot;:&quot;稳岳进步&quot;,&quot;description&quot;:&quot;地面冲刺距离缩短10%，结束后0.5秒内首次重武器攻击的起手缩短10%；不缩短蓄力阈值，不刷新基础冲刺冷却。&quot;,&quot;tags&quot;:[&quot;稳进&quot;,&quot;重武器衔接&quot;]},&quot;companion&quot;:{&quot;name&quot;:&quot;镇坛灵豕&quot;,&quot;description&quot;:&quot;灵豕每3秒随主人的连段终结撞击前方轻型敌人，Boss 只受伤害与少量破势；不强推 Boss，不触发附效或回灵。&quot;,&quot;tags&quot;:[&quot;主灵契&quot;,&quot;终结协击&quot;]},&quot;resource&quot;:{&quot;name&quot;:&quot;纳震藏息&quot;,&quot;description&quot;:&quot;成功精准防反或精准闪避返还10灵力，每2秒最多一次；必须实际应对有效攻击，单次攻击只算一次，挨打不会回灵。&quot;,&quot;tags&quot;:[&quot;精准防反&quot;,&quot;精准闪避&quot;,&quot;储灵&quot;]},&quot;affliction&quot;:{&quot;name&quot;:&quot;压阵震纹&quot;,&quot;description&quot;:&quot;主攻击连段末尾在接触处产生短程地面震纹，对附近敌人附加少量破势，间隔1.5秒；震纹伤害不能启动新一轮附效。&quot;,&quot;tags&quot;:[&quot;终结震纹&quot;,&quot;范围破势&quot;]}},&quot;yin&quot;:{&quot;weapon&quot;:{&quot;name&quot;:&quot;归元重刃&quot;,&quot;description&quot;:&quot;短按 J 进行慢斩；按住0.6秒后松开可支付15灵力强化范围与破势，不足时释放基础重斩。冲刺取消不误发，打空不返费。&quot;,&quot;tags&quot;:[&quot;蓄力&quot;,&quot;耗灵强化&quot;,&quot;重破势&quot;]},&quot;skill&quot;:{&quot;name&quot;:&quot;归元裂阵&quot;,&quot;description&quot;:&quot;按 U 消耗35灵力蓄势后砸出贴地冲击，对正面敌人造成伤害与破势；起手、收招较长，不能穿实体平台。冷却12秒。&quot;,&quot;tags&quot;:[&quot;主动术法&quot;,&quot;重击&quot;,&quot;地面冲击&quot;]},&quot;mobility&quot;:{&quot;name&quot;:&quot;藏锋退步&quot;,&quot;description&quot;:&quot;地面冲刺后0.8秒内首次蓄力攻击可更快开始蓄力，起手缩短10%；仍需完整蓄力时间和灵力，不增加空中次数。&quot;,&quot;tags&quot;:[&quot;蓄力衔接&quot;,&quot;共享冲刺&quot;]},&quot;companion&quot;:{&quot;name&quot;:&quot;墨坛灵豕&quot;,&quot;description&quot;:&quot;灵豕每4秒随主人有效施术生成最大生命5%的护盾，持续2秒；不叠同源、遵守总25%上限，冷却跨侧保留，不提供治疗。&quot;,&quot;tags&quot;:[&quot;主灵契&quot;,&quot;施术护盾&quot;]},&quot;resource&quot;:{&quot;name&quot;:&quot;敛息待发&quot;,&quot;description&quot;:&quot;精准闪避后2秒内首个直接命中返还8灵力，间隔2秒；同一攻击只能兑现一次，附伤不计，留存条件在切面时失效。&quot;,&quot;tags&quot;:[&quot;闪避反击&quot;,&quot;条件回灵&quot;]},&quot;affliction&quot;:{&quot;name&quot;:&quot;沉锋破甲&quot;,&quot;description&quot;:&quot;主攻击连段末尾或蓄力释放命中时额外增加破势，间隔1.5秒；同一次重击只触发一次，不让持续伤害或灵契重复触发。&quot;,&quot;tags&quot;:[&quot;蓄力联动&quot;,&quot;破势&quot;]}}}]}&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  const root = document.getElementById(&#x27;liangyi-rune-workbench&#x27;);
+  const catalog = JSON.parse(document.getElementById(&#x27;liangyi-rune-catalog&#x27;).textContent);
+  const runes = new Map(catalog.runes.map(rune =&gt; [rune.id, rune]));
+  const roles = [
+    { id: &#x27;weapon&#x27;, name: &#x27;阿修罗道&#x27;, label: &#x27;武器 · J&#x27; },
+    { id: &#x27;skill&#x27;, name: &#x27;天道&#x27;, label: &#x27;术法 · U&#x27; },
+    { id: &#x27;mobility&#x27;, name: &#x27;人间道&#x27;, label: &#x27;身法&#x27; },
+    { id: &#x27;companion&#x27;, name: &#x27;畜生道&#x27;, label: &#x27;灵契&#x27; },
+    { id: &#x27;resource&#x27;, name: &#x27;饿鬼道&#x27;, label: &#x27;续航&#x27; },
+    { id: &#x27;affliction&#x27;, name: &#x27;地狱道&#x27;, label: &#x27;附效&#x27; }
+  ];
+  const presets = {
+    moon: { yang: [&#x27;rabbit&#x27;,&#x27;goat&#x27;,&#x27;horse&#x27;,&#x27;dog&#x27;,&#x27;rat&#x27;,&#x27;snake&#x27;], yin: [&#x27;snake&#x27;,&#x27;rooster&#x27;,&#x27;rabbit&#x27;,&#x27;monkey&#x27;,&#x27;pig&#x27;,&#x27;tiger&#x27;] },
+    rider: { yang: [&#x27;horse&#x27;,&#x27;ox&#x27;,&#x27;monkey&#x27;,&#x27;dog&#x27;,&#x27;rat&#x27;,&#x27;dragon&#x27;], yin: [&#x27;rooster&#x27;,&#x27;rabbit&#x27;,&#x27;horse&#x27;,&#x27;goat&#x27;,&#x27;pig&#x27;,&#x27;snake&#x27;] },
+    guard: { yang: [&#x27;ox&#x27;,&#x27;goat&#x27;,&#x27;rabbit&#x27;,&#x27;dog&#x27;,&#x27;pig&#x27;,&#x27;tiger&#x27;], yin: [&#x27;pig&#x27;,&#x27;dragon&#x27;,&#x27;horse&#x27;,&#x27;monkey&#x27;,&#x27;rat&#x27;,&#x27;snake&#x27;] }
+  };
+  const sideNames = { yang: &#x27;阳&#x27;, yin: &#x27;阴&#x27; };
+  const defaults = {
+    weapon: { yang: [&#x27;基础飞剑&#x27;,&#x27;直线远攻，按住 J 连续攻击。&#x27;], yin: [&#x27;基础剑斩&#x27;,&#x27;近身剑斩，按住 J 连续攻击。&#x27;] },
+    skill: { yang: [&#x27;玉清护体&#x27;,&#x27;消耗灵力，提供护盾并发射贯虹飞剑。&#x27;], yin: [&#x27;镇魂突袭&#x27;,&#x27;消耗灵力，向前突进并扩大斩击。&#x27;] },
+    mobility: { yang: [&#x27;基础身法&#x27;,&#x27;保留完整的冲刺、轻重跳和二段跳。&#x27;], yin: [&#x27;基础身法&#x27;,&#x27;保留完整的冲刺、轻重跳和二段跳。&#x27;] },
+    companion: { yang: [&#x27;无灵契&#x27;,&#x27;此槽未装备主伴随灵体。&#x27;], yin: [&#x27;无灵契&#x27;,&#x27;此槽未装备主伴随灵体。&#x27;] },
+    resource: { yang: [&#x27;自然恢复&#x27;,&#x27;保留基础灵力恢复，不额外触发回灵。&#x27;], yin: [&#x27;自然恢复&#x27;,&#x27;保留基础灵力恢复，不额外触发回灵。&#x27;] },
+    affliction: { yang: [&#x27;无附效&#x27;,&#x27;直接攻击保留武器原有特性。&#x27;], yin: [&#x27;无附效&#x27;,&#x27;直接攻击保留武器原有特性。&#x27;] }
+  };
+  const element = id =&gt; root.querySelector(&#x27;#&#x27; + id);
+  const cloneLoadout = loadout =&gt; ({ yang: [...loadout.yang], yin: [...loadout.yin] });
+  const buttons = { yang: [], yin: [] };
+  const faces = { yang: element(&#x27;rune-face-yang&#x27;), yin: element(&#x27;rune-face-yin&#x27;) };
+  const dial = element(&#x27;rune-dial&#x27;);
+  const reducedMotion = window.matchMedia(&#x27;(prefers-reduced-motion: reduce)&#x27;);
+  let state = { preset: &#x27;moon&#x27;, loadout: cloneLoadout(presets.moon), active: &#x27;yang&#x27;, selectedIndex: 0, drafts: {} };
+  let flipping = false;
+  let flipTimer;
+  const draftKey = () =&gt; `${state.active}:${state.selectedIndex}`;
+  const currentId = () =&gt; state.loadout[state.active][state.selectedIndex];
+  const candidateId = () =&gt; Object.hasOwn(state.drafts, draftKey()) ? state.drafts[draftKey()] : currentId();
+
+  function applySaved(saved) {
+    const content = saved &amp;&amp; saved.modelContent;
+    const ui = saved &amp;&amp; saved.privateContent;
+    if (!content || content.version !== 1 || !content.loadout) return false;
+    const next = {};
+    for (const side of [&#x27;yang&#x27;,&#x27;yin&#x27;]) {
+      const values = content.loadout[side];
+      if (!Array.isArray(values) || values.length !== 6 || values.some(value =&gt; value !== null &amp;&amp; !runes.has(value))) return false;
+      const equipped = values.filter(Boolean);
+      if (new Set(equipped).size !== equipped.length) return false;
+      next[side] = [...values];
+    }
+    state.loadout = next;
+    state.active = content.active === &#x27;yin&#x27; ? &#x27;yin&#x27; : &#x27;yang&#x27;;
+    state.preset = &#x27;custom&#x27;;
+    for (const [id, loadout] of Object.entries(presets)) {
+      if (JSON.stringify(next) === JSON.stringify(loadout)) state.preset = id;
+    }
+    state.selectedIndex = ui &amp;&amp; Number.isInteger(ui.selectedIndex) &amp;&amp; ui.selectedIndex &gt;= 0 &amp;&amp; ui.selectedIndex &lt; 6 ? ui.selectedIndex : 0;
+    state.drafts = {};
+    for (const [key,value] of Object.entries(ui &amp;&amp; ui.drafts || {})) {
+      if (/^(yang|yin):[0-5]$/.test(key) &amp;&amp; (value === null || runes.has(value))) state.drafts[key] = value;
+    }
+    return true;
+  }
+  function persist() {
+    const api = window.openai;
+    if (!api || typeof api.setWidgetState !== &#x27;function&#x27;) return;
+    api.setWidgetState({
+      modelContent: { version: 1, system: &#x27;六道轮回六边形双面装备设计预览&#x27;, roleOrder: roles.map(role =&gt; role.name), loadout: cloneLoadout(state.loadout), active: state.active },
+      privateContent: { selectedIndex: state.selectedIndex, drafts: {...state.drafts} }
+    }).catch(() =&gt; {});
+  }
+  function effectFor(side, index, runeId = state.loadout[side][index]) {
+    const role = roles[index].id;
+    if (runes.has(runeId)) return runes.get(runeId)[side][role];
+    const [name, description] = defaults[role][side];
+    return { name, description, tags: [] };
+  }
+  function announce(message) { element(&#x27;rune-announcement&#x27;).textContent = message; }
+  function updateInteractivity() {
+    for (const side of [&#x27;yang&#x27;,&#x27;yin&#x27;]) {
+      faces[side].inert = flipping || side !== state.active;
+      faces[side].setAttribute(&#x27;aria-hidden&#x27;, String(side !== state.active));
+      buttons[side].forEach(button =&gt; { button.disabled = flipping || side !== state.active; });
+    }
+    element(&#x27;rune-flip&#x27;).disabled = flipping;
+    element(&#x27;rune-preset&#x27;).disabled = flipping;
+    element(&#x27;rune-picker&#x27;).disabled = flipping;
+    element(&#x27;rune-equip&#x27;).disabled = flipping || candidateId() === currentId();
+    element(&#x27;rune-cancel&#x27;).disabled = flipping;
+    element(&#x27;rune-stage&#x27;).setAttribute(&#x27;aria-busy&#x27;, String(flipping));
+  }
+  function finishFlip() {
+    if (!flipping) return;
+    flipping = false;
+    clearTimeout(flipTimer);
+    updateInteractivity();
+  }
+  roles.forEach((role, index) =&gt; {
+    for (const side of [&#x27;yang&#x27;,&#x27;yin&#x27;]) {
+      const button = document.createElement(&#x27;button&#x27;);
+      button.type = &#x27;button&#x27;;
+      button.className = &#x27;rune-slot cursor-interaction&#x27;;
+      button.dataset.side = side;
+      button.dataset.index = String(index);
+      const title = document.createElement(&#x27;span&#x27;);
+      title.className = &#x27;rune-slot-role&#x27;;
+      title.textContent = role.name;
+      const name = document.createElement(&#x27;span&#x27;);
+      name.className = &#x27;rune-slot-name&#x27;;
+      const label = document.createElement(&#x27;small&#x27;);
+      label.textContent = role.label;
+      button.append(title, name, label);
+      button.addEventListener(&#x27;click&#x27;, () =&gt; {
+        if (flipping || side !== state.active) return;
+        state.selectedIndex = index;
+        announce(`已选${sideNames[side]}面${role.name}。`);
+        render();
+        persist();
+      });
+      buttons[side].push(button);
+      faces[side].append(button);
+    }
+  });
+  function render() {
+    const { selectedIndex, active } = state;
+    const otherSide = active === &#x27;yang&#x27; ? &#x27;yin&#x27; : &#x27;yang&#x27;;
+    const equipped = currentId();
+    const candidate = candidateId();
+    const dirty = candidate !== equipped;
+    const effect = effectFor(active, selectedIndex);
+    const after = effectFor(active, selectedIndex, candidate);
+    const alternate = effectFor(otherSide, selectedIndex, candidate);
+    root.dataset.side = active;
+    dial.classList.toggle(&#x27;is-yin&#x27;, active === &#x27;yin&#x27;);
+    element(&#x27;rune-preset&#x27;).value = state.preset;
+    element(&#x27;rune-flip-label&#x27;).textContent = `翻至${sideNames[otherSide]}面`;
+    element(&#x27;rune-flip&#x27;).setAttribute(&#x27;aria-label&#x27;, `翻至${sideNames[otherSide]}面`);
+    element(&#x27;rune-active-label&#x27;).textContent = `正在编辑 · ${sideNames[active]}面`;
+    element(&#x27;rune-current-weapon&#x27;).textContent = `武器：${effectFor(active, 0).name}`;
+    element(&#x27;rune-face-count&#x27;).textContent = `${sideNames[active]}面 ${state.loadout[active].filter(Boolean).length} / 6`;
+    for (const side of [&#x27;yang&#x27;,&#x27;yin&#x27;]) {
+      buttons[side].forEach((button, index) =&gt; {
+        const rune = runes.get(state.loadout[side][index]);
+        button.querySelector(&#x27;.rune-slot-name&#x27;).textContent = rune ? rune.name : &#x27;空槽&#x27;;
+        button.setAttribute(&#x27;aria-pressed&#x27;, String(side === active &amp;&amp; index === selectedIndex));
+        button.setAttribute(&#x27;aria-label&#x27;, `${sideNames[side]} · ${roles[index].name} · ${rune ? rune.name : &#x27;未装备&#x27;} · ${effectFor(side, index).name}`);
+      });
+    }
+    element(&#x27;rune-slot-title&#x27;).textContent = `${sideNames[active]} · ${roles[selectedIndex].name}`;
+    element(&#x27;rune-slot-function&#x27;).textContent = roles[selectedIndex].label;
+    const picker = element(&#x27;rune-picker&#x27;);
+    picker.replaceChildren();
+    const empty = document.createElement(&#x27;option&#x27;);
+    empty.value = &#x27;&#x27;;
+    empty.textContent = &#x27;卸下符文 · 使用基础能力&#x27;;
+    picker.append(empty);
+    for (const rune of catalog.runes) {
+      const option = document.createElement(&#x27;option&#x27;);
+      option.value = rune.id;
+      const occupiedAt = state.loadout[active].indexOf(rune.id);
+      option.textContent = rune.name + (occupiedAt &gt;= 0 &amp;&amp; occupiedAt !== selectedIndex ? ` · 从${roles[occupiedAt].name}移入` : &#x27;&#x27;);
+      picker.append(option);
+    }
+    picker.value = candidate || &#x27;&#x27;;
+    element(&#x27;rune-effect-grid&#x27;).dataset.comparing = String(dirty);
+    element(&#x27;rune-effect-label&#x27;).textContent = dirty ? &#x27;当前装备&#x27; : &#x27;当前槽位效果&#x27;;
+    element(&#x27;rune-effect-name&#x27;).textContent = effect.name;
+    element(&#x27;rune-effect-description&#x27;).textContent = effect.description;
+    element(&#x27;rune-candidate&#x27;).hidden = !dirty;
+    element(&#x27;rune-candidate-name&#x27;).textContent = after.name;
+    element(&#x27;rune-candidate-description&#x27;).textContent = after.description;
+    element(&#x27;rune-alternate-label&#x27;).textContent = `查看${candidate ? runes.get(candidate).name : &#x27;空槽&#x27;}在${sideNames[otherSide]}面的效果`;
+    element(&#x27;rune-alternate-name&#x27;).textContent = alternate.name;
+    element(&#x27;rune-alternate-description&#x27;).textContent = alternate.description;
+    const tags = element(&#x27;rune-tags&#x27;);
+    tags.replaceChildren();
+    for (const tag of after.tags) {
+      const span = document.createElement(&#x27;span&#x27;);
+      span.textContent = &#x27;· &#x27; + tag;
+      tags.append(span);
+    }
+    element(&#x27;rune-tradeoff&#x27;).textContent = runes.has(candidate) ? `取舍：${runes.get(candidate).tradeoff}` : &#x27;&#x27;;
+    const previousAt = candidate ? state.loadout[active].indexOf(candidate) : -1;
+    const moving = previousAt &gt;= 0 &amp;&amp; previousAt !== selectedIndex;
+    element(&#x27;rune-change-note&#x27;).textContent = !dirty ? &#x27;选择生肖符文，预览此道位的变化。&#x27; : moving ? `确认后从${roles[previousAt].name}移入，原槽恢复基础能力。` : candidate ? &#x27;确认后替换当前符文，原符文归还背包。&#x27; : &#x27;确认后卸下符文，此槽恢复基础能力。&#x27;;
+    element(&#x27;rune-equip&#x27;).textContent = !dirty ? (equipped ? &#x27;已装备&#x27; : &#x27;空槽&#x27;) : moving ? &#x27;确认移入&#x27; : candidate ? &#x27;确认装备&#x27; : &#x27;确认卸下&#x27;;
+    element(&#x27;rune-cancel&#x27;).hidden = !dirty;
+    element(&#x27;rune-count&#x27;).textContent = `阳 ${state.loadout.yang.filter(Boolean).length}/6 · 阴 ${state.loadout.yin.filter(Boolean).length}/6`;
+    updateInteractivity();
+  }
+  element(&#x27;rune-picker&#x27;).addEventListener(&#x27;change&#x27;, event =&gt; {
+    const candidate = event.target.value || null;
+    if (candidate === currentId()) delete state.drafts[draftKey()];
+    else state.drafts[draftKey()] = candidate;
+    announce(&#x27;&#x27;);
+    render();
+    persist();
+  });
+  element(&#x27;rune-equip&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; {
+    if (flipping || candidateId() === currentId()) return;
+    const runeId = candidateId();
+    const side = state.active;
+    const index = state.selectedIndex;
+    const previousAt = runeId ? state.loadout[side].indexOf(runeId) : -1;
+    if (previousAt &gt;= 0 &amp;&amp; previousAt !== index) {
+      state.loadout[side][previousAt] = null;
+      if (state.drafts[`${side}:${previousAt}`] === runeId) delete state.drafts[`${side}:${previousAt}`];
+    }
+    state.loadout[side][index] = runeId;
+    delete state.drafts[draftKey()];
+    state.preset = &#x27;custom&#x27;;
+    announce(previousAt &gt;= 0 &amp;&amp; previousAt !== index ? `${runes.get(runeId).name}已从${roles[previousAt].name}移入${roles[index].name}，原槽恢复基础能力。` : `${sideNames[side]}面${roles[index].name}${runeId ? &#x27;已装备&#x27; + runes.get(runeId).name : &#x27;已卸下符文&#x27;}。`);
+    render();
+    persist();
+  });
+  element(&#x27;rune-cancel&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; {
+    delete state.drafts[draftKey()];
+    announce(&#x27;已取消此槽位的装备预览。&#x27;);
+    render();
+    persist();
+  });
+  element(&#x27;rune-flip&#x27;).addEventListener(&#x27;click&#x27;, () =&gt; {
+    if (flipping) return;
+    flipping = !reducedMotion.matches;
+    state.active = state.active === &#x27;yang&#x27; ? &#x27;yin&#x27; : &#x27;yang&#x27;;
+    announce(`已翻至${sideNames[state.active]}面，仍选中${roles[state.selectedIndex].name}。`);
+    render();
+    persist();
+    if (flipping) flipTimer = setTimeout(finishFlip, 700);
+  });
+  dial.addEventListener(&#x27;transitionend&#x27;, event =&gt; {
+    if (event.target === dial &amp;&amp; event.propertyName === &#x27;transform&#x27;) finishFlip();
+  });
+  reducedMotion.addEventListener(&#x27;change&#x27;, () =&gt; { if (reducedMotion.matches) finishFlip(); });
+  element(&#x27;rune-preset&#x27;).addEventListener(&#x27;change&#x27;, event =&gt; {
+    const id = event.target.value;
+    if (!presets[id]) return;
+    state.loadout = cloneLoadout(presets[id]);
+    state.preset = id;
+    state.drafts = {};
+    announce(&#x27;已载入双面示范配装。&#x27;);
+    render();
+    persist();
+  });
+  window.addEventListener(&#x27;openai:set_globals&#x27;, event =&gt; {
+    const saved = event.detail &amp;&amp; event.detail.globals &amp;&amp; event.detail.globals.widgetState;
+    if (saved &amp;&amp; applySaved(saved)) { finishFlip(); render(); }
+  });
+  applySaved(window.openai &amp;&amp; window.openai.widgetState);
+  render();
+})();
+&lt;/script&gt;
+
+
+&lt;script id=&quot;codex-visualization-tabs&quot;&gt;
+(() =&gt; {
+  const selector = &#x27;.nav[role=&quot;tablist&quot;] [role=&quot;tab&quot;]&#x27;;
+  const disabled = &#x27;:disabled,[aria-disabled=&quot;true&quot;]&#x27;;
+  const selectTab = (selected) =&gt; {
+    const panelId = selected.getAttribute(&quot;aria-controls&quot;);
+    for (const tab of selected.closest(&#x27;[role=&quot;tablist&quot;]&#x27;).querySelectorAll(&#x27;[role=&quot;tab&quot;]&#x27;)) {
+      const active = tab === selected;
+      tab.classList.toggle(&quot;active&quot;, active);
+      tab.setAttribute(&quot;aria-selected&quot;, String(active));
+      const id = tab.getAttribute(&quot;aria-controls&quot;);
+      const panel = id &amp;&amp; document.getElementById(id);
+      if (panel != null) {
+        panel.hidden = id !== panelId;
+        if (!panel.hidden &amp;&amp; selected.id) {
+          panel.setAttribute(&quot;aria-labelledby&quot;, selected.id);
+        }
+      }
+    }
+  };
+  const interact = (event) =&gt; {
+    const tab = event.target?.closest?.(selector);
+    if (event.defaultPrevented || tab == null || tab.matches(disabled)) {
+      return;
+    }
+    if (event.type === &quot;click&quot;) {
+      selectTab(tab);
+      return;
+    }
+    const tabs = Array.from(
+      tab.closest(&#x27;[role=&quot;tablist&quot;]&#x27;).querySelectorAll(&#x27;[role=&quot;tab&quot;]&#x27;),
+    ).filter((candidate) =&gt; !candidate.matches(disabled));
+    const current = tabs.indexOf(tab);
+    let next;
+    if (event.key === &quot;ArrowRight&quot; || event.key === &quot;ArrowDown&quot;) {
+      next = (current + 1) % tabs.length;
+    } else if (event.key === &quot;ArrowLeft&quot; || event.key === &quot;ArrowUp&quot;) {
+      next = (current + tabs.length - 1) % tabs.length;
+    } else if (event.key === &quot;Home&quot;) {
+      next = 0;
+    } else if (event.key === &quot;End&quot;) {
+      next = tabs.length - 1;
+    } else {
+      return;
+    }
+    event.preventDefault();
+    tabs[next].focus();
+    selectTab(tabs[next]);
+  };
+
+  for (const list of document.querySelectorAll(&#x27;.nav[role=&quot;tablist&quot;]&#x27;)) {
+    const selected =
+      list.querySelector(&#x27;[role=&quot;tab&quot;][aria-selected=&quot;true&quot;]&#x27;) ??
+      list.querySelector(&#x27;[role=&quot;tab&quot;].active&#x27;) ??
+      list.querySelector(&#x27;[role=&quot;tab&quot;]&#x27;);
+    if (selected != null) {
+      selectTab(selected);
+    }
+  }
+  document.addEventListener(&quot;click&quot;, interact);
+  document.addEventListener(&quot;keydown&quot;, interact);
+  window.addEventListener(&quot;pagehide&quot;, () =&gt; {
+    document.removeEventListener(&quot;click&quot;, interact);
+    document.removeEventListener(&quot;keydown&quot;, interact);
+  }, { once: true });
+})();
+&lt;/script&gt;
+&lt;script id=&quot;codex-visualization-carousel&quot;&gt;
+  (() =&gt; {
+    for (const root of document.querySelectorAll(&quot;.viz-carousel&quot;)) {
+      const panels = Array.from(
+        root.querySelectorAll(&quot;:scope &gt; [data-variant]&quot;),
+      );
+      if (panels.length === 0) {
+        continue;
+      }
+      root.setAttribute(&quot;role&quot;, &quot;group&quot;);
+      panels.forEach((panel, index) =&gt; {
+        panel.hidden = index !== 0;
+        panel.setAttribute(&quot;role&quot;, &quot;group&quot;);
+        if (!panel.hasAttribute(&quot;aria-label&quot;)) {
+          panel.setAttribute(&quot;aria-label&quot;, panel.dataset.variant);
+        }
+      });
+      root.dataset.activeVariant = panels[0].dataset.variant;
+      if (panels.length === 1) {
+        continue;
+      }
+
+      const controls = document.createElement(&quot;div&quot;);
+      controls.className = &quot;viz-carousel-controls&quot;;
+      // Portable copy of the settings dropdown&#x27;s legacy glyph; no 14px icon-package preset matches it.
+      // https://github.com/openai/openai/blob/master/codex/codex-apps/webview/src/icons/chevron.svg
+      controls.innerHTML = `
+      &lt;button type=&quot;button&quot; class=&quot;viz-carousel-previous cursor-interaction&quot;&gt;&lt;i data-lucide=&quot;chevron-left&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/button&gt;
+      &lt;details class=&quot;viz-carousel-picker&quot;&gt;
+        &lt;summary class=&quot;cursor-interaction&quot;&gt;
+          &lt;span class=&quot;viz-carousel-count tabular-nums&quot;&gt;&lt;/span&gt;
+          &lt;span class=&quot;viz-carousel-name&quot;&gt;&lt;/span&gt;
+          &lt;svg class=&quot;viz-carousel-caret&quot; width=&quot;14&quot; height=&quot;14&quot; viewBox=&quot;0 0 20 21&quot; fill=&quot;none&quot; aria-hidden=&quot;true&quot; focusable=&quot;false&quot;&gt;
+            &lt;path d=&quot;M15.2793 7.71101C15.539 7.45131 15.961 7.45131 16.2207 7.71101C16.4804 7.97071 16.4804 8.39272 16.2207 8.65242L10.4707 14.4024C10.211 14.6621 9.78902 14.6621 9.52932 14.4024L3.77932 8.65242L3.69436 8.54792C3.52385 8.28979 3.55205 7.93828 3.77932 7.71101C4.00659 7.48374 4.3581 7.45554 4.61623 7.62605L4.72073 7.71101L10 12.9903L15.2793 7.71101Z&quot; fill=&quot;currentColor&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;0.6&quot; /&gt;
+          &lt;/svg&gt;
+        &lt;/summary&gt;
+        &lt;div class=&quot;viz-carousel-options&quot;&gt;&lt;/div&gt;
+      &lt;/details&gt;
+      &lt;button type=&quot;button&quot; class=&quot;viz-carousel-next cursor-interaction&quot;&gt;&lt;i data-lucide=&quot;chevron-right&quot; aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;/button&gt;`;
+      const previous = controls.querySelector(&quot;.viz-carousel-previous&quot;);
+      const next = controls.querySelector(&quot;.viz-carousel-next&quot;);
+      const picker = controls.querySelector(&quot;.viz-carousel-picker&quot;);
+      const summary = picker.querySelector(&quot;summary&quot;);
+      const count = controls.querySelector(&quot;.viz-carousel-count&quot;);
+      const name = controls.querySelector(&quot;.viz-carousel-name&quot;);
+      const options = controls.querySelector(&quot;.viz-carousel-options&quot;);
+      const status = document.createElement(&quot;span&quot;);
+      status.className = &quot;sr-only&quot;;
+      status.setAttribute(&quot;role&quot;, &quot;status&quot;);
+      status.setAttribute(&quot;aria-live&quot;, &quot;polite&quot;);
+      status.setAttribute(&quot;aria-atomic&quot;, &quot;true&quot;);
+      previous.setAttribute(
+        &quot;aria-label&quot;,
+        root.dataset.previousLabel ?? &quot;Previous variant&quot;,
+      );
+      next.setAttribute(&quot;aria-label&quot;, root.dataset.nextLabel ?? &quot;Next variant&quot;);
+
+      let active = 0;
+      let mousePointerId = null;
+      let summaryPointerHandled = false;
+      summary.addEventListener(&quot;pointerdown&quot;, (event) =&gt; {
+        summaryPointerHandled =
+          event.pointerType === &quot;mouse&quot; &amp;&amp; event.button === 0 &amp;&amp; !event.ctrlKey;
+        if (!summaryPointerHandled) {
+          return;
+        }
+        event.preventDefault();
+        summary.focus({ preventScroll: true });
+        picker.open = !picker.open;
+        mousePointerId = picker.open ? event.pointerId : null;
+      });
+      summary.addEventListener(&quot;click&quot;, (event) =&gt; {
+        if (summaryPointerHandled &amp;&amp; event.detail &gt; 0) {
+          event.preventDefault();
+        }
+      });
+      const choices = panels.map((panel, index) =&gt; {
+        const choice = document.createElement(&quot;button&quot;);
+        choice.type = &quot;button&quot;;
+        choice.className = &quot;cursor-interaction&quot;;
+        choice.textContent = panel.dataset.variant;
+        choice.addEventListener(&quot;click&quot;, () =&gt; {
+          select(index);
+          summary.focus();
+        });
+        choice.addEventListener(&quot;pointerup&quot;, (event) =&gt; {
+          if (
+            picker.open &amp;&amp;
+            event.pointerType === &quot;mouse&quot; &amp;&amp;
+            event.button === 0 &amp;&amp;
+            event.pointerId === mousePointerId
+          ) {
+            choice.click();
+          }
+        });
+        options.appendChild(choice);
+        return choice;
+      });
+      const select = (index) =&gt; {
+        const changed = active !== index;
+        active = index;
+        panels.forEach((panel, position) =&gt; {
+          panel.hidden = position !== active;
+          choices[position].setAttribute(
+            &quot;aria-current&quot;,
+            String(position === active),
+          );
+        });
+        root.dataset.activeVariant = panels[active].dataset.variant;
+        count.textContent = `${active + 1} / ${panels.length}`;
+        name.textContent = panels[active].dataset.variant;
+        picker.open = false;
+        mousePointerId = null;
+        if (changed) {
+          status.textContent = `${count.textContent}: ${name.textContent}`;
+        }
+      };
+      previous.addEventListener(&quot;click&quot;, () =&gt;
+        select((active + panels.length - 1) % panels.length),
+      );
+      next.addEventListener(&quot;click&quot;, () =&gt;
+        select((active + 1) % panels.length),
+      );
+      picker.addEventListener(&quot;keydown&quot;, (event) =&gt; {
+        if (event.key === &quot;Escape&quot; &amp;&amp; picker.open) {
+          event.preventDefault();
+          picker.open = false;
+          mousePointerId = null;
+          summary.focus();
+          return;
+        }
+        if (event.altKey || event.ctrlKey || event.metaKey) {
+          return;
+        }
+        const index = choices.indexOf(document.activeElement);
+        let nextIndex;
+        if (event.key === &quot;ArrowDown&quot;) {
+          nextIndex = index &lt; 0 ? active : (index + 1) % choices.length;
+        } else if (event.key === &quot;ArrowUp&quot;) {
+          nextIndex = index &lt; 0 ? active : (index + choices.length - 1) % choices.length;
+        } else if (picker.open &amp;&amp; event.key === &quot;Home&quot;) {
+          nextIndex = 0;
+        } else if (picker.open &amp;&amp; event.key === &quot;End&quot;) {
+          nextIndex = choices.length - 1;
+        } else {
+          return;
+        }
+        event.preventDefault();
+        picker.open = true;
+        choices[nextIndex].focus();
+      });
+      picker.addEventListener(&quot;focusout&quot;, (event) =&gt; {
+        if (!picker.contains(event.relatedTarget)) {
+          picker.open = false;
+          mousePointerId = null;
+        }
+      });
+      const dismiss = (event) =&gt; {
+        if (!summary.contains(event.target)) {
+          mousePointerId = null;
+        }
+        if (!picker.contains(event.target)) {
+          picker.open = false;
+        }
+      };
+      const endPointerSelection = () =&gt; {
+        mousePointerId = null;
+      };
+      const sizePicker = () =&gt; {
+        root.style.setProperty(
+          &quot;--viz-carousel-picker-height&quot;,
+          `${picker.open ? options.offsetHeight : 0}px`,
+        );
+      };
+      picker.addEventListener(&quot;toggle&quot;, sizePicker);
+      window.addEventListener(&quot;resize&quot;, sizePicker);
+      document.addEventListener(&quot;pointerdown&quot;, dismiss);
+      document.addEventListener(&quot;pointerup&quot;, endPointerSelection);
+      document.addEventListener(&quot;pointercancel&quot;, endPointerSelection);
+      window.addEventListener(&quot;blur&quot;, endPointerSelection);
+      window.addEventListener(
+        &quot;pagehide&quot;,
+        () =&gt; {
+          document.removeEventListener(&quot;pointerdown&quot;, dismiss);
+          document.removeEventListener(&quot;pointerup&quot;, endPointerSelection);
+          document.removeEventListener(&quot;pointercancel&quot;, endPointerSelection);
+          window.removeEventListener(&quot;blur&quot;, endPointerSelection);
+          window.removeEventListener(&quot;resize&quot;, sizePicker);
+        },
+        { once: true },
+      );
+      root.append(controls, status);
+      select(0);
+    }
+  })();
+&lt;/script&gt;
+
+&lt;script&gt;
+(() =&gt; {
+  const initialize = () =&gt; {
+    globalThis.lucide?.createIcons({ attrs: { width: 16, height: 16 } });
+  };
+  if (globalThis.lucide != null) {
+    initialize();
+    return;
+  }
+  document
+    .getElementById(&quot;codex-visualization-lucide&quot;)
+    ?.addEventListener(&quot;load&quot;, initialize, { once: true });
+})();
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+</main>
+<footer class="preview-footer" aria-label="设计资料"><a href="https://github.com/AeonArjormon/hollow-labs/blob/main/shadow-jump/docs/reincarnation-runes-design.md">系统设计</a><a href="https://github.com/AeonArjormon/hollow-labs/blob/main/shadow-jump/docs/reincarnation-runes-catalog.md">十二生肖效果目录</a><a href="docs/reincarnation-runes-catalog.json" download>下载效果数据</a><span>试装配装保存在本机浏览器</span></footer>
+
+<script>(() => {
+  const frame = document.getElementById("codex-visualization");
+  if (!(frame instanceof HTMLIFrameElement)) {
+    return;
+  }
+  const isShare = document.documentElement.classList.contains(
+    "visualization-share-root",
+  );
+  let viewportHeight = globalThis.innerHeight;
+  let sizeFingerprint = null;
+  let sizeWriteTimeout;
+  let lastSize = null;
+  let pendingSize = null;
+  const storageKey = `codex:visualization-widget-state-v2:${JSON.stringify([
+    globalThis.location.pathname,
+    globalThis.location.search,
+  ])}`;
+  const sizeStorageKey = `${storageKey}:share-size-v1`;
+  const parseState = (serializedState) => {
+    if (
+      typeof serializedState !== "string" ||
+      new TextEncoder().encode(serializedState).length > 16 * 1024
+    ) {
+      throw new TypeError(
+        "Widget state must be a JSON object of at most 16 KiB",
+      );
+    }
+    /** @type {unknown} */
+    const state = JSON.parse(serializedState);
+    if (
+      state == null ||
+      typeof state !== "object" ||
+      Array.isArray(state) ||
+      ("imageIds" in state &&
+        (!Array.isArray(state.imageIds) || state.imageIds.length > 0))
+    ) {
+      throw new TypeError("Widget state must be a JSON object");
+    }
+    const storedState = { modelContent: null, privateContent: null, ...state };
+    const canonicalState = JSON.stringify(
+      storedState,
+      (_key, /** @type {unknown} */ value) => {
+        if (typeof value === "number" && !Number.isFinite(value)) {
+          throw new TypeError("Widget state must contain finite numbers");
+        }
+        return value;
+      },
+    );
+    if (new TextEncoder().encode(canonicalState).length > 16 * 1024) {
+      throw new TypeError(
+        "Widget state must be a JSON object of at most 16 KiB",
+      );
+    }
+    return storedState;
+  };
+  let storage = null;
+  let state = null;
+  try {
+    const localStorage = globalThis.localStorage;
+    const probeKey = `${storageKey}:probe`;
+    localStorage.setItem(probeKey, "1");
+    localStorage.removeItem(probeKey);
+    storage = localStorage;
+    const savedState = storage.getItem(storageKey);
+    if (savedState != null) {
+      try {
+        state = parseState(savedState);
+      } catch {
+        // Invalid saved state does not disable future writes.
+      }
+    }
+  } catch {
+    storage = null;
+  }
+  const persistSize = () => {
+    globalThis.clearTimeout(sizeWriteTimeout);
+    if (pendingSize == null) {
+      return;
+    }
+    try {
+      storage?.setItem(sizeStorageKey, pendingSize);
+    } catch {
+      // A denied or full cache must not affect the visualization.
+    }
+    pendingSize = null;
+  };
+  if (isShare) {
+    globalThis.addEventListener("pagehide", persistSize);
+  }
+  const initialGlobals = {
+    widgetState: state,
+    statePersistence: storage == null ? "none" : "local",
+  };
+
+  const channel = new MessageChannel();
+  channel.port1.addEventListener("message", (event) => {
+    const data = event.data;
+    if (typeof data !== "object" || data == null) {
+      return;
+    }
+    if (data.type === "widget-state-write") {
+      if (!Number.isSafeInteger(data.id) || data.id <= 0) {
+        return;
+      }
+      let ok = false;
+      try {
+        if (storage != null) {
+          const state = parseState(data.state);
+          storage.setItem(storageKey, JSON.stringify(state));
+          ok = true;
+        }
+      } catch {
+        // Storage denial, quota limits, and invalid state return a failed receipt.
+      }
+      channel.port1.postMessage({
+        type: "widget-state-result",
+        id: data.id,
+        ok,
+      });
+      return;
+    }
+    if (data.type === "height") {
+      const height = data.height;
+      if (
+        typeof height !== "number" ||
+        !Number.isFinite(height) ||
+        height < 0
+      ) {
+        return;
+      }
+      if (height <= 10_000) {
+        const width = isShare && storage != null ? frame.clientWidth : null;
+        frame.style.height = Math.ceil(height) + "px";
+        if (isShare && storage != null) {
+          const size = JSON.stringify({
+            fingerprint: sizeFingerprint,
+            width,
+            viewportHeight: globalThis.innerHeight,
+            dark: globalThis.matchMedia("(prefers-color-scheme: dark)").matches,
+            scale: globalThis.devicePixelRatio,
+            height: Math.ceil(height),
+          });
+          if (size !== lastSize) {
+            lastSize = size;
+            pendingSize = size;
+            globalThis.clearTimeout(sizeWriteTimeout);
+            sizeWriteTimeout = globalThis.setTimeout(persistSize, 100);
+          }
+        }
+      }
+      if (isShare) {
+        // Keep unusually tall content accessible without accepting an unbounded height.
+        if (height > 10_000 && Number.parseFloat(frame.style.height) === 0) {
+          frame.style.removeProperty("height");
+        }
+        frame.scrolling = height > 10_000 ? "auto" : "no";
+        document.documentElement.classList.add("visualization-share-ready");
+      }
+      return;
+    }
+    if (data.type === "scroll-to") {
+      const top = data.top;
+      if (
+        typeof top === "number" &&
+        Number.isFinite(top) &&
+        top >= 0 &&
+        globalThis.navigator.userActivation?.isActive === true
+      ) {
+        globalThis.scrollTo({
+          top: Math.ceil(
+            globalThis.scrollY + frame.getBoundingClientRect().top + top,
+          ),
+        });
+      }
+      return;
+    }
+    if (data.type === "open-external") {
+      const rawHref = data.href;
+      if (typeof rawHref !== "string") {
+        return;
+      }
+      let href;
+      try {
+        const url = new URL(rawHref, document.baseURI);
+        if (url.protocol !== "https:") {
+          return;
+        }
+        href = url.href;
+      } catch {
+        return;
+      }
+      if (globalThis.navigator.userActivation?.isActive === true) {
+        const anchor = document.createElement("a");
+        anchor.href = href;
+        anchor.rel = "noopener noreferrer";
+        anchor.target = "_blank";
+        document.body.appendChild(anchor);
+        anchor.click();
+        anchor.remove();
+      }
+      return;
+    }
+    if (data.type === "follow-up") {
+      const prompt = data.prompt;
+      if (
+        typeof prompt !== "string" ||
+        globalThis.navigator.userActivation?.isActive !== true
+      ) {
+        return;
+      }
+      const title = data.title;
+      globalThis.prompt(typeof title === "string" ? title : prompt, prompt);
+    }
+  });
+  channel.port1.start();
+  const srcdoc = frame.dataset.srcdoc;
+  if (srcdoc == null) {
+    return;
+  }
+  globalThis.addEventListener("resize", () => {
+    const height = Number.parseFloat(frame.style.height);
+    if (!isShare && (!Number.isFinite(height) || height <= viewportHeight)) {
+      frame.style.removeProperty("height");
+    }
+    viewportHeight = globalThis.innerHeight;
+    channel.port1.postMessage({ type: "measure" });
+  });
+  frame.addEventListener(
+    "load",
+    () => {
+      frame.contentWindow?.postMessage(
+        { type: "codex-visualization-initialize" },
+        "*",
+        [channel.port2],
+      );
+    },
+    { once: true },
+  );
+  // Match the trusted bootstrap element, not the same text in an authored title.
+  const frameHtml = srcdoc.replace(
+    '<script type="application/json" id="codex-visualization-widget-state">__CODEX_VISUALIZATION_WIDGET_STATE__<\/script>',
+    () =>
+      '<script type="application/json" id="codex-visualization-widget-state">' +
+      JSON.stringify(initialGlobals).replaceAll("<", "\\u003c") +
+      "<\/script>",
+  );
+  if (isShare && storage != null) {
+    // Fingerprint the rendered document, including restored widget state, without
+    // storing its content. This is a layout cache, not a security identity.
+    let hash = 5381;
+    for (let index = 0; index < frameHtml.length; index += 1) {
+      hash = (hash * 33 + frameHtml.charCodeAt(index)) % 4_294_967_296;
+    }
+    sizeFingerprint = hash.toString(36);
+    try {
+      const size = JSON.parse(storage.getItem(sizeStorageKey) ?? "null");
+      if (
+        size?.fingerprint === sizeFingerprint &&
+        size.width === frame.clientWidth &&
+        size.viewportHeight === globalThis.innerHeight &&
+        size.dark ===
+          globalThis.matchMedia("(prefers-color-scheme: dark)").matches &&
+        size.scale === globalThis.devicePixelRatio &&
+        typeof size.height === "number" &&
+        Number.isFinite(size.height) &&
+        size.height >= 0 &&
+        size.height <= 10_000
+      ) {
+        frame.style.height = size.height + "px";
+      }
+    } catch {
+      // Ignore missing or invalid cache entries and measure the live frame.
+    }
+  }
+  frame.srcdoc = frameHtml;
+  delete frame.dataset.srcdoc;
+})();
+</script>
+</body>
+</html>

@@ -18,6 +18,14 @@ python3 -m http.server 8000 --bind 127.0.0.1
 
 独立图鉴位于 `http://127.0.0.1:8000/shadow-jump/art-preview.html`，可比较双形态主角的实机尺寸与放大细节，切换待机、奔跑、起跳、下落、攻击、冲刺、受伤、换形八种动作，并查看四类小怪和十二生肖动态立绘。图鉴支持暂停动画细看，与游戏共用绘制代码。
 
+## 六道轮回装备设计预览
+
+[打开六道轮回试装](runes-preview.html)，也可从游戏顶部的“试装”或“选择元辰”面板进入。六边形轮回盘正面为阳、背面为阴，各有六个道位；点击中央太极翻面，点选道位和生肖符文，比较效果后确认装备。同侧符文可移入其他道位，空槽恢复基础能力，并提供三个示范配装。
+
+这是装备系统的交互设计预览，提供每种两枚的试装库存。配装与未确认的候选保存在当前浏览器；本地存储不可用时仅在当前页面有效。试装不会写入游戏存档，Boss 掉落、战斗武器变化和正式装备效果尚未接入游戏。
+
+设计资料集中在 [docs/](docs/README.md)：[系统设计](docs/reincarnation-runes-design.md)、[十二生肖效果目录](docs/reincarnation-runes-catalog.md) 与 [JSON 数据](docs/reincarnation-runes-catalog.json)。目录包含 24 种主武器、144 条道位效果，数值与平衡仍以设计提案为准。
+
 ## 操作
 
 | 操作 | 键位 |
@@ -77,6 +85,8 @@ python3 -m http.server 8000 --bind 127.0.0.1
 - `src/data/level-01.js`：基本路线、灵印、敌人、检查点，以及生成十二章变体的配置函数。
 - `src/art.js`、`src/enemy-art.js`、`src/zodiac-art.js`、`src/world-art.js`：汉服主角、四类小怪、十二生肖与两界场景的绘制和动画，详见 [美术说明](assets/README.md)。
 - `art-preview.html`：独立的两界生灵图鉴。
+- `runes-preview.html`：可独立部署的六边形双面装备设计预览，包含页面运行所需资源。
+- `docs/`：六道轮回系统规则与十二生肖效果设计资料。
 - `index.html`、`styles.css`：菜单、HUD、操作指南与触控布局。
 - `vendor/`：随站点托管的 Phaser 引擎与许可证。
 
