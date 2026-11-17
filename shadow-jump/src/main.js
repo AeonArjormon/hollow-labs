@@ -16,7 +16,7 @@ if (!window.Phaser) {
   throw new Error("Shadow Jump boot failed: Phaser is unavailable.");
 }
 
-if (!window.SHADOW_JUMP_LEVEL || !window.ShadowJumpGameScene) {
+if (!window.SHADOW_JUMP_LEVEL || !window.ShadowJumpGameScene || !window.ShadowJumpArt || !window.ShadowJumpWorldArt || !window.ShadowJumpEnemyArt || !window.SHADOW_JUMP_ZODIAC || !window.ShadowJumpZodiacArt || !window.createShadowJumpChapter) {
   showBootError("本地游戏脚本没有加载完整，请确认 src/ 目录与 index.html 在同一项目目录下。");
   throw new Error("Shadow Jump boot failed: local game scripts are unavailable.");
 }
@@ -27,7 +27,8 @@ const config = {
   width: 1152,
   height: 648,
   backgroundColor: "#080a10",
-  pixelArt: true,
+  antialias: true,
+  roundPixels: true,
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH

@@ -6,8 +6,9 @@ window.SHADOW_JUMP_LEVEL = {
   crystalsRequired: 5,
   portal: { x: 4100, y: 458, w: 88, h: 132 },
   checkpoints: [
-    { x: 1160, y: 512, set: { x: 1160, y: 500 }, label: "第一段已完成" },
-    { x: 2460, y: 512, set: { x: 2500, y: 500 }, label: "反向组合路线已解锁" }
+    { x: 1160, y: 512, set: { x: 1160, y: 500 }, label: "渡口长明灯已点亮" },
+    { x: 2250, y: 512, set: { x: 2250, y: 500 }, label: "两界长明灯已点亮" },
+    { x: 3540, y: 512, set: { x: 3540, y: 500 }, label: "元辰坛前长明灯已点亮" }
   ],
   platforms: [
     { x: 0, y: 590, w: 470, h: 130, mode: "both", kind: "ground" },
@@ -43,14 +44,14 @@ window.SHADOW_JUMP_LEVEL = {
     { x: 3042, y: 332, mode: "shadow" }
   ],
   enemies: [
-    { x: 386, y: 540, w: 46, h: 38, hp: 30, maxHp: 30, min: 310, max: 492, vx: 55, mode: "light", weakness: "light", label: "圣甲虫" },
-    { x: 1245, y: 538, w: 54, h: 42, hp: 44, maxHp: 44, min: 1120, max: 1408, vx: 70, mode: "shadow", weakness: "shadow", label: "裂隙守卫" },
-    { x: 2220, y: 392, w: 48, h: 38, hp: 34, maxHp: 34, min: 2140, max: 2340, vx: 62, mode: "light", weakness: "shadow", label: "重甲门卫" },
-    { x: 3628, y: 540, w: 58, h: 46, hp: 54, maxHp: 54, min: 3510, max: 3820, vx: 86, mode: "shadow", weakness: "light", label: "深渊猎手" }
+    { x: 386, y: 568, w: 46, h: 38, hp: 30, maxHp: 30, min: 310, max: 442, vx: 55, mode: "light", weakness: "light", species: "scarab", label: "纸鹤傀" },
+    { x: 1245, y: 566, w: 54, h: 42, hp: 44, maxHp: 44, min: 1120, max: 1386, vx: 70, mode: "shadow", weakness: "shadow", species: "warden", label: "提灯阴差" },
+    { x: 2220, y: 416, w: 48, h: 38, hp: 34, maxHp: 34, min: 2206, max: 2292, vx: 62, mode: "light", weakness: "shadow", species: "sentinel", label: "持盾天兵" },
+    { x: 3628, y: 564, w: 58, h: 46, hp: 54, maxHp: 54, min: 3510, max: 3802, vx: 86, mode: "shadow", weakness: "light", species: "hunter", label: "冥火狐妖" }
   ],
   gates: [
-    { x: 2046, y: 492, w: 46, h: 98, mode: "light", hp: 3, weakness: "shadow", label: "光场景重门" },
-    { x: 3140, y: 444, w: 42, h: 146, mode: "shadow", hp: 2, weakness: "light", label: "暗影封印" }
+    { x: 2046, y: 492, w: 46, h: 98, mode: "light", hp: 3, weakness: "shadow", label: "玉阙镇魂封" },
+    { x: 3140, y: 444, w: 42, h: 146, mode: "shadow", hp: 2, weakness: "light", label: "黄泉引剑符" }
   ],
   boss: {
     x: 3950,
@@ -60,8 +61,63 @@ window.SHADOW_JUMP_LEVEL = {
     hp: 120,
     maxHp: 120,
     phases: [
-      { scene: "light", weakness: "shadow", label: "破光盾" },
-      { scene: "shadow", weakness: "light", label: "净化影核" }
+      { scene: "light", weakness: "shadow", label: "初试" },
+      { scene: "shadow", weakness: "light", label: "元辰觉醒" }
     ]
   }
 };
+
+
+// Keep each chapter's objects independent. Shared counts let the scene reuse its
+// Arcade colliders while changing routes, realms and the actual guardian.
+window.createShadowJumpChapter = function(index = 0) {
+  const zodiac = window.SHADOW_JUMP_ZODIAC[index];
+  if (!zodiac) throw new RangeError("Unknown zodiac chapter");
+  const level = JSON.parse(JSON.stringify(window.SHADOW_JUMP_LEVEL));
+  level.chapterIndex = index;
+  level.chapterName = zodiac.chapterName;
+  level.startMode = zodiac.realm;
+  level.arenaStart = 3470;
+  level.arenaEnd = 4280;
+  const flip = zodiac.realm === "shadow";
+  const swap = mode => flip && mode !== "both" ? (mode === "light" ? "shadow" : "light") : mode;
+  // Three elevation rhythms: cloud terraces, hanging bridges, stepped shrines.
+  const route = index % 3;
+  const raised = new Map();
+  level.platforms.forEach((platform, i) => {
+    platform.mode = swap(platform.mode);
+    if (i < 11 && platform.kind !== "ground") {
+      const dy = route === 1 ? (i % 2 ? -16 : 12) : route === 2 ? (i % 2 ? 14 : -22) : 0;
+      platform.y += dy;
+      raised.set(i, dy);
+    }
+  });
+  [1, 2, 4, 5, 9].forEach((platformIndex, i) => {
+    level.crystals[i].mode = level.platforms[platformIndex].mode;
+    level.crystals[i].y += raised.get(platformIndex) || 0;
+  });
+  level.hazards.forEach(hazard => { hazard.mode = swap(hazard.mode); });
+  level.gates.forEach(gate => { gate.mode = swap(gate.mode); });
+  level.enemies.forEach((enemy, i) => {
+    enemy.mode = swap(enemy.mode);
+    enemy.hp = enemy.maxHp = enemy.hp + Math.floor(index / 3) * 6;
+    enemy.vx *= 1 + index * .025;
+    if (i === 2) enemy.mode = level.platforms[15].mode;
+  });
+  // The arena is safe in either realm, including during a charge or world switch.
+  level.platforms[11].w = 830;
+  level.platforms[12] = { x: 3900, y: 704, w: 400, h: 16, mode: "both", kind: "ground" };
+  level.platforms[16] = { x: 3360, y: 438, w: 110, h: 22, mode: "both", kind: "cloud" };
+  level.hazards[4] = { x: 3395, y: 656, w: 70, h: 30, mode: "both" };
+  const weakness = zodiac.realm === "light" ? "shadow" : "light";
+  level.boss = {
+    ...zodiac, x: 3950, y: level.floorY, w: 88, h: 110,
+    maxHp: zodiac.hp,
+    phases: [
+      { scene: zodiac.realm, weakness, label: "初试", pattern: zodiac.pattern },
+      { scene: zodiac.realm === "light" ? "shadow" : "light", weakness: weakness === "light" ? "shadow" : "light", label: "元辰觉醒", pattern: zodiac.secondaryPattern }
+    ]
+  };
+  return level;
+};
+window.SHADOW_JUMP_CHAPTERS = window.SHADOW_JUMP_ZODIAC.map((_, index) => window.createShadowJumpChapter(index));

@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="430" viewBox="0 0 560 430" fill="none">
+  <defs>
+    <linearGradient id="jade" x1="110" y1="150" x2="270" y2="380" gradientUnits="userSpaceOnUse"><stop stop-color="#edf0d7"/><stop offset=".42" stop-color="#bdcfbd"/><stop offset="1" stop-color="#477d76"/></linearGradient>
+    <linearGradient id="silk" x1="159" y1="145" x2="226" y2="376" gradientUnits="userSpaceOnUse"><stop stop-color="#fff4db"/><stop offset=".6" stop-color="#e7e5cd"/><stop offset="1" stop-color="#a3b7a9"/></linearGradient>
+    <linearGradient id="ink" x1="300" y1="125" x2="405" y2="365" gradientUnits="userSpaceOnUse"><stop stop-color="#38515a"/><stop offset=".55" stop-color="#1d343f"/><stop offset="1" stop-color="#10242e"/></linearGradient>
+    <linearGradient id="vermilion" x1="310" y1="152" x2="393" y2="354" gradientUnits="userSpaceOnUse"><stop stop-color="#d28c6f"/><stop offset=".4" stop-color="#a65049"/><stop offset="1" stop-color="#623743"/></linearGradient>
+    <linearGradient id="hair" x1="190" y1="70" x2="234" y2="273" gradientUnits="userSpaceOnUse"><stop stop-color="#0d252e"/><stop offset=".45" stop-color="#17343d"/><stop offset="1" stop-color="#285451"/></linearGradient>
+    <linearGradient id="skin" x1="190" y1="91" x2="226" y2="140" gradientUnits="userSpaceOnUse"><stop stop-color="#f9e5c6"/><stop offset=".6" stop-color="#efcfac"/><stop offset="1" stop-color="#c9927a"/></linearGradient>
+    <linearGradient id="steel" x1="101" y1="177" x2="125" y2="367" gradientUnits="userSpaceOnUse"><stop stop-color="#f0f4db"/><stop offset=".5" stop-color="#86beb0"/><stop offset="1" stop-color="#244f58"/></linearGradient>
+    <radialGradient id="aura"><stop stop-color="#a2b98b" stop-opacity=".19"/><stop offset="1" stop-color="#99b990" stop-opacity="0"/></radialGradient>
+    <filter id="shadow" x="-50%" y="-30%" width="200%" height="180%"><feDropShadow dx="0" dy="10" stdDeviation="6" flood-color="#071b24" flood-opacity=".5"/></filter>
+    <g id="cloud" stroke="#adbd99" stroke-width="1.1"><path d="M-42 4h68c22 0 21-21 9-21-8 0-12 9-6 12M-59 14h94M-28-4c-14 0-18-15-7-21 11-6 22 5 16 14M-48 4h-24"/></g>
+    <g id="blossom" fill="#c28867"><path d="M0 0c-14-2-8-14 0-4C8-14 14-2 0 0 10 4 5 13 0 3-5 13-10 4 0 0Z"/><circle r="1.4" fill="#f3d997"/></g>
+  </defs>
+  <!-- A celestial chart, palace eaves and cloud scrolls frame the two forms. -->
+  <ellipse cx="283" cy="224" rx="218" ry="190" fill="url(#aura)"/>
+  <g stroke="#b7bf92" opacity=".28"><circle cx="282" cy="210" r="160"/><circle cx="282" cy="210" r="170" stroke-dasharray="1 12"/><path d="M112 210h22m296 0h22M282 40v20m0 302v20M162 90l15 15m211 211 15 15M162 330l15-15m211-211 15-15"/></g>
+  <g fill="#a6b590" opacity=".38" font-family="Songti SC, STSong, serif" font-size="11" text-anchor="middle"><text x="282" y="24">子</text><text x="374" y="50">丑</text><text x="442" y="117">寅</text><text x="466" y="215">卯</text><text x="441" y="308">辰</text><text x="375" y="379">巳</text><text x="282" y="404">午</text><text x="188" y="379">未</text><text x="120" y="308">申</text><text x="96" y="215">酉</text><text x="120" y="117">戌</text><text x="188" y="50">亥</text></g>
+  <g opacity=".18" stroke="#b4c7a3" stroke-width="1.2"><path d="M41 242c35 11 51-15 76-28 25 13 41 39 76 28l-9 9H50Z"/><path d="M69 251v53m96-53v53M84 256v44m65-44v44M55 304h124M419 264c25 5 37-11 53-20 17 9 29 25 53 20l-6 8h-94Z"/><path d="M440 272v42m64-42v42M430 314h85"/></g>
+  <g opacity=".28"><use href="#cloud" x="89" y="175"/><use href="#cloud" x="454" y="117"/><use href="#cloud" x="461" y="347"/><use href="#cloud" x="118" y="361"/></g>
+  <!-- 镇魂: long hair, human face, vermilion-lined cross-collar robe. -->
+  <g filter="url(#shadow)">
+    <path d="M325 99c-9 17-14 43-8 65-11 42-25 58-21 93 13-7 29-26 39-42 20 41 54 61 91 52-39-23-48-56-47-92 2-40-4-71-22-81Z" fill="#102631"/>
+    <path d="M363 128c4 50 8 80 41 111M328 141c-2 34-7 58-18 79" stroke="#476066" stroke-opacity=".6" stroke-width="2"/>
+    <path d="M330 148c-32 7-43 32-52 61l31 22 24-43 19 61 38-15-8-65Z" fill="url(#ink)" stroke="#67837d" stroke-width="1"/>
+    <path d="M374 163c17 7 27 30 43 52 11 16 26 24 30 41-33 13-63-2-80-35l-12-34Z" fill="url(#ink)" stroke="#526e6d"/>
+    <path d="M406 214c6 19 18 32 29 38-15 3-30-4-45-19" fill="url(#vermilion)"/>
+    <path d="M321 217c-1 54-21 89-31 134 33 17 71 14 106 8-14-48-10-92-20-135Z" fill="url(#ink)" stroke="#6c8077"/>
+    <path d="m339 226-25 127 25 12 16-139Z" fill="url(#vermilion)"/>
+    <path d="M365 234c-8 40-3 82 14 123M329 241c-4 31-14 62-26 88M375 262l10 72" stroke="#67807b" stroke-opacity=".5" stroke-width="1.3"/>
+    <path d="m332 144 16 18 15-18 15 25-24 36-31-47Z" fill="#a97560"/>
+    <path d="m334 143 15 16 12-15 9 12-21 38-21-39Z" fill="#ddcbb0"/>
+    <path d="m324 153 28 37-14 26-19-47Z" fill="#253d47" stroke="#d5b477" stroke-width="1.4"/>
+    <path d="m373 151-40 64 36 2 17-43Z" fill="#304b51" stroke="#d5b477" stroke-width="1.4"/>
+    <path d="M320 215c18 5 41 5 58-2l1 13c-20 8-43 8-62 1Z" fill="#9b594f"/>
+    <path d="m345 214 14-2 9 11-12 11-14-6Z" fill="#ccb27d" stroke="#f2dab0"/>
+    <path d="m351 219 7-1 4 5-6 5-5-3Z" fill="#6c9a83"/>
+    <path d="M358 231c12 32 14 54 37 76M359 231c18 21 30 30 57 32" stroke="#b46d57" stroke-width="4"/>
+    <path d="M357 233c10 14 8 34 6 46" stroke="#d6b37a" stroke-width="1.3"/><path d="m359 274 7-1 2 19-7 4Z" fill="#7ba68f"/>
+    <path d="M316 176c-17 9-20 21-29 39l12 7 24-36Z" fill="#34505a"/>
+    <path d="m284 209-11 17c-3 5 3 9 7 5l12-15" fill="url(#skin)" stroke="#a88673"/>
+    <path d="m322 352-3 18-21 8 1 7h36l4-29M370 357l4 16 19 7-2 7h-32l-5-29" fill="#14252c" stroke="#5e7470"/>
+    <path d="M338 128v17l11 11 13-12-1-17" fill="url(#skin)"/>
+    <path d="M327 105c0-17 10-27 24-26 19 1 26 15 23 32-2 18-11 30-22 30-9 0-22-13-25-36Z" fill="url(#skin)" stroke="#182f36" stroke-width="1.3"/>
+    <path d="M326 111c-10-31 7-45 24-45 22 0 33 18 26 44-5-12-14-21-29-27-3 14-11 21-21 28Z" fill="#122932"/>
+    <path d="M347 81c11 8 20 11 25 19M332 93c2-8 6-13 10-16" stroke="#476066" stroke-width="1.5"/>
+    <path d="M339 73c-9-13 4-25 16-24 15 1 19 14 10 27" fill="#102832" stroke="#3e5a5e"/>
+    <path d="m336 66 32 2" stroke="#bba976" stroke-width="4"/><path d="m331 64 44 7" stroke="#e0c78d" stroke-width="1.5"/><path d="m373 68 7-3 2 8-6 4Z" fill="#a6c2a0"/>
+    <path d="M332 110l8-2m15-1 10 2" stroke="#554235" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="m332 115 7-1 4 2m11-1 6-1 5 2" stroke="#24333a" stroke-width="1.3"/><path d="M337 114v3m22-3v3" stroke="#152931" stroke-width="2"/>
+    <path d="m350 114-2 9 4 1" stroke="#b18a73" stroke-width=".9"/><path d="m347 130 7-1" stroke="#9b5d54" stroke-width="1.3" stroke-linecap="round"/>
+    <path d="M329 104c-4 22-1 41-11 56M372 102c5 23 8 44 23 58" stroke="#152f38" stroke-width="4" stroke-linecap="round"/>
+    <!-- cinnabar talisman and the long ritual sword -->
+    <path d="m393 184 10-1 7 32-13 3Z" fill="#d8b47c" stroke="#795c43"/><path d="m398 188 2 22m-4-17 8-2m-8 8 9-2m-7 7 8-2" stroke="#a45043" stroke-width="1.5"/>
+    <g transform="rotate(24 275 223)"><path d="M272 183h7v119l-3 17-4-17Z" fill="#9fbeb5" stroke="#45666a"/><path d="M276 187v119" stroke="#eef1cf"/><path d="M265 218h21l-4 5h-13Z" fill="#c5a66c"/><path d="M272 198h7v19h-7Z" fill="#7d4c42"/><path d="M274 198h3v-5h-3Z" fill="#d6bb7b"/><path d="M275 193c-20-14-33-11-42-4" stroke="#a65b4e" stroke-width="3"/></g>
+    <g stroke="#ac9c6b" stroke-width=".9" opacity=".65"><path d="M371 253c-15-9-14 16-2 12 5-2 0-9-5-5M375 274c-15-9-14 16-2 12 5-2 0-9-5-5M383 338c-12-4-23-4-31-2M306 338l9 3"/></g>
+  </g>
+  <!-- 御剑: soft face, jade hairpin, embroidered pale hanfu and trailing silk. -->
+  <g filter="url(#shadow)">
+    <path d="M180 99c-15 20-19 47-19 75 0 39-30 63-35 97 22-3 52-24 67-42 1 32 16 61 48 76-12-26-19-62-11-105 6-35 1-72-14-91Z" fill="url(#hair)"/>
+    <path d="M181 127c-8 46-13 76-33 110M213 141c14 44-8 92 15 128M175 145c-5 37-9 57-15 75" stroke="#62807a" stroke-opacity=".4" stroke-width="1.5"/>
+    <!-- Back ribbon, then full bell sleeves -->
+    <path d="M182 169c-33 16-52 30-81 22-10-3-19-11-33-11 29 20 35 39 76 29l38-17M219 182c30-11 54-11 79 0 13 7 30 8 43 6-26 17-51 16-72 5l-48 4" fill="#7aa995" opacity=".8"/>
+    <path d="M179 146c-18 5-32 18-44 43-15 32-35 51-52 76 20 21 46 28 68 16 24-24 34-47 43-82l10-26Z" fill="url(#jade)" stroke="#a2bdad"/>
+    <path d="M220 149c22 7 31 21 37 43 10 24 31 40 49 56-12 26-33 44-56 42-27-31-33-66-41-94Z" fill="url(#jade)" stroke="#a2bdad"/>
+    <path d="M140 205c-5 26-25 49-44 61 12 11 26 15 43 10l22-30" fill="#49796f"/>
+    <path d="M256 218c10 21 21 31 38 35-9 17-18 26-33 29l-17-36" fill="#49796f"/>
+    <path d="M91 262c16 18 32 23 53 16M255 283c18-3 32-15 42-32" stroke="#d6c497" stroke-width="2.5"/>
+    <path d="M175 205c-2 48-24 95-31 146 31 27 86 24 116 2-16-48-26-95-31-145Z" fill="url(#silk)" stroke="#b9ccba"/>
+    <path d="M178 220c-5 53-14 88-27 123 19 6 32 1 43-4l12-112Z" fill="#dbe1c8"/>
+    <path d="M214 220c0 42 5 86 12 129l31 3c-9-35-14-70-25-116Z" fill="#609286"/>
+    <path d="M201 234c-6 38-11 69-18 106M209 244l-1 106M174 267l-14 65M233 267l14 73" stroke="#7c9f92" stroke-width="1.3"/>
+    <path d="M146 351c31 20 76 23 112 2" stroke="#ddc999" stroke-width="3"/>
+    <path d="m182 144 22 13 16-14 10 20-24 39-32-36Z" fill="#fcf0d4"/>
+    <path d="m180 145 31 33-15 29-26-46Z" fill="#568b7e" stroke="#cfc396" stroke-width="2"/>
+    <path d="m224 146-37 59 25 10 25-46Z" fill="#71a291" stroke="#d9d1a9" stroke-width="2"/>
+    <path d="M172 204c15 7 37 11 57 5l5 16c-21 6-46 1-66-6Z" fill="#345f59" stroke="#b2bd92"/>
+    <path d="m196 206 15 2 4 12-10 8-14-7Z" fill="#d8bb7c"/><path d="m200 212 8 1 2 6-6 4-7-4Z" fill="#90c0a2" stroke="#eff1c4"/>
+    <path d="M202 225c-10 38-35 56-72 65 14 10 38 6 58-7 19-11 27-35 29-57Z" fill="#6a9d8b"/><path d="M214 227c11 38 36 55 66 70-20 9-38-3-53-18-13-15-17-33-19-52Z" fill="#bad0b4"/>
+    <path d="M199 225c-1 13 3 27 0 42" stroke="#d8ba79" stroke-width="1.8"/><path d="m194 263 10 1-1 17-7 4-5-6Z" fill="#93c8ae" stroke="#e5e7ba"/><path d="m196 283-2 16m4-15 1 14m2-15 2 13" stroke="#cdb380"/>
+    <path d="M177 354l-3 16-26 10 1 7h40l10-31M224 356l5 17 23 9-1 6h-33l-11-30" fill="#254842" stroke="#6a9482"/><path d="m153 381 29-2m43 3 21 1" stroke="#c0bea0"/>
+    <path d="M190 128v18l13 13 14-16-3-19" fill="url(#skin)"/>
+    <path d="M179 103c-2-19 10-32 25-33 19 0 29 14 27 33-2 18-12 34-24 36-11 0-24-17-28-36Z" fill="url(#skin)" stroke="#29453e" stroke-width="1.2"/>
+    <path d="M179 113c-10-24-5-44 11-51 11-6 27-4 36 4 11 10 14 27 6 44-5-16-10-24-24-32-6 15-16 24-29 35Z" fill="url(#hair)"/>
+    <path d="M182 95c5-12 10-21 19-25M210 69c10 7 17 15 20 28M185 89l10-14" stroke="#54736a" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M193 64c-7-11-3-23 11-26 13-2 23 7 19 22" fill="#19363c" stroke="#4b7269"/>
+    <path d="M196 54c7-5 14-5 21-1M198 47c7-3 12-2 16 0" stroke="#516f62" stroke-width="1.4"/>
+    <path d="m187 58 42-3" stroke="#afbd8c" stroke-width="4"/><path d="m181 59 51-5" stroke="#e0d7aa" stroke-width="1.5"/><path d="m231 53 7-5 4 5-7 6Z" fill="#b6d3b0" stroke="#e8dfac"/>
+    <path d="M234 57c2 11 4 15 2 22" stroke="#ccba83"/><circle cx="236" cy="80" r="2.5" fill="#9bc8aa"/>
+    <path d="m185 108 10-3m14-1 11 3" stroke="#63533d" stroke-width="1.7" stroke-linecap="round"/>
+    <path d="m185 113 7-2 5 2m12-1 6-2 5 3" stroke="#2a3d38" stroke-width="1.5" stroke-linecap="round"/><path d="M191 111v3m24-4v3" stroke="#234139" stroke-width="2"/>
+    <path d="m203 112-2 10 4 1" stroke="#bd9679" stroke-width="1"/><path d="m200 130 8-1" stroke="#a3695a" stroke-width="1.3" stroke-linecap="round"/>
+    <path d="m184 119 6 2m24-2 5-1" stroke="#d4a084" stroke-opacity=".5" stroke-width="2"/>
+    <path d="M178 102c-1 21-2 32-9 48M230 99c3 24 5 36 15 51" stroke="#16373a" stroke-width="4" stroke-linecap="round"/>
+    <path d="M178 149c-2 16-6 27-13 37M244 149c9 17 16 24 28 30" stroke="#446b60" stroke-width="1.2"/>
+    <path d="M147 194c-6 6-11 13-13 23l13 6 12-20Z" fill="url(#silk)"/><path d="m137 217-8 10c-4 5-1 11 3 10l9-13 6 3 3-9Z" fill="url(#skin)" stroke="#c7b093"/>
+    <path d="M263 229c8 6 12 10 18 12l-2 9c-10-2-17-5-23-12" fill="url(#skin)" stroke="#b9a389"/>
+    <!-- Narrow Chinese straight sword, jade guard and silk sword tassel. -->
+    <g transform="rotate(18 132 228)"><path d="M129 240h7v120l-4 17-3-17Z" fill="url(#steel)" stroke="#b2cabb"/><path d="M132 245v119" stroke="#f0f2d8"/><path d="m119 240 13-4 15 4-5 5-10-3-8 3Z" fill="#d5c085" stroke="#f0db9e"/><path d="M129 216h7v21h-7Z" fill="#417c6b"/><path d="m129 220 7 4-7 3 7 4" stroke="#d1c79c"/><path d="M131 214h3v-7h-3Z" fill="#d2c58e"/><path d="M132 208c-8-19-23-25-32-20" stroke="#b3d2b6" stroke-width="3"/><path d="m99 186-5 13m8-12-5 13" stroke="#d3c28f" stroke-width="1.4"/></g>
+    <!-- Embroidery follows the moving cloth rather than a flat repeated tile. -->
+    <g stroke="#d9cc9d" stroke-width="1.1" opacity=".85"><path d="M116 260c5-14 11-13 9-7-2 7-10 3-8-3 4-12 15-9 18-15M261 267c-4-14-13-12-10-5 3 6 9 2 6-4M163 333c12-8 24-4 19 3-6 8-16-2-10-7M224 331c16-9 23-2 17 4-6 6-13-2-7-6M192 190l6-2m-3-4 6-2M212 169l6 4"/></g>
+  </g>
+  <g fill="#d9cd9c" opacity=".8"><path d="m85 130 2 5 5 2-5 2-2 5-2-5-5-2 5-2Z"/><path d="m445 222 2 5 5 2-5 2-2 5-2-5-5-2 5-2Z"/><circle cx="108" cy="301" r="1.5"/><circle cx="431" cy="169" r="1.5"/></g>
+  <use href="#blossom" transform="translate(422 315) rotate(30) scale(.8)"/><use href="#blossom" transform="translate(468 292) rotate(60) scale(.5)"/><use href="#blossom" transform="translate(113 340) rotate(-20) scale(.65)"/>
+  <path d="M125 389c91 14 205 13 294-7" stroke="#a8b792" stroke-opacity=".3"/><path d="M164 398c65 7 134 7 201 0" stroke="#a8b792" stroke-opacity=".15"/>
+</svg>

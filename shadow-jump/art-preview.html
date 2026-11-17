@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>两界生灵图鉴 · 两仪行·十二元辰</title>
+  <style>
+    :root { color-scheme: dark; font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif; color: #e9e5d4; background: #101b20; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 320px; background: radial-gradient(ellipse at 12% 0%, #254b4580, transparent 45%), radial-gradient(ellipse at 95% 25%, #642f2b55, transparent 42%), #101b20; }
+    button { font: inherit; cursor: pointer; }
+    button:focus-visible { outline: 2px solid #b7e5d0; outline-offset: 4px; }
+    main { width: min(1180px, calc(100% - 64px)); margin: 0 auto; padding: 38px 0 46px; }
+    .eyebrow { margin: 0 0 10px; color: #aac7bd; letter-spacing: .18em; font-size: 10px; font-weight: 650; }
+    header { display: flex; align-items: flex-end; justify-content: space-between; gap: 30px; }
+    h1 { margin: 0; font-size: clamp(25px, 3vw, 36px); font-family: "Songti SC", "STSong", "Noto Serif SC", serif; font-weight: 560; letter-spacing: .12em; }
+    .intro { margin: 10px 0 0; color: #8fa5aa; font-size: 12px; line-height: 1.8; }
+    .edition { color: #9badaf; border-left: 1px solid #a3bfc02b; padding-left: 18px; font-size: 10px; line-height: 1.9; white-space: nowrap; }
+    .edition strong { display: block; color: #d6c8a4; font-weight: 500; letter-spacing: .14em; }
+    .controls { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin: 27px 0 18px; padding: 12px 0; border-block: 1px solid #9baeb31c; }
+    .actions { display: flex; gap: 5px; flex-wrap: wrap; }
+    .actions button, .playback { border: 1px solid transparent; background: transparent; color: #91a5ad; padding: 8px 13px; border-radius: 6px; font-size: 12px; transition: background .15s, color .15s; }
+    .actions button:hover, .playback:hover { color: #f5f4e7; background: #a5c4b812; }
+    .actions button[aria-pressed="true"] { color: #d4e9d7; border-color: #a8d7c139; background: #87bea51b; }
+    .playback { color: #d6c8a4; border-color: #b8ab852b; white-space: nowrap; }
+    .heroes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .hero { position: relative; overflow: hidden; border: 1px solid #a0c7be22; border-radius: 14px; background: linear-gradient(140deg, #1b353a65, #101c28 65%); }
+    .hero.shadow { background: linear-gradient(140deg, #5f2c2f66, #172329 65%); border-color: #cb92782b; }
+    .hero-top { display: flex; align-items: center; justify-content: space-between; margin: 22px 24px 0; }
+    .index { font: 11px ui-monospace, monospace; letter-spacing: .16em; color: #758f92; }
+    .form { color: #b4d9c2; font-size: 10px; letter-spacing: .1em; }
+    .shadow .form { color: #d5a18c; }
+    .hero-stage { min-height: 250px; display: flex; align-items: flex-end; justify-content: center; gap: clamp(12px, 3vw, 45px); padding: 0 15px 10px; }
+    .portrait { position: relative; width: 240px; flex: 0 1 240px; aspect-ratio: 1; }
+    .portrait::before { content: ""; position: absolute; inset: 8% 7% 0; border: 1px solid #b2d9be0f; border-radius: 48% 48% 8% 8%; background: radial-gradient(ellipse, #75c5ad13, transparent 68%); }
+    .shadow .portrait::before { border-color: #dba78b13; background: radial-gradient(ellipse, #c36d5a1c, transparent 68%); }
+    canvas { display: block; position: relative; width: 100%; height: 100%; }
+    .actual { flex: 0 0 112px; width: 112px; margin: 0 0 11px; text-align: center; }
+    .actual .ground { position: relative; height: 112px; }
+    .ground::after { content: ""; position: absolute; left: 8%; right: 8%; bottom: 8.333%; height: 1px; background: linear-gradient(90deg, transparent, #a1c9b44d, transparent); }
+    .actual figcaption { margin-top: 3px; font-size: 9px; color: #7d969b; letter-spacing: .04em; }
+    .hero-copy { margin: 0 24px 22px; padding-top: 17px; border-top: 1px solid #b5d0c118; }
+    .hero-copy h2 { margin: 0 0 7px; font-family: "Songti SC", "STSong", serif; font-size: 20px; font-weight: 520; letter-spacing: .12em; }
+    .hero-copy p { margin: 0; color: #8da5a6; font-size: 11px; line-height: 1.8; }
+    .creature-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin: 28px 0 14px; }
+    .creature-heading h2 { font-size: 14px; font-weight: 500; letter-spacing: .1em; margin: 0; }
+    .creature-heading p { color: #7f969e; font-size: 10px; margin: 0; }
+    .creatures { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+    .creature { padding: 17px 19px 18px; background: #14222e99; border: 1px solid #9db6c01c; border-radius: 12px; }
+    .creature .type { color: #7d979c; font-size: 9px; letter-spacing: .16em; }
+    .creature-art { width: min(180px, 100%); aspect-ratio: 1; margin: -5px auto -2px; background: radial-gradient(ellipse at 50% 55%, #8ab5a313, transparent 70%); }
+    .creature h3 { margin: 0 0 6px; color: #dce4dc; font-size: 14px; font-weight: 500; letter-spacing: .04em; }
+    .creature p { margin: 0; font-size: 10px; line-height: 1.7; color: #8ca1a7; }
+    .zodiac-card { background: linear-gradient(145deg, #28463c55, #14232b); }
+    .zodiac-card.shadow { background: linear-gradient(145deg, #57353355, #172329); border-color: #c38b6f2a; }
+    .zodiac-card .creature-art { width: min(200px, 100%); margin-top: 4px; }
+    .zodiac-card .battle-note { margin-top: 12px; padding-top: 11px; border-top: 1px solid #baab7c20; color: #b7ab86; }
+    footer { display: flex; justify-content: space-between; gap: 16px; margin-top: 22px; color: #657e88; font-size: 10px; line-height: 1.7; }
+    #status { color: #a6c4b8; }
+    @media (max-width: 950px) { .hero-stage { gap: 0; } .portrait { max-width: 210px; } .hero-stage { min-height: 220px; } .actual { transform: scale(.9); transform-origin: bottom center; margin-left: -8px; } }
+    @media (max-width: 760px) { main { width: calc(100% - 32px); padding-top: 25px; } .edition { display: none; } .heroes { grid-template-columns: 1fr; } .hero-stage { min-height: 250px; gap: 35px; } .portrait { max-width: 240px; } .actual { transform: none; margin-left: 0; } .creatures { grid-template-columns: repeat(2, minmax(0, 1fr)); } .controls { align-items: flex-start; } .actions { gap: 2px; } .actions button { padding: 7px 10px; } .creature-heading p { display: none; } }
+    @media (max-width: 390px) { .hero-stage { gap: 0; } .portrait { width: 200px; } .creature { padding-inline: 12px; } footer { flex-direction: column; gap: 4px; } }
+    @media (prefers-reduced-motion: reduce) { button { transition: none !important; } }
+  </style>
+  <script defer src="src/art.js"></script>
+  <script defer src="src/enemy-art.js"></script>
+  <script defer src="src/data/zodiac.js"></script>
+  <script defer src="src/zodiac-art.js"></script>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <p class="eyebrow">两仪行 · 十二元辰 / 造物录</p>
+        <h1>两界生灵图鉴</h1>
+        <p class="intro">上行天阙，下入幽都。一柄长剑穿过两界，与十二元辰重定星序。</p>
+      </div>
+      <div class="edition"><strong>天庭 · 地府</strong>巡界剑修 / 两界生灵 / 十二星君</div>
+    </header>
+    <div class="controls">
+      <div class="actions" role="group" aria-label="选择角色动作">
+        <button type="button" data-action="idle" aria-pressed="true">待机</button>
+        <button type="button" data-action="walk" aria-pressed="false">奔跑</button>
+        <button type="button" data-action="jump" aria-pressed="false">起跳</button>
+        <button type="button" data-action="fall" aria-pressed="false">下落</button>
+        <button type="button" data-action="attack" aria-pressed="false">攻击</button>
+        <button type="button" data-action="dash" aria-pressed="false">冲刺</button>
+        <button type="button" data-action="hurt" aria-pressed="false">受伤</button>
+        <button type="button" data-action="switch" aria-pressed="false">换形</button>
+      </div>
+      <button type="button" class="playback" id="playback" aria-pressed="false">暂停动画</button>
+    </div>
+    <section class="heroes" aria-label="双形态主角">
+      <article class="hero light">
+        <div class="hero-top"><span class="index">壹 / 天阙</span><span class="form">御剑 · 青玉白衣</span></div>
+        <div class="hero-stage">
+          <div class="portrait"><canvas width="480" height="480" data-hero="light" role="img" aria-label="御剑形态主角放大动作"></canvas></div>
+          <figure class="actual"><div class="ground"><canvas width="224" height="224" data-hero="light" role="img" aria-label="御剑形态主角实机尺寸"></canvas></div><figcaption>实机尺寸 · 112 px</figcaption></figure>
+        </div>
+        <div class="hero-copy"><h2>巡界使 · 御剑</h2><p>乌发玉簪 · 交领白衣 · 青玉长剑<br>袖底流云，衣上金纹，以御剑之术巡行天庭。</p></div>
+      </article>
+      <article class="hero shadow">
+        <div class="hero-top"><span class="index">贰 / 幽都</span><span class="form">镇魂 · 玄衣朱砂</span></div>
+        <div class="hero-stage">
+          <div class="portrait"><canvas width="480" height="480" data-hero="shadow" role="img" aria-label="镇魂形态主角放大动作"></canvas></div>
+          <figure class="actual"><div class="ground"><canvas width="224" height="224" data-hero="shadow" role="img" aria-label="镇魂形态主角实机尺寸"></canvas></div><figcaption>实机尺寸 · 112 px</figcaption></figure>
+        </div>
+        <div class="hero-copy"><h2>巡界使 · 镇魂</h2><p>玄衣朱绶 · 玉佩垂缨 · 赤金剑芒<br>踏过黄泉，借镇魂之力穿行幽都，衣袂随步而动。</p></div>
+      </article>
+    </section>
+    <div class="creature-heading"><h2>两界众生</h2><p>纸中生灵、阴司差役与天门守军</p></div>
+    <section class="creatures" aria-label="敌人生物图鉴">
+      <article class="creature"><span class="type">天庭 · 符纸化灵</span><div class="creature-art"><canvas width="360" height="360" data-creature="scarab" role="img" aria-label="云中纸鹤傀行走动画"></canvas></div><h3>云中纸鹤傀</h3><p>折纸为翼，朱符为心。<br>金线随折痕，轻足巡过云阶。</p></article>
+      <article class="creature"><span class="type">地府 · 引魂夜巡</span><div class="creature-art"><canvas width="360" height="360" data-creature="warden" role="img" aria-label="提灯阴差行走动画"></canvas></div><h3>提灯阴差</h3><p>高冠玄袍，青灯微晃。<br>沿黄泉旧路，寻访未归的游魂。</p></article>
+      <article class="creature"><span class="type">天庭 · 云门金甲</span><div class="creature-art"><canvas width="360" height="360" data-creature="sentinel" role="img" aria-label="持盾天兵行走动画"></canvas></div><h3>持盾天兵</h3><p>金札云盾，朱缨长枪。<br>甲叶层叠，守住天门的一线光。</p></article>
+      <article class="creature"><span class="type">地府 · 狐火惑影</span><div class="creature-art"><canvas width="360" height="360" data-creature="hunter" role="img" aria-label="冥火狐妖行走动画"></canvas></div><h3>冥火狐妖</h3><p>三尾如烟，眉点朱砂。<br>铃声与狐火之间，白影掠过冥途。</p></article>
+    </section>
+    <div class="creature-heading"><h2>十二元辰 · 镇守两界</h2><p>十二生肖星君，各有形貌、封号与守关之法</p></div>
+    <section class="creatures zodiac" id="zodiac-gallery" aria-label="十二生肖首领图鉴"></section>
+    <footer><span>与游戏共用角色绘制 · 可切换动作与暂停细看</span><span id="status" role="status">正在准备图鉴…</span></footer>
+  </main>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      "use strict";
+      const heroArt = window.ShadowJumpArt;
+      const enemyArt = window.ShadowJumpEnemyArt;
+      const zodiacArt = window.ShadowJumpZodiacArt;
+      const guardians = window.SHADOW_JUMP_ZODIAC || [];
+      const status = document.getElementById("status");
+      if (!heroArt?.renderHero || !enemyArt?.render || !zodiacArt?.render || guardians.length !== 12) {
+        status.textContent = "角色绘制模块加载失败，请刷新页面";
+        return;
+      }
+      const zodiacGallery = document.getElementById("zodiac-gallery");
+      for (const guardian of guardians) {
+        const article = document.createElement("article");
+        article.className = `creature zodiac-card ${guardian.realm}`;
+        const type = document.createElement("span");
+        type.className = "type";
+        type.textContent = `${guardian.branch} · ${guardian.realm === "light" ? "天庭" : "地府"} / ${guardian.title}`;
+        const stage = document.createElement("div");
+        stage.className = "creature-art";
+        const canvas = document.createElement("canvas");
+        canvas.width = canvas.height = 400;
+        canvas.dataset.zodiac = guardian.id;
+        canvas.setAttribute("role", "img");
+        canvas.setAttribute("aria-label", `${guardian.name}动态立绘`);
+        stage.append(canvas);
+        const title = document.createElement("h3");
+        title.textContent = guardian.name;
+        const lore = document.createElement("p");
+        lore.textContent = guardian.lore;
+        const battle = document.createElement("p");
+        battle.className = "battle-note";
+        battle.textContent = guardian.telegraph;
+        article.append(type, stage, title, lore, battle);
+        zodiacGallery.append(article);
+      }
+      const zodiacCanvases = [...document.querySelectorAll("[data-zodiac]")];
+      const heroCanvases = [...document.querySelectorAll("[data-hero]")];
+      const enemyCanvases = [...document.querySelectorAll("[data-creature]")];
+      const buttons = [...document.querySelectorAll("[data-action]")];
+      const playback = document.getElementById("playback");
+      const actionNames = Object.fromEntries(buttons.map(button => [button.dataset.action, button.textContent]));
+      let action = "idle";
+      let paused = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      let elapsed = 0;
+      let lastTime = null;
+      let lastFrame = "";
+
+      function updatePlayback() {
+        playback.textContent = paused ? "播放动画" : "暂停动画";
+        playback.setAttribute("aria-pressed", String(paused));
+        status.textContent = `${actionNames[action]} · ${paused ? "已暂停" : "播放中"}`;
+      }
+
+      function draw(canvas, render, logicalSize = 96) {
+        const context = canvas.getContext("2d");
+        context.setTransform(1, 0, 0, 1, 0, 0);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.save();
+        context.scale(canvas.width / logicalSize, canvas.height / logicalSize);
+        render(context);
+        context.restore();
+      }
+
+      function paint() {
+        const spec = heroArt.animations[action];
+        const count = spec.end - spec.start + 1;
+        const cycleLength = count / spec.frameRate + (spec.repeat === 0 ? .35 : 0);
+        const frame = Math.min(count - 1, Math.floor((elapsed % cycleLength) * spec.frameRate));
+        const enemyFrames = enemyCanvases.map(canvas => Math.floor(elapsed * (enemyArt.species[canvas.dataset.creature]?.frameRate || 10)) % 6);
+        const zodiacFrames = zodiacCanvases.map(canvas => Math.floor(elapsed * (zodiacArt.bosses[canvas.dataset.zodiac]?.frameRate || 6)) % 6);
+        const frameKey = `${action}:${frame}:${enemyFrames.join(",")}:${zodiacFrames.join(",")}`;
+        if (frameKey === lastFrame) return;
+        lastFrame = frameKey;
+        for (const canvas of heroCanvases) draw(canvas, context => heroArt.renderHero(context, canvas.dataset.hero, action, frame, count));
+        enemyCanvases.forEach((canvas, index) => draw(canvas, context => enemyArt.render(context, canvas.dataset.creature, enemyFrames[index])));
+        zodiacCanvases.forEach((canvas, index) => draw(canvas, context => zodiacArt.render(context, canvas.dataset.zodiac, zodiacFrames[index]), 128));
+      }
+
+      for (const button of buttons) {
+        button.addEventListener("click", () => {
+          action = button.dataset.action;
+          elapsed = 0;
+          for (const other of buttons) other.setAttribute("aria-pressed", String(other === button));
+          updatePlayback();
+          paint();
+        });
+      }
+      playback.addEventListener("click", () => { paused = !paused; updatePlayback(); });
+      document.addEventListener("visibilitychange", () => { lastTime = null; });
+      function tick(now) {
+        if (lastTime !== null && !paused && !document.hidden) elapsed += Math.min((now - lastTime) / 1000, .1);
+        lastTime = now;
+        paint();
+        window.requestAnimationFrame(tick);
+      }
+      updatePlayback();
+      window.requestAnimationFrame(tick);
+    });
+  </script>
+</body>
+</html>
