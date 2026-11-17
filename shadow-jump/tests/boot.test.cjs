@@ -7,7 +7,8 @@ const vm = require("node:vm");
 const source = fs.readFileSync(path.join(__dirname, "../src/main.js"), "utf8");
 const dependencies = [
   "SHADOW_JUMP_LEVEL", "ShadowJumpGameScene", "ShadowJumpArt", "ShadowJumpWorldArt",
-  "ShadowJumpEnemyArt", "SHADOW_JUMP_ZODIAC", "ShadowJumpZodiacArt", "createShadowJumpChapter"
+  "ShadowJumpEnemyArt", "SHADOW_JUMP_ZODIAC", "ShadowJumpZodiacArt", "createShadowJumpChapter",
+  "ShadowJumpRuneStore", "ShadowJumpRunes", "ShadowJumpRuneUI"
 ];
 
 test("page keeps existing local scripts deferred with Phaser before game code", () => {

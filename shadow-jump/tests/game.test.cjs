@@ -737,8 +737,8 @@ test("changing boss phase clears old warnings, motion and projectiles and change
   scene.bossMotion = { pattern: "leap" };
   scene.boss.sprite.y = 410;
   scene.damageBoss(model.maxHp / 2 + 1, model.phases[1].weakness);
-  assert.equal(model.hp, model.maxHp, "the shield blocks the wrong form");
-  assert.equal(warning.destroyed, undefined, "a blocked hit cannot cancel an enemy attack");
+  assert.equal(model.hp, model.maxHp - (model.maxHp / 2 + 1) * .45, "off-polarity attacks retain reduced damage");
+  assert.equal(warning.destroyed, undefined, "a hit above the phase threshold cannot cancel an enemy attack");
   scene.damageBoss(model.maxHp / 2 + 1, model.phases[0].weakness);
   assert.equal(model.phaseIndex, 1);
   assert.equal(model.attackTimer, 1.8);
@@ -769,6 +769,43 @@ test("a defeated boss removes every active attack and cannot launch another voll
   assert.ok(scene.events.includes("xp:boss:120"));
   scene.executeBossAttack(attack);
   assert.equal(scene.bossThreats.length, 0);
+});
+
+test("registered Boss contact marks charge and leap unblockable but preserves ordinary contact", () => {
+  const scene = makeBossScene();
+  const boss = scene.boss, player = scene.player, overlaps = [];
+  const visual = () => {
+    const object = displayObject();
+    object.setScrollFactor = () => object;
+    return object;
+  };
+  scene.level = { ...scene.level, platforms: [], hazards: [], crystals: [], enemies: [], gates: [] };
+  scene.createBoss = () => boss;
+  scene.createPortal = () => ({ zone: {} });
+  scene.add = Object.fromEntries(["image", "tileSprite", "graphics", "ellipse", "text", "circle", "group"].map(name => [name, visual]));
+  player.setDepth = player.setCollideWorldBounds = () => player;
+  scene.physics.add = {
+    sprite: () => player, group: visual, collider() {},
+    overlap(first, second, callback) { overlaps.push({ first, second, callback }); }
+  };
+  scene.physics.world.setBounds = () => {};
+  Object.assign(scene.cameras.main, { setBounds() {}, startFollow() {}, setDeadzone() {} });
+  scene.createWorld();
+  const contact = overlaps.find(entry => entry.first === player && entry.second === boss.sprite);
+  assert.ok(contact, "the actual world registers the Boss contact callback");
+  for (const pattern of [null, "charge", "leap"]) {
+    scene.bossMotion = pattern ? { pattern } : null;
+    let calls = 0;
+    scene.hurt = amount => {
+      calls += 1;
+      assert.equal(amount, 18);
+      assert.equal(scene.runeIncomingAttack.sourceX, boss.sprite.x);
+      assert.equal(scene.runeIncomingAttack.unblockable, Boolean(pattern));
+    };
+    contact.callback();
+    assert.equal(calls, 1);
+    assert.equal(scene.runeIncomingAttack, null, "contact context cannot leak into subsequent damage");
+  }
 });
 
 test("boss projectiles use the player body, expire, and deal damage only once", () => {

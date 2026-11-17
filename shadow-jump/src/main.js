@@ -27,7 +27,7 @@ if (!window.Phaser) {
   throw new Error("Shadow Jump boot failed: Phaser is unavailable.");
 }
 
-if (!window.SHADOW_JUMP_LEVEL || !window.ShadowJumpGameScene || !window.ShadowJumpArt || !window.ShadowJumpWorldArt || !window.ShadowJumpEnemyArt || !window.SHADOW_JUMP_ZODIAC || !window.ShadowJumpZodiacArt || !window.createShadowJumpChapter) {
+if (!window.SHADOW_JUMP_LEVEL || !window.ShadowJumpGameScene || !window.ShadowJumpArt || !window.ShadowJumpWorldArt || !window.ShadowJumpEnemyArt || !window.SHADOW_JUMP_ZODIAC || !window.ShadowJumpZodiacArt || !window.createShadowJumpChapter || !window.ShadowJumpRuneStore || !window.ShadowJumpRunes || !window.ShadowJumpRuneUI) {
   showBootError(
     "游戏脚本没有加载完整，无法启动。",
     "请刷新重试，并确认发布内容包含完整的 src/ 目录，且与 index.html 位于同一项目目录下。"

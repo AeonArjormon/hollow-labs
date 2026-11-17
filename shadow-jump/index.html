@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#102c2d">
   <meta name="description" content="执剑巡天庭，持符入地府。化身巡界使，收集灵印，挑战十二生肖元辰。">
   <title>两仪行 · 十二元辰</title>
-  <link rel="stylesheet" href="styles.css?v=runes-preview-1">
+  <link rel="stylesheet" href="styles.css?v=runes-live-1">
   <script defer src="vendor/phaser.min.js"></script>
   <script defer src="src/data/zodiac.js"></script>
   <script defer src="src/data/level-01.js"></script>
@@ -14,8 +14,12 @@
   <script defer src="src/zodiac-art.js"></script>
   <script defer src="src/enemy-art.js"></script>
   <script defer src="src/world-art.js"></script>
-  <script defer src="src/game-scene.js"></script>
-  <script defer src="src/main.js"></script>
+  <link rel="stylesheet" href="rune-ui.css?v=runes-live-1">
+  <script defer src="src/rune-store.js?v=runes-live-1"></script>
+  <script defer src="src/rune-combat.js?v=runes-live-1"></script>
+  <script defer src="src/rune-ui.js?v=runes-live-1"></script>
+  <script defer src="src/game-scene.js?v=runes-live-1"></script>
+  <script defer src="src/main.js?v=runes-live-1"></script>
 </head>
 <body>
   <main class="shell">
@@ -24,7 +28,7 @@
         <a class="back-link" href="../index.html" aria-label="返回空洞实验室">← <span>HOLLOW LABS</span></a>
         <div class="brand"><span class="brand-mark" aria-hidden="true">两仪</span><span>两仪行 <small>十二元辰</small></span></div>
         <div class="settings" aria-label="游戏设置">
-          <a class="art-preview-link" href="runes-preview.html" target="_blank" rel="noopener" aria-label="打开六道轮回装备设计预览（新标签页）">试装 <span aria-hidden="true">↗</span></a>
+          <button type="button" class="art-preview-link" data-open-runes aria-haspopup="dialog">六道装备 <kbd>E</kbd></button>
           <a class="art-preview-link" href="art-preview.html" target="_blank" rel="noopener" aria-label="打开巡界图鉴（新标签页）">图鉴 <span aria-hidden="true">↗</span></a>
           <button id="sound-toggle" type="button" aria-label="切换音效" aria-pressed="true" title="切换音效">音效 开</button>
           <button id="motion-toggle" type="button" aria-label="减少动态效果" aria-pressed="false" title="减少屏幕震动与动态效果">动态 开</button>
@@ -42,8 +46,8 @@
         </div>
         <div class="collection"><div class="hud-chip crystal-chip" id="crystals">灵印 0/5</div><div class="hud-chip level-chip" id="level">Lv 1 · 0/60</div></div>
         <div class="mode-group"><span class="mode-label">所在两界 <kbd>空格</kbd></span><div class="mode-box" aria-label="所在两界"><button class="mode-token light active" id="light-scene" type="button" aria-label="前往天庭" aria-pressed="true">天庭</button><button class="mode-token shadow" id="shadow-scene" type="button" aria-label="前往地府" aria-pressed="false">地府</button></div></div>
-        <div class="mode-group"><span class="mode-label">巡界之术 <kbd>L</kbd></span><div class="mode-box" aria-label="巡界之术"><button class="mode-token light active" id="light-form" type="button" aria-label="切换御剑形态" aria-pressed="true">御剑</button><button class="mode-token shadow" id="shadow-form" type="button" aria-label="切换镇魂形态" aria-pressed="false">镇魂</button></div></div>
-        <div class="loadout"><div class="hud-chip spirit" id="spirit-core">术法：玉清护体</div><div class="hud-chip gear" id="equipment">飞剑 / 云履 / 镇魂印</div></div>
+        <div class="mode-group"><span class="mode-label">阴阳配装 <kbd>L</kbd></span><div class="mode-box" aria-label="阴阳配装"><button class="mode-token light active" id="light-form" type="button" aria-label="切换阳面配装" aria-pressed="true">阳 · 青玉</button><button class="mode-token shadow" id="shadow-form" type="button" aria-label="切换阴面配装" aria-pressed="false">阴 · 朱砂</button></div></div>
+        <div class="loadout"><div class="hud-chip spirit" id="spirit-core">术法：玉清护体</div><div class="hud-chip gear" id="equipment">E 六道轮回</div></div>
         <div class="session-state"><div class="hud-chip state" id="state" role="status">准备</div><button class="pause-button" id="pause" type="button" disabled title="暂停 / 继续（P）">暂停</button></div>
       </div>
       <section id="zodiac-journal" class="zodiac-journal" aria-label="十二元辰试炼进度"></section>
@@ -63,7 +67,8 @@
             <p class="intro-description">化身巡界使，往来天庭与地府。<br>寻回灵印，逐一挑战十二生肖元辰。</p>
             <button class="primary start-button" id="start" type="button"><span>执剑入两界</span><span aria-hidden="true">→</span></button>
             <button class="chapter-picker" type="button" data-open-chapters>选择元辰 <span aria-hidden="true">↗</span></button>
-            <div class="start-note">双界探索 · 御剑镇魂 · 十二生肖试炼</div>
+            <button class="chapter-picker" type="button" data-open-runes>六道轮回 · 整备符文 <kbd>E</kbd></button>
+            <div class="start-note">双界探索 · 阴阳十二槽 · 生肖符文</div>
           </div>
           <div class="intro-art">
             <div class="orbit orbit-one" aria-hidden="true"></div><div class="orbit orbit-two" aria-hidden="true"></div>
@@ -71,24 +76,24 @@
             <img src="assets/hero-portrait.svg" alt="巡界使的御剑与镇魂形态：玉簪长发、青白汉服与朱砂玄衣" width="560" height="430">
             <div class="form-cards"><div class="form-card light-card"><span>剑</span><div><strong>御剑</strong><small>青衫御剑 · 玉清护体</small></div></div><div class="form-card shadow-card"><span>符</span><div><strong>镇魂</strong><small>玄衣镇魂 · 破阵突袭</small></div></div></div>
           </div>
-          <div class="intro-controls controls"><span><kbd>A</kbd><kbd>D</kbd> 移动</span><span><kbd>K</kbd> 二段跳</span><span><kbd>J</kbd> 攻击</span><span><kbd>空格</kbd> 换两界</span><span><kbd>L</kbd> 换术法</span><span><kbd>Shift</kbd> 冲刺</span></div>
+          <div class="intro-controls controls"><span><kbd>A</kbd><kbd>D</kbd> 移动</span><span><kbd>K</kbd> 二段跳</span><span><kbd>J</kbd> 攻击</span><span><kbd>空格</kbd> 换两界</span><span><kbd>L</kbd> 换阴阳</span><span><kbd>Shift</kbd> 冲刺</span></div>
         </div>
       </div>
 
       <div class="overlay hidden" id="pause-overlay" role="dialog" aria-modal="true" aria-labelledby="pause-title">
-        <div class="panel pause-panel"><span class="dialog-symbol" aria-hidden="true">☾</span><div class="eyebrow">且歇一程</div><h1 id="pause-title">且听风吟</h1><p>云海有归处，冥川亦有岸。歇息片刻，再赴两界。</p><div class="dialog-actions"><button class="primary" id="resume" type="button">继续巡界 <kbd>P</kbd></button><button class="secondary" id="pause-restart" type="button">重新出发</button><button class="secondary" type="button" data-open-chapters>选择元辰</button></div><p class="dialog-note">重新出发将重置本次关卡进度。</p></div>
+        <div class="panel pause-panel"><span class="dialog-symbol" aria-hidden="true">☾</span><div class="eyebrow">且歇一程</div><h1 id="pause-title">且听风吟</h1><p>云海有归处，冥川亦有岸。歇息片刻，再赴两界。</p><div class="dialog-actions"><button class="primary" id="resume" type="button">继续巡界 <kbd>P</kbd></button><button class="secondary" id="pause-restart" type="button">重新出发</button><button class="secondary" type="button" data-open-chapters>选择元辰</button><button class="secondary" type="button" data-open-runes>六道装备</button></div><p class="dialog-note">重新出发将重置本次关卡进度。</p></div>
       </div>
 
       <div class="overlay hidden" id="help-panel" role="dialog" aria-modal="true" aria-labelledby="help-title">
-        <div class="panel help-panel"><div class="dialog-heading"><div><div class="eyebrow">巡界要诀</div><h1 id="help-title">巡界手札</h1></div><button class="close-button" id="help-close" type="button" aria-label="关闭操作指南">×</button></div><p>天庭与地府各有通途，御剑与镇魂各有所长。</p><div class="controls help-controls"><span><kbd>A / D</kbd> 或方向键移动</span><span><kbd>K</kbd> 跳跃 / 空中再跳一次</span><span><kbd>J</kbd> 攻击，可持续按住</span><span><kbd>U</kbd> 释放形态技能</span><span><kbd>空格</kbd> 往来天庭 / 地府</span><span><kbd>L</kbd> 切换御剑 / 镇魂术法</span><span><kbd>Shift</kbd> 向当前朝向冲刺</span><span><kbd>P</kbd> 暂停 / 继续</span><span><kbd>R</kbd> 从头重新开始</span></div><div class="guide-tips"><p><b>跳得更准</b> 轻点低跳，按住高跳；落地前稍早按下也能接上下一跳。</p><p><b>留意灵力</b> 在天庭御剑、于地府镇魂可恢复灵力，交错施术则持续消耗。</p><p><b>放心探索</b> 引魂灯可记录落脚处并恢复资源。集齐灵印，前往界门挑战当值元辰。</p></div></div>
+        <div class="panel help-panel"><div class="dialog-heading"><div><div class="eyebrow">巡界要诀</div><h1 id="help-title">巡界手札</h1></div><button class="close-button" id="help-close" type="button" aria-label="关闭操作指南">×</button></div><p>天庭与地府各有通途，阴阳六道决定出招。Boss 掉落对应生肖符文，可在 E 装备页配置十二槽。</p><div class="controls help-controls"><span><kbd>A / D</kbd> 或方向键移动</span><span><kbd>K</kbd> 跳跃 / 空中再跳一次</span><span><kbd>J</kbd> 连攻；重武器长按蓄力，松手释放</span><span><kbd>U</kbd> 释放天道术法</span><span><kbd>E</kbd> 六道装备与试装</span><span><kbd>空格</kbd> 往来天庭 / 地府</span><span><kbd>L</kbd> 切换阴阳六道配装</span><span><kbd>Shift</kbd> 向当前朝向冲刺</span><span><kbd>P</kbd> 暂停 / 继续</span><span><kbd>R</kbd> 从头重新开始</span></div><div class="guide-tips"><p><b>跳得更准</b> 轻点低跳，按住高跳；落地前稍早按下也能接上下一跳。</p><p><b>留意灵力</b> 灵力自然恢复；天庭配阳面、地府配阴面时恢复更快。切面不补充资源。</p><p><b>放心探索</b> 长明灯可记录落脚处。清理周围敌人后可确认配装；战斗中只能编辑草案。演武可免费试用全部符文，返回历练恢复正式配装。</p></div></div>
       </div>
     </section>
 
-    <footer class="bottombar"><div class="guide-line"><span aria-hidden="true">✧</span><span id="guide-text">收集灵印，挑战十二生肖元辰。</span></div><div class="ability-status" aria-label="技能状态"><span><kbd>Shift</kbd><span id="dash-status">冲刺就绪</span></span><span><kbd>U</kbd><span id="skill-status">技能就绪</span></span></div><span class="hint">顺应两界恢复灵力 <span>·</span> 引魂灯处记录进度</span></footer>
+    <footer class="bottombar"><div class="guide-line"><span aria-hidden="true">✧</span><span id="guide-text">收集灵印，挑战十二生肖元辰。</span></div><div class="ability-status" aria-label="技能状态"><span><kbd>Shift</kbd><span id="dash-status">冲刺就绪</span></span><span><kbd>U</kbd><span id="skill-status">技能就绪</span></span></div><span class="hint">E 六道配装 · 长明灯附近确认 <span>·</span> 引魂灯处记录进度</span></footer>
 
     <nav class="touch-controls" aria-label="触控操作">
       <div class="touch-movement"><button data-hold="left" type="button" aria-label="向左移动"><b>←</b></button><button data-hold="right" type="button" aria-label="向右移动"><b>→</b></button></div>
-      <div class="touch-switches"><button data-action="scene" type="button"><b>◒</b><span>两界</span></button><button data-action="form" type="button"><b>✧</b><span>术法</span></button><button data-action="skill" type="button"><b>✦</b><span>技能</span></button></div>
+      <div class="touch-switches"><button data-action="scene" type="button"><b>◒</b><span>两界</span></button><button data-action="form" type="button"><b>☯</b><span>阴阳</span></button><button data-action="skill" type="button"><b>✦</b><span>技能</span></button></div>
       <div class="touch-actions"><button data-action="dash" type="button"><b>⇥</b><span>冲刺</span></button><button data-action="attack" type="button"><b>╱</b><span>攻击</span></button><button class="jump-button" data-action="jump" type="button"><b>↑</b><span>跳跃</span></button></div>
     </nav>
     <p class="orientation-hint">横屏体验更开阔 · 支持键盘与触控</p>
@@ -97,7 +102,7 @@
     <div class="dialog-heading"><div><div class="eyebrow">十二元辰 · 巡界录</div><h1 id="chapter-picker-title">选择元辰</h1></div><button class="close-button" id="chapter-close" type="button" aria-label="关闭章节选择">×</button></div>
     <p id="chapter-picker-note">点选元辰后开启该章；关闭选择可返回，当前历练进度保留。</p>
     <div class="chapter-options" id="chapter-options" aria-label="十二元辰章节"></div>
-    <a class="art-preview-link chapter-art-link" href="runes-preview.html" target="_blank" rel="noopener">六道轮回 · 装备设计预览 <span aria-hidden="true">↗</span><span class="link-context">新标签页</span></a>
+    <button class="art-preview-link chapter-art-link" type="button" data-open-runes>六道轮回 · 打开正式装备盘 <kbd>E</kbd></button>
     <a class="art-preview-link chapter-art-link" href="art-preview.html" target="_blank" rel="noopener">巡界图鉴 · 人物与十二元辰 <span aria-hidden="true">↗</span><span class="link-context">新标签页</span></a>
   </dialog>
 </body>

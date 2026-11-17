@@ -144,6 +144,12 @@ class GameScene extends Phaser.Scene {
   create() {
     this.chapterIndex = 0;
     this.completedZodiacs = this.readCampaign();
+    if (window.ShadowJumpRuneStore) {
+      let storage;
+      try { storage = window.localStorage; } catch { /* Keep a playable session when storage is blocked. */ }
+      this.formalRuneStore = window.ShadowJumpRuneStore.create({ storage, completedZodiacs: [...this.completedZodiacs] });
+      this.runeStore = this.formalRuneStore;
+    }
     this.practiceMode = false;
     this.level = window.createShadowJumpChapter(this.chapterIndex);
     this.sceneMode = "light";
@@ -188,6 +194,7 @@ class GameScene extends Phaser.Scene {
     this.createHudHooks();
     this.createChapterJournal();
     this.resetGame(false);
+    this.runeUI = window.ShadowJumpRuneUI?.create(this);
     this.showMenu();
   }
 
@@ -242,11 +249,12 @@ class GameScene extends Phaser.Scene {
       R: () => { if (!this.helpOpen) this.resetGame(true); }, P: () => { if (!this.helpOpen) this.togglePause(); },
       ESC: () => this.helpOpen ? this.closeHelp() : this.togglePause(),
       SPACE: () => this.switchScene(), L: () => this.switchForm(),
-      K: () => this.jump(), J: () => this.attack(),
-      U: () => this.skill(), SHIFT: () => this.dash()
+      K: () => this.jump(), J: () => this.beginRuneAttack ? this.beginRuneAttack() : this.attack(),
+      U: () => this.skill(), SHIFT: () => this.dash(), E: () => this.runeUI?.open()
     };
     Object.entries(keyActions).forEach(([key, action]) => {
       this.input.keyboard.on(`keydown-${key}`, event => {
+        if (this.runeEquipmentOpen) return;
         if (this.chapterPickerOpen) {
           if (key === "ESC") this.closeChapterPicker();
           return;
@@ -255,6 +263,7 @@ class GameScene extends Phaser.Scene {
       });
     });
     this.input.keyboard.on("keyup-K", () => this.releaseJump());
+    this.input.keyboard.on("keyup-J", () => this.endRuneAttack?.());
 
     this.holdInput = { left: false, right: false, attack: false };
     document.querySelectorAll("[data-hold]").forEach(button => {
@@ -275,7 +284,7 @@ class GameScene extends Phaser.Scene {
 
     const actions = {
       jump: () => this.jump(),
-      attack: () => this.attack(),
+      attack: () => this.beginRuneAttack ? this.beginRuneAttack() : this.attack(),
       skill: () => this.skill(),
       scene: () => this.switchScene(),
       form: () => this.switchForm(),
@@ -297,7 +306,11 @@ class GameScene extends Phaser.Scene {
         // pointerup/cancel also releases capture; apply the jump cut only once.
         this.actionPointers.delete(button);
         if (button.dataset.action === "jump") this.releaseJump();
-        if (button.dataset.action === "attack") this.holdInput.attack = false;
+        if (button.dataset.action === "attack") {
+          this.holdInput.attack = false;
+          if (event.type === "pointercancel" || event.type === "lostpointercapture") this.cancelRuneAttack?.();
+          else this.endRuneAttack?.();
+        }
       };
       button.addEventListener("pointerup", release);
       button.addEventListener("pointercancel", release);
@@ -350,7 +363,10 @@ class GameScene extends Phaser.Scene {
     this.physics.add.overlap(this.player, this.hazards.map(h => h.zone), () => this.hurt(14), null, this);
     this.physics.add.overlap(this.player, this.crystals.map(c => c.sprite), (_player, crystal) => this.collectCrystal(crystal), null, this);
     this.physics.add.overlap(this.player, this.enemies.map(e => e.sprite), (_player, enemy) => this.touchEnemy(enemy), null, this);
-    this.physics.add.overlap(this.player, this.boss.sprite, () => this.hurt(18), null, this);
+    this.physics.add.overlap(this.player, this.boss.sprite, () => {
+      this.runeIncomingAttack = { sourceX: this.boss.sprite.x, unblockable: Boolean(this.bossMotion) };
+      try { this.hurt(18); } finally { this.runeIncomingAttack = null; }
+    }, null, this);
     this.physics.add.overlap(this.player, this.portal.zone, () => this.tryPortal(), null, this);
     this.physics.add.overlap(this.projectiles, this.enemies.map(e => e.sprite), (projectile, enemy) => this.projectileHit(projectile, enemy), null, this);
     this.physics.add.overlap(this.projectiles, this.gates.map(g => g.sprite), (projectile, gate) => this.projectileGateHit(projectile, gate), null, this);
@@ -423,7 +439,7 @@ class GameScene extends Phaser.Scene {
     sprite.setData("model", { ...data });
     const hpBack = this.add.rectangle(data.x, data.y - 30, 54, 6, 0x080a10, 0.76).setDepth(30);
     const hpBar = this.add.rectangle(data.x - 27, data.y - 30, 54, 6, 0xcf7968, 1).setOrigin(0, 0.5).setDepth(31);
-    const weaknessLabel = this.add.text(data.x, data.y - 46, data.weakness === "shadow" ? "弱点 · 镇魂斩" : "弱点 · 飞剑", {
+    const weaknessLabel = this.add.text(data.x, data.y - 46, data.weakness === "shadow" ? "弱点 · 阴" : "弱点 · 阳", {
       fontFamily: "system-ui, sans-serif", fontSize: "11px",
       color: data.weakness === "shadow" ? "#d6c7fa" : "#dcefc6",
       backgroundColor: "#142234", padding: { x: 5, y: 3 }
@@ -437,7 +453,7 @@ class GameScene extends Phaser.Scene {
     sprite.body.allowGravity = false;
     sprite.body.setImmovable(true);
     sprite.setData("model", { ...data, maxHp: data.hp });
-    const labelText = this.add.text(data.x + data.w / 2, data.y - 18, data.weakness === "shadow" ? "镇魂斩" : "飞剑", {
+    const labelText = this.add.text(data.x + data.w / 2, data.y - 18, data.weakness === "shadow" ? "阴面破封" : "阳面破封", {
       fontFamily: "system-ui, sans-serif",
       fontSize: "13px",
       color: "#fff1a8"
@@ -513,7 +529,7 @@ class GameScene extends Phaser.Scene {
     this.syncPreferences();
     // Only the top visible, non-inert dialog participates in the focus loop.
     const trapDialogFocus = event => {
-      if (event.key !== "Tab" || this.chapterPickerOpen) return;
+      if (event.key !== "Tab" || this.chapterPickerOpen || this.runeEquipmentOpen) return;
       const panels = [...document.querySelectorAll('.overlay:not(.hidden)[role="dialog"]')];
       const panel = panels.filter(element => !element.closest('[inert], [aria-hidden="true"]')).at(-1);
       if (!panel) return;
@@ -537,6 +553,78 @@ class GameScene extends Phaser.Scene {
       const value = JSON.parse(localStorage.getItem("liangyi-zodiac-progress-v1") || "[]");
       return new Set(Array.isArray(value) ? value.filter(id => window.SHADOW_JUMP_ZODIAC.some(z => z.id === id)) : []);
     } catch { return new Set(); }
+  }
+
+  getRuneLoadouts() {
+    return this.runeStore?.getLoadouts() || { light: Array(6).fill(null), shadow: Array(6).fill(null) };
+  }
+
+  getRuneEquipmentState() {
+    const state = this.runeStore?.state;
+    const nearbyEnemy = this.enemies?.some(enemy => enemy.sprite.active &&
+      this.isActiveMode(enemy) && Math.abs(enemy.sprite.x - this.player.x) < 360 &&
+      Math.abs(enemy.sprite.y - this.player.y) < 150);
+    const bossCombat = this.boss?.sprite.active && this.player.x >= this.level.arenaStart;
+    const threatened = nearbyEnemy || bossCombat || this.bossThreats?.length > 0;
+    const nearStart = Math.abs(this.player.x - this.level.start.x) < 150;
+    const nearLamp = this.checkpoint.x > this.level.start.x &&
+      Math.abs(this.player.x - this.checkpoint.x) < 170 &&
+      Math.abs(this.player.y - this.checkpoint.y) < 130;
+    const settled = this.boss?.sprite.getData("model").hp <= 0;
+    const safe = !this.lost && (this.practiceMode || this.won || !this.running ||
+      (!threatened && (nearStart || nearLamp || settled)));
+    return {
+      safe, practice: Boolean(this.practiceMode), inventory: { ...state?.inventory }, ink: state?.ink || 0,
+      persistent: Boolean(this.runeStore?.persistent), warning: this.runeStore?.warning || "",
+      reason: this.lost ? "魂灯续行后再换装；死亡不会丢失已获得符文。" :
+        this.practiceMode ? "演武试装：全部符文可用，返回历练恢复正式配装。" :
+        safe ? "可确认装备。生命、灵力与技能冷却保留。" :
+        "当前可编辑草案；回到已点亮的长明灯并清理周围敌人，或击败元辰后确认。"
+    };
+  }
+
+  beginRuneEquipment() {
+    if (this.runeEquipmentOpen) return;
+    if (this.chapterPickerOpen) this.closeChapterPicker(false);
+    if (this.helpOpen) this.closeHelp();
+    this.runeEquipmentWasPaused = this.paused;
+    this.runeEquipmentOpen = true;
+    this.clearInput();
+    this.paused = true;
+    this.time.paused = true;
+    this.physics.world.pause();
+    this.tweens.pauseAll();
+    this.player.anims.pause();
+    this.pauseEnemyAnimations(true);
+    this.updateHud();
+  }
+
+  endRuneEquipment() {
+    if (!this.runeEquipmentOpen) return;
+    this.runeEquipmentOpen = false;
+    this.clearInput();
+    this.paused = Boolean(this.runeEquipmentWasPaused);
+    if (!this.paused && this.running && !this.won && !this.lost) {
+      this.time.paused = false;
+      this.physics.world.resume();
+      this.tweens.resumeAll();
+      this.player.anims.resume();
+      this.pauseEnemyAnimations(false);
+    }
+    this.updateHud();
+  }
+
+  applyRuneLoadouts(loadouts) {
+    const availability = this.getRuneEquipmentState();
+    if (!availability.safe) return { ok: false, error: availability.reason };
+    const result = this.runeStore.equip(loadouts);
+    if (result.ok) {
+      this.cancelRuneAttack?.();
+      this.syncRuneCombatSide?.();
+      this.updateHud();
+      this.showMessage(this.practiceMode ? "演武配装已生效" : "六道配装已生效", 1800);
+    }
+    return result;
   }
 
   createChapterJournal() {
@@ -598,6 +686,11 @@ class GameScene extends Phaser.Scene {
 
   selectChapter(index, practice = false) {
     if (!window.SHADOW_JUMP_ZODIAC[index]) return;
+    this.runeUI?.close();
+    if (this.formalRuneStore) {
+      if (practice && !this.practiceMode) this.practiceRuneStore = window.ShadowJumpRuneStore.createPractice(this.formalRuneStore.getLoadouts());
+      this.runeStore = practice ? this.practiceRuneStore : this.formalRuneStore;
+    }
     this.audio.unlock();
     this.chapterIndex = index;
     this.practiceMode = practice;
@@ -687,6 +780,7 @@ class GameScene extends Phaser.Scene {
   }
 
   resetGame(startRunning) {
+    this.runeUI?.close();
     this.clearBossAttacks();
     this.time.removeAllEvents();
     this.time.paused = false;
@@ -727,6 +821,8 @@ class GameScene extends Phaser.Scene {
     this.runTime = 0;
     this.fallCount = 0;
     this.checkpoint = { ...this.level.start };
+    this.runeInstanceId = this.runeStore?.createInstance(window.SHADOW_JUMP_ZODIAC[this.chapterIndex].id);
+    this.initRuneCombat?.();
 
     this.player?.setPosition(this.level.start.x, this.level.start.y);
     this.player?.setVelocity(0, 0);
@@ -745,7 +841,7 @@ class GameScene extends Phaser.Scene {
       enemy.sprite.enableBody(true, enemy.x, enemy.y + enemy.h / 2 + 3, true, true);
       enemy.sprite.setData("model", { ...this.level.enemies[index] });
       enemy.sprite.setTint(0xffffff);
-      enemy.weaknessLabel?.setText(enemy.weakness === "shadow" ? "弱点 · 镇魂斩" : "弱点 · 飞剑");
+      enemy.weaknessLabel?.setText(enemy.weakness === "shadow" ? "弱点 · 阴" : "弱点 · 阳");
       enemy.sprite.setFlipX(enemy.vx < 0);
       enemy.sprite.play(window.ShadowJumpEnemyArt.species[enemy.species].animation);
     });
@@ -893,6 +989,7 @@ class GameScene extends Phaser.Scene {
   }
 
   clearInput() {
+    this.cancelRuneAttack?.();
     Object.keys(this.holdInput).forEach(key => { this.holdInput[key] = false; });
     this.actionPointers?.clear();
     this.input.keyboard.resetKeys();
@@ -937,6 +1034,7 @@ class GameScene extends Phaser.Scene {
 
     this.runTime += dt;
     this.updateTimers(dt);
+    this.tickRuneCombat?.(dt);
     this.updateResources(dt);
     this.updatePlayer(dt);
     if (!this.running) return;
@@ -966,14 +1064,8 @@ class GameScene extends Phaser.Scene {
   }
 
   updateResources(dt) {
-    const reversed = this.sceneMode !== this.formMode;
-    const before = this.mp;
-    const stats = this.getStats();
-    this.mp += reversed ? -(14 - stats.reverseDrainReduction) * dt : (10 + stats.mpRegen) * dt;
+    this.mp += (this.sceneMode === this.formMode ? 6 : 4) * dt;
     this.mp = Phaser.Math.Clamp(this.mp, 0, this.maxMp);
-    if (before > 0 && this.mp <= 0 && reversed) {
-      this.forceMatchingForm();
-    }
   }
 
   updatePlayer(dt) {
@@ -1024,6 +1116,7 @@ class GameScene extends Phaser.Scene {
       if (!this.lost) {
         this.sceneMode = this.level.startMode || "light";
         this.formMode = this.sceneMode;
+        this.syncRuneCombatSide?.();
         this.dashTimer = 0;
         this.attackCooldown = 0;
         this.switchTimer = 0;
@@ -1097,7 +1190,7 @@ class GameScene extends Phaser.Scene {
       this.showMessage(`${model.name} · ${model.telegraph}`, 3600);
     }
     const phase = model.phases[model.phaseIndex];
-    this.boss.label.setText(`${model.name}  ·  ${phase.label}  ·  ${phase.weakness === "shadow" ? "弱点：镇魂斩" : "弱点：飞剑"}`);
+    this.boss.label.setText(`${model.name}  ·  ${phase.label}  ·  ${phase.weakness === "shadow" ? "弱点：阴" : "弱点：阳"}`);
     sprite.setFlipX(this.player.x < sprite.x);
     if (this.pendingBossAttack) {
       this.pendingBossAttack.remaining -= dt;
@@ -1219,7 +1312,10 @@ class GameScene extends Phaser.Scene {
       const x = Phaser.Math.Clamp(orb.x, body.x, body.x + body.width);
       const y = Phaser.Math.Clamp(orb.y, body.y, body.y + body.height);
       const hit = Math.hypot(orb.x - x, orb.y - y) < orb.radius;
-      if (hit) this.hurt(14);
+      if (hit) {
+        this.runeIncomingAttack = { sourceX: orb.x, unblockable: true };
+        try { this.hurt(14); } finally { this.runeIncomingAttack = null; }
+      }
       if (hit || orb.life <= 0 || orb.y > this.level.floorY + 20 || orb.x < this.level.arenaStart - 100 || orb.x > this.level.width + 40) {
         orb.art.destroy(); return false;
       }
@@ -1326,8 +1422,8 @@ class GameScene extends Phaser.Scene {
 
   helpTextForPosition() {
     if (this.player.x < 950) return "第一段：K 二段跳，轻按低跳、长按高跳；空格切场景找路。";
-    if (this.player.x < 2150) return "第二段：L 切换形态。御剑远程，镇魂近战，重门需要镇魂斩。";
-    if (this.player.x < 3450) return "第三段：异界行法会消耗灵力。地府御剑可缓降，天庭镇魂可快速冲刺。";
+    if (this.player.x < 2150) return "第二段：L 切换阴阳配装；对准极性弱点破封。E 打开六道装备。";
+    if (this.player.x < 3450) return "第三段：两界都能恢复灵力；青玉高跳缓降，朱砂擅长快速冲刺。";
     return "元辰坛：留意招式预警，按弱点换形出招。";
   }
 
@@ -1344,26 +1440,17 @@ class GameScene extends Phaser.Scene {
   }
 
   switchForm(nextMode) {
-    if (!this.canAct()) return;
+    if (!this.canAct() || this.switchTimer > 0) return;
     const target = nextMode || (this.formMode === "light" ? "shadow" : "light");
     if (target === this.formMode) return;
+    this.cancelRuneAttack?.();
     this.formMode = target;
+    this.syncRuneCombatSide?.();
     this.applyPlayerArt();
-    this.switchTimer = 0.16;
+    this.switchTimer = 0.6;
     this.burst(target);
     this.audio.play("switch");
-    this.showMessage(target === "light" ? "御剑形态：高跳、缓降、飞剑" : "镇魂形态：高速、长冲刺、斩击", 1100);
-  }
-
-  forceMatchingForm() {
-    this.formMode = this.sceneMode;
-    this.applyPlayerArt();
-    this.player.body.setVelocityX(this.player.body.velocity.x * 0.25);
-    this.lockTimer = 0.35;
-    this.dashTimer = 0;
-    this.shake(160, 0.006);
-    this.showMessage("灵力耗尽，形态被拉回当前场景", 1500);
-    this.updateHud();
+    this.showMessage(`${target === "light" ? "阳面 · 青玉" : "阴面 · 朱砂"}：${this.getRuneWeapon?.().name || (target === "light" ? "飞剑" : "镇魂斩")}`, 1100);
   }
 
   jump() {
@@ -1534,7 +1621,7 @@ class GameScene extends Phaser.Scene {
     this.emitMotes(enemy.sprite.x, enemy.sprite.y - enemy.h / 2, FORM[form].color, 7, 40);
     enemy.sprite.x = Phaser.Math.Clamp(enemy.sprite.x + (this.player.flipX ? -12 : 12), model.min, model.max);
     enemy.sprite.body.updateFromGameObject();
-    this.mp = Phaser.Math.Clamp(this.mp + 4, 0, this.maxMp);
+    if (!this.runeStore) this.mp = Phaser.Math.Clamp(this.mp + 4, 0, this.maxMp);
     this.floatText(enemy.sprite.x, enemy.sprite.y - 42, `${Math.ceil(finalDamage)}`, FORM[form].color);
     this.audio.play("hit");
     if (model.hp <= 0) {
@@ -1551,7 +1638,7 @@ class GameScene extends Phaser.Scene {
   damageGate(gate, form) {
     const model = gate.sprite.getData("model");
     if (model.weakness !== form) {
-      this.showMessage(model.weakness === "shadow" ? "需要镇魂形态破门" : "需要御剑形态净化", 900);
+      this.showMessage(model.weakness === "shadow" ? "按 L 切阴面破门" : "按 L 切阳面净化", 900);
       return;
     }
     model.hp -= 1;
@@ -1569,13 +1656,14 @@ class GameScene extends Phaser.Scene {
 
   damageBoss(amount, form) {
     const model = this.boss.sprite.getData("model");
+    if (model.hp <= 0) return;
     const phase = model.phases[model.phaseIndex];
     if (phase.weakness !== form) {
-      this.showMessage(phase.weakness === "shadow" ? "护体灵光：按 L 切镇魂，用近身剑斩破防" : "护体灵光：按 L 切御剑，用飞剑破防", 1000);
-      return;
+      amount *= 0.45;
+      this.showMessage(phase.weakness === "shadow" ? "护体减伤：按 L 切阴面可造成完整伤害" : "护体减伤：按 L 切阳面可造成完整伤害", 1000);
     }
     model.hp -= amount;
-    this.mp = Phaser.Math.Clamp(this.mp + 8, 0, this.maxMp);
+    if (!this.runeStore) this.mp = Phaser.Math.Clamp(this.mp + 8, 0, this.maxMp);
     this.shake(120, 0.004);
     this.floatText(this.boss.sprite.x, this.boss.sprite.y - 72, `${Math.ceil(amount)}`, FORM[form].color);
     this.emitMotes(this.boss.sprite.x, this.boss.sprite.y, FORM[form].color, 10, 54);
@@ -1586,7 +1674,9 @@ class GameScene extends Phaser.Scene {
       this.boss.sprite.disableBody(true, true);
       this.boss.hpBack.setVisible(false); this.boss.hpBar.setVisible(false); this.boss.label.setVisible(false);
       this.addXp(120, "boss");
-      this.showMessage(`${model.name} · 试炼通过，前往右侧两界门`, 2200);
+      const reward = this.runeStore?.reward(window.SHADOW_JUMP_ZODIAC[this.chapterIndex].id, this.runeInstanceId, this.practiceMode);
+      const drop = reward?.awarded ? (reward.kind === "rune" ? `获得${window.SHADOW_JUMP_ZODIAC[this.chapterIndex].animal}符文 · 按 E 装备` : "符文已满 · 转为符墨") : "试炼通过，前往右侧两界门";
+      this.showMessage(`${model.name} · ${drop}${reward?.awarded && !this.runeStore.persistent ? "（本次会话有效）" : ""}`, 4200);
       return;
     }
     if (model.hp <= model.maxHp * 0.5 && model.phaseIndex === 0) {
@@ -1594,7 +1684,7 @@ class GameScene extends Phaser.Scene {
       model.phaseIndex = 1;
       model.attackTimer = 1.8;
       const next = model.phases[1];
-      this.showMessage(`${model.name}觉醒 · 弱点改为${next.weakness === "light" ? "御剑飞剑" : "镇魂斩"}，按 L 换形`, 2500);
+      this.showMessage(`${model.name}觉醒 · 弱点改为${next.weakness === "light" ? "阳" : "阴"}，按 L 换形`, 2500);
     }
   }
 
@@ -1612,6 +1702,7 @@ class GameScene extends Phaser.Scene {
     this.lockTimer = 0.18;
     this.dashTimer = 0;
     this.attackCooldown = 0;
+    this.cancelRuneAttack?.();
     this.jumpBufferTimer = 0;
     this.shake(150, 0.006);
     this.player.body.setVelocity(this.player.flipX ? 260 : -260, -360);
@@ -1669,7 +1760,7 @@ class GameScene extends Phaser.Scene {
   }
 
   canAct() {
-    return this.running && !this.won && !this.lost && this.lockTimer <= 0 && !this.paused && !this.helpOpen;
+    return this.running && !this.won && !this.lost && this.lockTimer <= 0 && !this.paused && !this.helpOpen && !this.runeEquipmentOpen;
   }
 
   isActiveMode(entity) {
@@ -1955,14 +2046,14 @@ class GameScene extends Phaser.Scene {
     this.hud.mpBar.closest(".meter").classList.toggle("low", this.mp / this.maxMp < 0.25 && this.sceneMode !== this.formMode);
     text(this.hud.crystals, this.practiceMode ? "演武 · 不计通关" : `灵印 ${this.crystalCount}/${this.level.crystalsRequired}`);
     text(this.hud.level, `Lv ${this.levelValue} · ${this.xp}/${this.nextXp}`);
-    text(this.hud.equipment, `${this.equipment.lightBlade.name} / ${this.equipment.shadowBoots.name} / ${this.equipment.soulVessel.name}`);
-    const core = SPIRIT_CORES[this.formMode];
+    const weapon = this.getRuneWeapon?.();
+    text(this.hud.equipment, weapon ? `${this.formMode === "light" ? "阳" : "阴"} · ${weapon.name} · E 六道` : "E 六道轮回");
+    const core = this.getRuneSkill?.() || SPIRIT_CORES[this.formMode];
     text(this.hud.spiritCore, `灵格：${core.name} · ${core.cost} 灵力`);
-    const reverseSeconds = Math.ceil(this.mp / (14 - this.getStats().reverseDrainReduction));
-    text(this.hud.state, forcedState || (this.won ? (this.practiceMode ? "演武完成" : "已通关") : this.lost ? "旅程暂歇" : this.paused ? "已暂停" : !this.running ? "准备出发" : this.sceneMode !== this.formMode ? `灵力约 ${reverseSeconds}s` : "冒险中"));
+    text(this.hud.state, forcedState || (this.won ? (this.practiceMode ? "演武完成" : "已通关") : this.lost ? "旅程暂歇" : this.paused ? "已暂停" : !this.running ? "准备出发" : "巡界中"));
     text(this.hud.pause, this.paused ? "继续" : "暂停");
     this.hud.pause.disabled = !this.running || this.helpOpen;
-    const canInteract = this.running && !this.paused && !this.helpOpen && !this.won && !this.lost;
+    const canInteract = this.running && !this.paused && !this.helpOpen && !this.runeEquipmentOpen && !this.won && !this.lost;
     for (const [key, selected] of [["lightScene", this.sceneMode === "light"], ["shadowScene", this.sceneMode === "shadow"], ["lightForm", this.formMode === "light"], ["shadowForm", this.formMode === "shadow"]]) {
       const button = this.hud[key];
       button.classList.toggle("active", selected);
@@ -1986,10 +2077,10 @@ class GameScene extends Phaser.Scene {
     text(this.hud.chapter, `${String(this.chapterIndex + 1).padStart(2, "0")} / ${zodiac.chapterName} · ${area}`);
     let guide = "A / D 行走，K 二段跳；收集沿途五枚元辰灵印。";
     if (position >= 300 && position < 1100) guide = "空格往返天庭地府，让对应的云台与灵印显现。";
-    else if (position >= 1100 && position < 2400) guide = "L 切御剑 / 镇魂；对应弱点出招。长明灯会保存进度并补充灵力。";
+    else if (position >= 1100 && position < 2400) guide = "L 切阴阳配装；对应极性弱点出招。长明灯附近可按 E 装备。";
     else if (position >= 2400 && position < this.level.arenaStart) guide = "空中再按 K 二段跳，Shift 踏云冲刺，跨越凌云阶。";
     else if (position >= this.level.arenaStart) guide = this.boss?.sprite.active ? `${zodiac.name} · ${zodiac.telegraph}` : !this.practiceMode && this.crystalCount < this.level.crystalsRequired ? `两界门还需 ${this.level.crystalsRequired - this.crystalCount} 枚灵印，可沿原路回访。` : "元辰已认可你的修为，进入右侧两界门。";
-    if (this.sceneMode !== this.formMode && this.mp / this.maxMp < .25) guide = "灵力将尽：天庭御剑、地府镇魂可恢复灵力。";
+    if (this.mp / this.maxMp < .25) guide = "灵力恢复中：天庭配阳面、地府配阴面时恢复更快。";
     if (this.won) guide = this.practiceMode ? "演武完成，回到本章历练即可收录元辰印。" : "元辰印已归位；继续下一章，重整两界秩序。";
     text(this.hud.guide, guide);
     const progress = this.won ? 100 : Math.round(Math.min(1, Math.max(0, (position - this.level.start.x) / (this.level.portal.x - this.level.start.x))) * 100);
@@ -2075,6 +2166,7 @@ class GameScene extends Phaser.Scene {
     this.sceneMode = this.level.startMode || "light";
     this.formMode = this.sceneMode;
     this.lockTimer = this.dashTimer = this.dashCooldown = this.attackCooldown = this.skillCooldown = this.shieldTimer = this.switchTimer = 0;
+    this.syncRuneCombatSide?.();
     this.jumpsUsed = this.coyoteTimer = 0;
     this.invulnTimer = 1.05;
     this.applyPlayerArt();
@@ -2093,3 +2185,4 @@ class GameScene extends Phaser.Scene {
 }
 
 window.ShadowJumpGameScene = GameScene;
+window.ShadowJumpRunes?.install(GameScene);
