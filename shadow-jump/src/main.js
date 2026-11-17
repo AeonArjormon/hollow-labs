@@ -1,23 +1,37 @@
-function showBootError(message) {
+function showBootError(message, help) {
   const overlay = document.getElementById("overlay");
   if (!overlay) return;
-  overlay.innerHTML = `
-    <div class="panel">
-      <h1>启动失败</h1>
-      <p>${message}</p>
-      <p>建议通过本地服务器或 GitHub Pages 打开；如果是离线环境，需要先恢复 Phaser 脚本访问。</p>
-      <button class="primary" type="button" onclick="location.reload()">重新加载</button>
-    </div>`;
+  const panel = document.createElement("div");
+  panel.className = "panel";
+  const title = document.createElement("h1");
+  title.textContent = "启动失败";
+  const detail = document.createElement("p");
+  detail.textContent = message;
+  const suggestion = document.createElement("p");
+  suggestion.textContent = help;
+  const retry = document.createElement("button");
+  retry.className = "primary";
+  retry.type = "button";
+  retry.textContent = "重新加载";
+  retry.addEventListener("click", () => window.location.reload());
+  panel.append(title, detail, suggestion, retry);
+  overlay.replaceChildren(panel);
   overlay.classList.remove("hidden");
 }
 
 if (!window.Phaser) {
-  showBootError("Phaser 没有加载成功，游戏引擎不可用。");
+  showBootError(
+    "游戏引擎文件 vendor/phaser.min.js 未能加载。",
+    "请刷新重试；如果刚更新了 GitHub Pages，请等待部署完成。仍无法启动时，请确认发布内容包含完整的 vendor/ 目录。"
+  );
   throw new Error("Shadow Jump boot failed: Phaser is unavailable.");
 }
 
 if (!window.SHADOW_JUMP_LEVEL || !window.ShadowJumpGameScene || !window.ShadowJumpArt || !window.ShadowJumpWorldArt || !window.ShadowJumpEnemyArt || !window.SHADOW_JUMP_ZODIAC || !window.ShadowJumpZodiacArt || !window.createShadowJumpChapter) {
-  showBootError("本地游戏脚本没有加载完整，请确认 src/ 目录与 index.html 在同一项目目录下。");
+  showBootError(
+    "游戏脚本没有加载完整，无法启动。",
+    "请刷新重试，并确认发布内容包含完整的 src/ 目录，且与 index.html 位于同一项目目录下。"
+  );
   throw new Error("Shadow Jump boot failed: local game scripts are unavailable.");
 }
 

@@ -12,7 +12,9 @@
 python3 -m http.server 8000 --bind 127.0.0.1
 ```
 
-在浏览器打开 `http://127.0.0.1:8000/shadow-jump/`。项目无需构建或安装 npm 依赖；Phaser 由页面中的 CDN 脚本加载，未缓存时需要网络。
+在浏览器打开 `http://127.0.0.1:8000/shadow-jump/`。项目无需构建或安装 npm 依赖；Phaser 4.2.0 随项目放在 `vendor/` 目录中，由当前站点加载，无需访问第三方 CDN。下载完整仓库后，可通过本地服务器离线运行；首次访问 GitHub Pages 仍需要网络。
+
+部署时请一并发布 `vendor/`、`src/` 和 `assets/` 目录。如果提示游戏引擎文件未能加载，请检查 `vendor/phaser.min.js` 是否已发布，并在 GitHub Pages 部署完成后刷新页面。
 
 独立图鉴位于 `http://127.0.0.1:8000/shadow-jump/art-preview.html`，可比较双形态主角的实机尺寸与放大细节，切换待机、奔跑、起跳、下落、攻击、冲刺、受伤、换形八种动作，并查看四类小怪和十二生肖动态立绘。图鉴支持暂停动画细看，与游戏共用绘制代码。
 
@@ -76,14 +78,15 @@ python3 -m http.server 8000 --bind 127.0.0.1
 - `src/art.js`、`src/enemy-art.js`、`src/zodiac-art.js`、`src/world-art.js`：汉服主角、四类小怪、十二生肖与两界场景的绘制和动画，详见 [美术说明](assets/README.md)。
 - `art-preview.html`：独立的两界生灵图鉴。
 - `index.html`、`styles.css`：菜单、HUD、操作指南与触控布局。
+- `vendor/`：随站点托管的 Phaser 引擎与许可证。
 
 在仓库根目录使用 Node.js 18 或更高版本运行逻辑回归测试：
 
 ```sh
-node --test shadow-jump/tests/game.test.cjs
+node --test shadow-jump/tests/*.test.cjs
 ```
 
-逻辑回归测试覆盖跳跃容错、冲刺、暂停、投射物寿命、检查点、重开及切换世界后的碰撞处理。测试使用模拟场景，渲染、音效、触控多指操作和完整路线可玩性仍需浏览器验证。
+逻辑回归测试覆盖跳跃容错、冲刺、暂停、投射物寿命、检查点、重开及切换世界后的碰撞处理，以及启动依赖缺失时的提示和重新加载操作。测试使用模拟场景，渲染、音效、触控多指操作和完整路线可玩性仍需浏览器验证。
 
 浏览器验收可按以下步骤进行；此清单是验证方法，不表示十二章完整流程均已逐一实测：
 
