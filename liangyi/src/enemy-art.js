@@ -284,5 +284,5 @@
       scene.anims.create({key:spec.animation,frames:scene.anims.generateFrameNumbers(spec.texture,{start:0,end:5}),frameRate:spec.frameRate,repeat:-1});
     }
   }
-  window.ShadowJumpEnemyArt=Object.freeze({install,species,frameSize,footBaseline,render});
+  window.LiangyiEnemyArt=Object.freeze({install,species,frameSize,footBaseline,render});
 })();

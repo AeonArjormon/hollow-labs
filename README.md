@@ -9,8 +9,8 @@ hollow-labs/
 ├── index.html              ← 首页入口
 ├── bangbu/
 │   └── index.html          ← 邦布语翻译器
-└── shadow-jump/
-    ├── index.html          ← Shadow Jump 游戏
+└── liangyi/
+    ├── index.html          ← 两仪行 · 十二元辰 游戏
     └── 玩法优化计划.md      ← 游戏设计文档
 ```
 
@@ -26,7 +26,7 @@ hollow-labs/
 
 | 项目 | 说明 |
 |------|------|
-| [Shadow Jump](https://aeonarjormon.github.io/hollow-labs/shadow-jump/index.html) | Canvas 跳跃小游戏，光/影双系统切换 |
+| [两仪行 · 十二元辰](https://aeonarjormon.github.io/hollow-labs/liangyi/index.html) | 天庭地府双界横版动作游戏，十二生肖元辰与六道符文 |
 
 ## 在线访问
 

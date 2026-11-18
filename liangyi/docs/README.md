@@ -18,7 +18,7 @@
 
 ## 发布与维护
 
-站点使用静态文件发布，无需构建。完整发布 `shadow-jump/`，确保 `src/rune-store.js`、`src/rune-combat.js`、`src/rune-ui.js` 与 `rune-ui.css` 随主页面发布。正式装备入口位于游戏顶部、暂停页和章节选择面板。`runes-preview.html` 继续作为独立设计页面使用。
+站点使用静态文件发布，无需构建。完整发布 `liangyi/`，确保 `src/rune-store.js`、`src/rune-combat.js`、`src/rune-ui.js` 与 `rune-ui.css` 随主页面发布。正式装备入口位于游戏顶部、暂停页和章节选择面板。`runes-preview.html` 继续作为独立设计页面使用。
 
 正式效果维护在 `src/rune-combat.js`；装备说明由同一模块的 `getEntry` 生成，应与实际执行规则保持一致。修改完整目标设计时，同步更新设计 Markdown、JSON 和独立预览页的内联目录，不能仅修改设计描述就视为游戏已支持。交互目标见系统设计第 7 节。
 

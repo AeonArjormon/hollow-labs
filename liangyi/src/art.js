@@ -15,8 +15,8 @@
     switch: { start: 22, end: 25, frameRate: 22, repeat: 0 }
   };
   const palettes = {
-    light: { outline: "#183e42", cloak: "#e8eee1", deep: "#256c68", edge: "#9dd7bf", scarf: "#f4eedb", mask: "#f3d5bb", maskShade: "#bf947f", eyes: "#203e3c", gold: "#c6a46b", glow: "#b6ecd4" },
-    shadow: { outline: "#171f2d", cloak: "#303e51", deep: "#721f31", edge: "#d6927f", scarf: "#cf695d", mask: "#f0cbb5", maskShade: "#ae7e79", eyes: "#352d36", gold: "#d2a16b", glow: "#f0b69a" }
+    light: { outline: "#16393e", cloak: "#f2f7ec", deep: "#23726c", edge: "#b2e6d2", scarf: "#f8f3e2", mask: "#f7dcc4", maskShade: "#c39a84", eyes: "#1d3a39", gold: "#d9b675", glow: "#cdf7e6" },
+    shadow: { outline: "#151c29", cloak: "#33425a", deep: "#7d2336", edge: "#e29b86", scarf: "#d97366", mask: "#f4d2bd", maskShade: "#b3847e", eyes: "#332b35", gold: "#e0ad74", glow: "#ffc4a6" }
   };
   function canvas(w, h) {
     const c = document.createElement("canvas"); c.width = w; c.height = h; return c;
@@ -171,5 +171,5 @@
     for(const form of["light","shadow"]){installHero(scene,form);const key=`feather-${form}`;
       if(scene.textures.exists(key))scene.textures.remove(key);scene.textures.addCanvas(key,feather(form));}
   }
-  window.ShadowJumpArt=Object.freeze({install,animations,frameSize:SIZE,footBaseline:176,palettes,renderHero:hero});
+  window.LiangyiArt=Object.freeze({install,animations,frameSize:SIZE,footBaseline:176,palettes,renderHero:hero});
 })();

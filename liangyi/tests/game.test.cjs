@@ -16,10 +16,10 @@ vm.createContext(sandbox);
 for (const file of ["data/zodiac.js", "data/level-01.js", "zodiac-art.js", "game-scene.js"]) {
   vm.runInContext(fs.readFileSync(path.join(__dirname, "../src", file), "utf8"), sandbox, { filename: file });
 }
-const GameScene = sandbox.window.ShadowJumpGameScene;
-const level = sandbox.window.createShadowJumpChapter(0);
-const zodiac = sandbox.window.SHADOW_JUMP_ZODIAC;
-const createChapter = sandbox.window.createShadowJumpChapter;
+const GameScene = sandbox.window.LiangyiGameScene;
+const level = sandbox.window.createLiangyiChapter(0);
+const zodiac = sandbox.window.LIANGYI_ZODIAC;
+const createChapter = sandbox.window.createLiangyiChapter;
 
 function makeScene() {
   const scene = new GameScene();
@@ -596,7 +596,7 @@ test("full restart clears pending actions and starts with restored resources", (
 test("all twelve chapters have independent routes and the corresponding zodiac guardian", () => {
   const ids = ["rat", "ox", "tiger", "rabbit", "dragon", "snake", "horse", "goat", "monkey", "rooster", "dog", "pig"];
   assert.deepEqual(Array.from(zodiac, guardian => guardian.id), ids);
-  assert.equal(sandbox.window.SHADOW_JUMP_CHAPTERS.length, 12);
+  assert.equal(sandbox.window.LIANGYI_CHAPTERS.length, 12);
   const chapters = ids.map((id, index) => {
     const chapter = createChapter(index);
     assert.equal(chapter.chapterIndex, index);
@@ -612,12 +612,12 @@ test("all twelve chapters have independent routes and the corresponding zodiac g
   chapters[0].platforms[0].w = 1;
   chapters[0].boss.phases[0].weakness = "modified";
   chapters[0].checkpoints[0].set.x = -1;
-  for (const chapter of [...chapters.slice(1), createChapter(0), sandbox.window.SHADOW_JUMP_CHAPTERS[0]]) {
+  for (const chapter of [...chapters.slice(1), createChapter(0), sandbox.window.LIANGYI_CHAPTERS[0]]) {
     assert.equal(chapter.platforms[0].w, 470, "an old run cannot corrupt another chapter");
     assert.notEqual(chapter.boss.phases[0].weakness, "modified");
     assert.equal(chapter.checkpoints[0].set.x, 1160);
   }
-  assert.equal(sandbox.window.SHADOW_JUMP_LEVEL.platforms[0].w, 470);
+  assert.equal(sandbox.window.LIANGYI_LEVEL.platforms[0].w, 470);
   for (const index of [-1, 12, 1.5, NaN]) assert.throws(() => createChapter(index), { name: "RangeError" });
 });
 
@@ -637,7 +637,7 @@ test("every chapter provides an unbroken arena and safe shared checkpoint and pr
 test("initial scene construction resolves chapter data and saved progress before creating the world", () => {
   withStorage('["rat","dragon"]', () => {
     const scene = new GameScene();
-    const artNames = ["ShadowJumpArt", "ShadowJumpEnemyArt", "ShadowJumpWorldArt", "ShadowJumpZodiacArt"];
+    const artNames = ["LiangyiArt", "LiangyiEnemyArt", "LiangyiWorldArt", "LiangyiZodiacArt"];
     const previous = artNames.map(name => sandbox.window[name]);
     artNames.forEach(name => { sandbox.window[name] = { install() {} }; });
     let createdWorld = false;
@@ -659,7 +659,7 @@ test("each live guardian uses its own art, animation, health and consistently sc
   const textures = new Set();
   for (let index = 0; index < 12; index++) {
     const scene = makeBossScene(index), sprite = scene.boss.sprite;
-    const model = sprite.getData("model"), design = sandbox.window.ShadowJumpZodiacArt.bosses[zodiac[index].id];
+    const model = sprite.getData("model"), design = sandbox.window.LiangyiZodiacArt.bosses[zodiac[index].id];
     textures.add(sprite.texture);
     assert.equal(sprite.texture, design.texture);
     assert.equal(sprite.animation, design.animation);

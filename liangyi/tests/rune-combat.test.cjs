@@ -7,7 +7,7 @@ const vm = require("node:vm");
 const context = { window: {}, console };
 vm.createContext(context);
 vm.runInContext(fs.readFileSync(path.join(__dirname, "../src/rune-combat.js"), "utf8"), context);
-const runes = context.window.ShadowJumpRunes;
+const runes = context.window.LiangyiRunes;
 const ids = ["rat", "ox", "tiger", "rabbit", "dragon", "snake", "horse", "goat", "monkey", "rooster", "dog", "pig"];
 const chainObject = () => new Proxy({ active: true, destroy() { this.active = false; } }, { get(obj, key) { if (key in obj) return obj[key]; return function () { return this; }; } });
 function enemy(x = 280, hp = 1000) {

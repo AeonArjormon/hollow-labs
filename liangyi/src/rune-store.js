@@ -173,7 +173,7 @@
     return store;
   }
 
-  global.ShadowJumpRuneStore = Object.freeze({
+  global.LiangyiRuneStore = Object.freeze({
     key: KEY, ids: IDS, duplicateInk: DUPLICATE_INK, blankLoadouts, validateLoadouts,
     create,
     createPractice(loadouts) { return create({ practice: true, storage: null, loadouts }); }

@@ -6,9 +6,9 @@ const vm = require("node:vm");
 
 const source = fs.readFileSync(path.join(__dirname, "../src/main.js"), "utf8");
 const dependencies = [
-  "SHADOW_JUMP_LEVEL", "ShadowJumpGameScene", "ShadowJumpArt", "ShadowJumpWorldArt",
-  "ShadowJumpEnemyArt", "SHADOW_JUMP_ZODIAC", "ShadowJumpZodiacArt", "createShadowJumpChapter",
-  "ShadowJumpRuneStore", "ShadowJumpRunes", "ShadowJumpRuneUI"
+  "LIANGYI_LEVEL", "LiangyiGameScene", "LiangyiArt", "LiangyiWorldArt",
+  "LiangyiEnemyArt", "LIANGYI_ZODIAC", "LiangyiZodiacArt", "createLiangyiChapter",
+  "LiangyiRuneStore", "LiangyiRunes", "LiangyiRuneUI"
 ];
 
 test("page keeps existing local scripts deferred with Phaser before game code", () => {
@@ -109,10 +109,10 @@ test("complete dependencies start one game in the expected container and scene",
   const boot = createBoot();
   boot.run();
   assert.equal(boot.games.length, 1);
-  assert.equal(boot.sandbox.shadowJump, boot.games[0]);
+  assert.equal(boot.sandbox.liangyi, boot.games[0]);
   assert.equal(boot.games[0].config.parent, "game-root");
   assert.equal(boot.games[0].config.scene.length, 1);
-  assert.equal(boot.games[0].config.scene[0], boot.sandbox.ShadowJumpGameScene);
+  assert.equal(boot.games[0].config.scene[0], boot.sandbox.LiangyiGameScene);
   assert.equal(boot.overlay.children.length, 0);
 });
 
@@ -135,6 +135,6 @@ test("error details stay literal text and the retry button reloads the page", ()
 
 test("missing overlay preserves the original boot failure", () => {
   const boot = createBoot({ missing: ["Phaser"], overlayPresent: false });
-  assert.throws(boot.run, /Shadow Jump boot failed: Phaser is unavailable/);
+  assert.throws(boot.run, /Liangyi boot failed: Phaser is unavailable/);
   assert.equal(boot.games.length, 0);
 });

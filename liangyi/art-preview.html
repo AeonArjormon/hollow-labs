@@ -123,10 +123,10 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       "use strict";
-      const heroArt = window.ShadowJumpArt;
-      const enemyArt = window.ShadowJumpEnemyArt;
-      const zodiacArt = window.ShadowJumpZodiacArt;
-      const guardians = window.SHADOW_JUMP_ZODIAC || [];
+      const heroArt = window.LiangyiArt;
+      const enemyArt = window.LiangyiEnemyArt;
+      const zodiacArt = window.LiangyiZodiacArt;
+      const guardians = window.LIANGYI_ZODIAC || [];
       const status = document.getElementById("status");
       if (!heroArt?.renderHero || !enemyArt?.render || !zodiacArt?.render || guardians.length !== 12) {
         status.textContent = "角色绘制模块加载失败，请刷新页面";

@@ -18,7 +18,7 @@
   const escape = value => String(value ?? "").replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[character]));
 
   function create(scene) {
-    const zodiacs = window.SHADOW_JUMP_ZODIAC || [];
+    const zodiacs = window.LIANGYI_ZODIAC || [];
     const zodiacById = Object.fromEntries(zodiacs.map(zodiac => [zodiac.id, zodiac]));
     const drafts = new WeakMap();
     const fallbackContext = {};
@@ -80,7 +80,7 @@
     }
 
     function entry(id, side, index) {
-      const runtime = window.ShadowJumpRunes?.getEntry?.(id, side, index);
+      const runtime = window.LiangyiRunes?.getEntry?.(id, side, index);
       if (runtime?.name) return runtime;
       return { name: id ? `${zodiacById[id]?.branch || ""}${zodiacById[id]?.animal || ""} · ${PATHS[index].role}` : "基础能力", description: id ? "此道位的符文效果将在确认装备后生效。" : "未放入生肖符文，保留巡界使的基础能力。" };
     }
@@ -327,5 +327,5 @@
     return { open, close, refresh: () => { if (opened) render(); } };
   }
 
-  window.ShadowJumpRuneUI = Object.freeze({ create });
+  window.LiangyiRuneUI = Object.freeze({ create });
 })();

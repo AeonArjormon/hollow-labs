@@ -1,4 +1,4 @@
-window.SHADOW_JUMP_LEVEL = {
+window.LIANGYI_LEVEL = {
   width: 4300,
   height: 720,
   floorY: 590,
@@ -70,10 +70,10 @@ window.SHADOW_JUMP_LEVEL = {
 
 // Keep each chapter's objects independent. Shared counts let the scene reuse its
 // Arcade colliders while changing routes, realms and the actual guardian.
-window.createShadowJumpChapter = function(index = 0) {
-  const zodiac = window.SHADOW_JUMP_ZODIAC[index];
+window.createLiangyiChapter = function(index = 0) {
+  const zodiac = window.LIANGYI_ZODIAC[index];
   if (!zodiac) throw new RangeError("Unknown zodiac chapter");
-  const level = JSON.parse(JSON.stringify(window.SHADOW_JUMP_LEVEL));
+  const level = JSON.parse(JSON.stringify(window.LIANGYI_LEVEL));
   level.chapterIndex = index;
   level.chapterName = zodiac.chapterName;
   level.startMode = zodiac.realm;
@@ -120,4 +120,4 @@ window.createShadowJumpChapter = function(index = 0) {
   };
   return level;
 };
-window.SHADOW_JUMP_CHAPTERS = window.SHADOW_JUMP_ZODIAC.map((_, index) => window.createShadowJumpChapter(index));
+window.LIANGYI_CHAPTERS = window.LIANGYI_ZODIAC.map((_, index) => window.createLiangyiChapter(index));

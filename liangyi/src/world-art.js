@@ -184,7 +184,7 @@
     }
     c.globalAlpha = 1;
   }
-  window.ShadowJumpWorldArt = {
+  window.LiangyiWorldArt = {
     install(scene) {
       Object.entries(palettes).forEach(([mode, palette]) => {
         canvas(scene, `world-${mode}`, 1152, 648, c => sky(c, palette, mode));

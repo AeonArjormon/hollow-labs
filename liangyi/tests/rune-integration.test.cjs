@@ -14,8 +14,8 @@ vm.createContext(sandbox);
 for (const file of ["data/zodiac.js", "data/level-01.js", "rune-store.js", "game-scene.js"]) {
   vm.runInContext(fs.readFileSync(path.join(__dirname, "../src", file), "utf8"), sandbox, { filename: file });
 }
-const Scene = sandbox.window.ShadowJumpGameScene;
-const RuneStore = sandbox.window.ShadowJumpRuneStore;
+const Scene = sandbox.window.LiangyiGameScene;
+const RuneStore = sandbox.window.LiangyiRuneStore;
 const clone = value => JSON.parse(JSON.stringify(value));
 
 function memory() {
@@ -47,7 +47,7 @@ function fixture(index = 0) {
   const group = () => ({ clear() {}, getChildren: () => [] });
   const layer = () => ({ classList: { add() {}, remove() {}, toggle() {} } });
   Object.assign(scene, {
-    chapterIndex: index, level: sandbox.window.createShadowJumpChapter(index), completedZodiacs: new Set(),
+    chapterIndex: index, level: sandbox.window.createLiangyiChapter(index), completedZodiacs: new Set(),
     practiceMode: false, running: true, paused: false, lost: false, won: false,
     formMode: "light", sceneMode: "light", lockTimer: 0, switchTimer: 0,
     hp: 37, mp: 19, maxHp: 100, maxMp: 100, levelValue: 1, crystalCount: 0,

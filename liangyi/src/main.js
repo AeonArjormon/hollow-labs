@@ -24,15 +24,15 @@ if (!window.Phaser) {
     "游戏引擎文件 vendor/phaser.min.js 未能加载。",
     "请刷新重试；如果刚更新了 GitHub Pages，请等待部署完成。仍无法启动时，请确认发布内容包含完整的 vendor/ 目录。"
   );
-  throw new Error("Shadow Jump boot failed: Phaser is unavailable.");
+  throw new Error("Liangyi boot failed: Phaser is unavailable.");
 }
 
-if (!window.SHADOW_JUMP_LEVEL || !window.ShadowJumpGameScene || !window.ShadowJumpArt || !window.ShadowJumpWorldArt || !window.ShadowJumpEnemyArt || !window.SHADOW_JUMP_ZODIAC || !window.ShadowJumpZodiacArt || !window.createShadowJumpChapter || !window.ShadowJumpRuneStore || !window.ShadowJumpRunes || !window.ShadowJumpRuneUI) {
+if (!window.LIANGYI_LEVEL || !window.LiangyiGameScene || !window.LiangyiArt || !window.LiangyiWorldArt || !window.LiangyiEnemyArt || !window.LIANGYI_ZODIAC || !window.LiangyiZodiacArt || !window.createLiangyiChapter || !window.LiangyiRuneStore || !window.LiangyiRunes || !window.LiangyiRuneUI) {
   showBootError(
     "游戏脚本没有加载完整，无法启动。",
     "请刷新重试，并确认发布内容包含完整的 src/ 目录，且与 index.html 位于同一项目目录下。"
   );
-  throw new Error("Shadow Jump boot failed: local game scripts are unavailable.");
+  throw new Error("Liangyi boot failed: local game scripts are unavailable.");
 }
 
 const config = {
@@ -54,7 +54,7 @@ const config = {
       debug: false
     }
   },
-  scene: [window.ShadowJumpGameScene]
+  scene: [window.LiangyiGameScene]
 };
 
-window.shadowJump = new Phaser.Game(config);
+window.liangyi = new Phaser.Game(config);

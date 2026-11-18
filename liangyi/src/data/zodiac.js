@@ -15,5 +15,5 @@
     { id: "dog", animal: "狗", branch: "戌", name: "戌犬 · 守夜神", title: "踏月巡关", realm: "shadow", color: 0x89aeb8, hp: 222, speed: 100, attackInterval: 2.0, pattern: "aimed", secondaryPattern: "charge", telegraph: "守夜神会追踪气息，灵弹蓄成后换位，低吼时准备跳跃。", lore: "玉铃声过处，幽魂都停下脚步。他守的是门，也是两界的安宁。", chapterName: "守夜冥关" },
     { id: "pig", animal: "猪", branch: "亥", name: "亥猪 · 玄坛尊", title: "藏锋归元", realm: "light", color: 0xb9957d, hp: 260, speed: 54, attackInterval: 2.6, pattern: "charge", secondaryPattern: "spiral", telegraph: "玄坛尊冲阵后吐出回旋灵流，先跃过冲锋，再回到空隙。", lore: "最后一枚元辰印藏在厚重玄甲下。十二印归位，天阙与幽都重归秩序。", chapterName: "归元玄坛" }
   ];
-  window.SHADOW_JUMP_ZODIAC = Object.freeze(guardians.map(guardian => Object.freeze(guardian)));
+  window.LIANGYI_ZODIAC = Object.freeze(guardians.map(guardian => Object.freeze(guardian)));
 })();

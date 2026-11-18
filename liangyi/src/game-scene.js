@@ -60,6 +60,14 @@ const SPIRIT_CORES = {
 
 const MOVEMENT = { coyoteTime: 0.12, jumpBuffer: 0.14, jumpCutSpeed: 220 };
 
+// Each skin is a token set in styles.css plus the mobile browser chrome colour.
+// The canvas art keeps its own two palettes; skins restyle the surrounding UI.
+const SKINS = [
+  { id: "jade", label: "青玉", theme: "#102c2d" },
+  { id: "ink", label: "玄墨", theme: "#090b10" },
+  { id: "ember", label: "赤霞", theme: "#1a0f0d" }
+];
+
 const HUD_IDS = {
   hpBar: "hp-bar",
   hpValue: "hp-value",
@@ -144,14 +152,14 @@ class GameScene extends Phaser.Scene {
   create() {
     this.chapterIndex = 0;
     this.completedZodiacs = this.readCampaign();
-    if (window.ShadowJumpRuneStore) {
+    if (window.LiangyiRuneStore) {
       let storage;
       try { storage = window.localStorage; } catch { /* Keep a playable session when storage is blocked. */ }
-      this.formalRuneStore = window.ShadowJumpRuneStore.create({ storage, completedZodiacs: [...this.completedZodiacs] });
+      this.formalRuneStore = window.LiangyiRuneStore.create({ storage, completedZodiacs: [...this.completedZodiacs] });
       this.runeStore = this.formalRuneStore;
     }
     this.practiceMode = false;
-    this.level = window.createShadowJumpChapter(this.chapterIndex);
+    this.level = window.createLiangyiChapter(this.chapterIndex);
     this.sceneMode = "light";
     this.formMode = "light";
     this.hp = 100;
@@ -183,10 +191,10 @@ class GameScene extends Phaser.Scene {
     this.isDashing = false;
     this.checkpoint = { ...this.level.start };
 
-    window.ShadowJumpArt.install(this);
-    window.ShadowJumpEnemyArt.install(this);
-    window.ShadowJumpWorldArt.install(this);
-    window.ShadowJumpZodiacArt.install(this);
+    window.LiangyiArt.install(this);
+    window.LiangyiEnemyArt.install(this);
+    window.LiangyiWorldArt.install(this);
+    window.LiangyiZodiacArt.install(this);
     this.createTextures();
     this.createPlayerAnimations();
     this.createInput();
@@ -194,7 +202,7 @@ class GameScene extends Phaser.Scene {
     this.createHudHooks();
     this.createChapterJournal();
     this.resetGame(false);
-    this.runeUI = window.ShadowJumpRuneUI?.create(this);
+    this.runeUI = window.LiangyiRuneUI?.create(this);
     this.showMenu();
   }
 
@@ -221,7 +229,7 @@ class GameScene extends Phaser.Scene {
 
   createPlayerAnimations() {
     for (const mode of ["light", "shadow"]) {
-      for (const [action, { start, end, frameRate, repeat }] of Object.entries(window.ShadowJumpArt.animations)) {
+      for (const [action, { start, end, frameRate, repeat }] of Object.entries(window.LiangyiArt.animations)) {
         this.anims.create({ key: `${mode}-${action}`, frames: this.anims.generateFrameNumbers(`hero-${mode}`, { start, end }), frameRate, repeat });
       }
     }
@@ -421,7 +429,7 @@ class GameScene extends Phaser.Scene {
   }
 
   createEnemy(data) {
-    const art = window.ShadowJumpEnemyArt;
+    const art = window.LiangyiEnemyArt;
     const design = art.species[data.species];
     const footY = data.y + data.h / 2 + 3;
     const sprite = this.physics.add.sprite(data.x, footY, design.texture);
@@ -462,7 +470,7 @@ class GameScene extends Phaser.Scene {
   }
 
   createBoss(data) {
-    const design = window.ShadowJumpZodiacArt.bosses[data.id];
+    const design = window.LiangyiZodiacArt.bosses[data.id];
     const sprite = this.physics.add.sprite(data.x, data.y, design.texture).setDepth(18);
     const hpBack = this.add.rectangle(576, 82, 360, 10, 0x101c22, .9).setScrollFactor(0).setDepth(70);
     const hpBar = this.add.rectangle(396, 82, 360, 10, data.color).setOrigin(0, .5).setScrollFactor(0).setDepth(71);
@@ -475,7 +483,7 @@ class GameScene extends Phaser.Scene {
   }
 
   configureBoss(boss, data) {
-    const art = window.ShadowJumpZodiacArt, design = art.bosses[data.id], sprite = boss.sprite;
+    const art = window.LiangyiZodiacArt, design = art.bosses[data.id], sprite = boss.sprite;
     Object.assign(boss, data);
     sprite.setTexture(design.texture).setOrigin(.5, art.footBaseline / art.frameSize);
     sprite.setDisplaySize(design.displaySize, design.displaySize);
@@ -501,6 +509,13 @@ class GameScene extends Phaser.Scene {
     const extraIds = { help: "help-panel", helpToggle: "help-toggle", chapter: "chapter-label", guide: "guide-text", progress: "journey-progress", dashStatus: "dash-status", skillStatus: "skill-status" };
     this.hud = Object.fromEntries(Object.entries({ ...HUD_IDS, ...extraIds }).map(([key, id]) => [key, dom(id)]));
     this.touchButtons = [...document.querySelectorAll(".touch-controls button")];
+    // Cache the nodes updateHud touches every frame; querying them per frame forces
+    // the browser to re-match selectors 60 times a second for values that rarely change.
+    this.cachedNodes = {
+      gameRoot: dom("game-root"),
+      touchControls: document.querySelector(".touch-controls"),
+      lowMeter: this.hud.mpBar?.closest(".meter") || null
+    };
     this.hud.start.addEventListener("click", () => {
       this.audio.unlock();
       this.resetGame(true);
@@ -521,6 +536,12 @@ class GameScene extends Phaser.Scene {
     });
     dom("motion-toggle")?.addEventListener("click", () => {
       this.preferences.reducedMotion = !this.preferences.reducedMotion;
+      this.syncPreferences();
+      this.focusGame();
+    });
+    dom("skin-toggle")?.addEventListener("click", () => {
+      const index = SKINS.findIndex(item => item.id === this.preferences.skin);
+      this.preferences.skin = SKINS[(index + 1) % SKINS.length].id;
       this.syncPreferences();
       this.focusGame();
     });
@@ -551,7 +572,7 @@ class GameScene extends Phaser.Scene {
   readCampaign() {
     try {
       const value = JSON.parse(localStorage.getItem("liangyi-zodiac-progress-v1") || "[]");
-      return new Set(Array.isArray(value) ? value.filter(id => window.SHADOW_JUMP_ZODIAC.some(z => z.id === id)) : []);
+      return new Set(Array.isArray(value) ? value.filter(id => window.LIANGYI_ZODIAC.some(z => z.id === id)) : []);
     } catch { return new Set(); }
   }
 
@@ -630,11 +651,11 @@ class GameScene extends Phaser.Scene {
   createChapterJournal() {
     const journal = dom("zodiac-journal");
     if (!journal) return;
-    journal.innerHTML = window.SHADOW_JUMP_ZODIAC.map((z, i) =>
+    journal.innerHTML = window.LIANGYI_ZODIAC.map((z, i) =>
       `<button type="button" class="zodiac-node" data-chapter="${i}" aria-label="第${i + 1}章 ${z.name}，${z.chapterName}"><span class="zodiac-order">${z.branch}</span><span class="zodiac-animal">${z.animal}</span></button>`
     ).join("") + '<div class="zodiac-caption"><span id="zodiac-summary"></span><button type="button" class="zodiac-practice" id="zodiac-practice">演武 · 直面元辰</button></div>';
     const picker = dom("chapter-options");
-    if (picker) picker.innerHTML = window.SHADOW_JUMP_ZODIAC.map((z, i) =>
+    if (picker) picker.innerHTML = window.LIANGYI_ZODIAC.map((z, i) =>
       `<button type="button" class="zodiac-node" data-chapter="${i}" aria-label="开始第${i + 1}章 ${z.name}，${z.chapterName}"><span class="zodiac-animal">${z.branch}${z.animal}</span><strong>${z.name}</strong><small>${z.chapterName}</small></button>`
     ).join("");
     [journal, picker].filter(Boolean).forEach(container => container.querySelectorAll("[data-chapter]").forEach(button => button.addEventListener("click", () => {
@@ -675,26 +696,26 @@ class GameScene extends Phaser.Scene {
     const journal = dom("zodiac-journal");
     if (!journal) return;
     [journal, dom("chapter-options")].filter(Boolean).forEach(container => container.querySelectorAll("[data-chapter]").forEach(button => {
-      const i = Number(button.dataset.chapter), complete = this.completedZodiacs.has(window.SHADOW_JUMP_ZODIAC[i].id);
+      const i = Number(button.dataset.chapter), complete = this.completedZodiacs.has(window.LIANGYI_ZODIAC[i].id);
       button.classList.toggle("active", i === this.chapterIndex);
       button.classList.toggle("completed", complete);
       button.setAttribute("aria-pressed", String(i === this.chapterIndex));
-      button.title = `${window.SHADOW_JUMP_ZODIAC[i].name} · ${complete ? "已归位，可再挑战" : "点击开始本章"}`;
+      button.title = `${window.LIANGYI_ZODIAC[i].name} · ${complete ? "已归位，可再挑战" : "点击开始本章"}`;
     }));
     dom("zodiac-summary").textContent = `${this.level.chapterName} · 元辰归位 ${this.completedZodiacs.size}/12${this.practiceMode ? " · 演武不计通关" : ""}`;
   }
 
   selectChapter(index, practice = false) {
-    if (!window.SHADOW_JUMP_ZODIAC[index]) return;
+    if (!window.LIANGYI_ZODIAC[index]) return;
     this.runeUI?.close();
     if (this.formalRuneStore) {
-      if (practice && !this.practiceMode) this.practiceRuneStore = window.ShadowJumpRuneStore.createPractice(this.formalRuneStore.getLoadouts());
+      if (practice && !this.practiceMode) this.practiceRuneStore = window.LiangyiRuneStore.createPractice(this.formalRuneStore.getLoadouts());
       this.runeStore = practice ? this.practiceRuneStore : this.formalRuneStore;
     }
     this.audio.unlock();
     this.chapterIndex = index;
     this.practiceMode = practice;
-    this.level = window.createShadowJumpChapter(index);
+    this.level = window.createLiangyiChapter(index);
     const place = (sprite, data) => {
       sprite.setPosition(data.x + data.w / 2, data.y + data.h / 2).setDisplaySize(data.w, data.h);
       sprite.body.updateFromGameObject();
@@ -711,21 +732,33 @@ class GameScene extends Phaser.Scene {
   }
 
   readPreferences() {
-    const defaults = { muted: false, reducedMotion: window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches || false };
+    const defaults = { muted: false, reducedMotion: window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches || false, skin: SKINS[0].id };
     try {
-      const stored = JSON.parse(localStorage.getItem("shadow-jump-preferences") || "{}");
+      // Read the current key first, then fall back to the legacy one so players who
+      // saved preferences before the rename keep their sound and motion settings.
+      const stored = JSON.parse(localStorage.getItem("liangyi-preferences") || localStorage.getItem("shadow-jump-preferences") || "{}");
       return {
         muted: typeof stored?.muted === "boolean" ? stored.muted : defaults.muted,
-        reducedMotion: typeof stored?.reducedMotion === "boolean" ? stored.reducedMotion : defaults.reducedMotion
+        reducedMotion: typeof stored?.reducedMotion === "boolean" ? stored.reducedMotion : defaults.reducedMotion,
+        skin: SKINS.some(item => item.id === stored?.skin) ? stored.skin : defaults.skin
       };
     } catch { return defaults; }
   }
 
   syncPreferences() {
-    try { localStorage.setItem("shadow-jump-preferences", JSON.stringify(this.preferences)); } catch { /* Storage may be unavailable in private browsing. */ }
-    document.body.classList.toggle("reduce-motion", this.preferences.reducedMotion);
+    try {
+      localStorage.setItem("liangyi-preferences", JSON.stringify(this.preferences));
+      localStorage.removeItem("shadow-jump-preferences");
+    } catch { /* Storage may be unavailable in private browsing. */ }
+    document.body?.classList.toggle("reduce-motion", this.preferences.reducedMotion);
     this.audio.muted = this.preferences.muted;
-    const sound = dom("sound-toggle"), motion = dom("motion-toggle");
+    const skin = SKINS.find(item => item.id === this.preferences.skin) || SKINS[0];
+    // Guarded because lightweight test harnesses provide only part of `document`.
+    const root = document.documentElement;
+    if (root?.dataset) root.dataset.skin = skin.id;
+    const themeMeta = document.querySelector?.('meta[name="theme-color"]');
+    if (themeMeta?.setAttribute) themeMeta.setAttribute("content", skin.theme);
+    const sound = dom("sound-toggle"), motion = dom("motion-toggle"), skinButton = dom("skin-toggle");
     if (sound) {
       sound.textContent = this.preferences.muted ? "音效 关" : "音效 开";
       sound.setAttribute("aria-pressed", String(!this.preferences.muted));
@@ -733,6 +766,11 @@ class GameScene extends Phaser.Scene {
     if (motion) {
       motion.textContent = this.preferences.reducedMotion ? "动态 柔和" : "动态 完整";
       motion.setAttribute("aria-pressed", String(this.preferences.reducedMotion));
+    }
+    if (skinButton) {
+      skinButton.textContent = `风格 · ${skin.label}`;
+      skinButton.setAttribute("aria-label", `切换界面风格，当前为${skin.label}`);
+      skinButton.title = "切换界面风格：青玉 / 玄墨 / 赤霞";
     }
   }
 
@@ -821,7 +859,7 @@ class GameScene extends Phaser.Scene {
     this.runTime = 0;
     this.fallCount = 0;
     this.checkpoint = { ...this.level.start };
-    this.runeInstanceId = this.runeStore?.createInstance(window.SHADOW_JUMP_ZODIAC[this.chapterIndex].id);
+    this.runeInstanceId = this.runeStore?.createInstance(window.LIANGYI_ZODIAC[this.chapterIndex].id);
     this.initRuneCombat?.();
 
     this.player?.setPosition(this.level.start.x, this.level.start.y);
@@ -843,7 +881,7 @@ class GameScene extends Phaser.Scene {
       enemy.sprite.setTint(0xffffff);
       enemy.weaknessLabel?.setText(enemy.weakness === "shadow" ? "弱点 · 阴" : "弱点 · 阳");
       enemy.sprite.setFlipX(enemy.vx < 0);
-      enemy.sprite.play(window.ShadowJumpEnemyArt.species[enemy.species].animation);
+      enemy.sprite.play(window.LiangyiEnemyArt.species[enemy.species].animation);
     });
 
     this.gates?.forEach((gate, index) => {
@@ -903,7 +941,7 @@ class GameScene extends Phaser.Scene {
     const bodyHeight = 54 / this.player.scaleY;
     this.player.setSize(bodyWidth, bodyHeight).setOffset(
       (this.player.width - bodyWidth) / 2,
-      window.ShadowJumpArt.footBaseline - bodyHeight
+      window.LiangyiArt.footBaseline - bodyHeight
     );
     this.isAttacking = false;
     this.isDashing = false;
@@ -1417,7 +1455,12 @@ class GameScene extends Phaser.Scene {
       }
     }
 
-    this.helpText.setText(this.helpTextForPosition());
+    // Phaser re-renders a Text texture on every setText call; skip identical hints.
+    const help = this.helpTextForPosition();
+    if (help !== this.lastHelpText) {
+      this.lastHelpText = help;
+      this.helpText.setText(help);
+    }
   }
 
   helpTextForPosition() {
@@ -1630,6 +1673,9 @@ class GameScene extends Phaser.Scene {
       enemy.hpBack.setVisible(false);
       enemy.hpBar.setVisible(false);
       enemy.weaknessLabel.setVisible(false);
+      // A short ring marks the kill so the last hit reads differently from a graze.
+      this.motionRing?.(enemy.sprite.x, enemy.sprite.y, FORM[form].color);
+      this.emitMotes(enemy.sprite.x, enemy.sprite.y, FORM[form].color, 12, 62);
       this.addXp(24, "enemy");
       this.showMessage(`${model.label} 已击倒`, 1000);
     }
@@ -1674,8 +1720,8 @@ class GameScene extends Phaser.Scene {
       this.boss.sprite.disableBody(true, true);
       this.boss.hpBack.setVisible(false); this.boss.hpBar.setVisible(false); this.boss.label.setVisible(false);
       this.addXp(120, "boss");
-      const reward = this.runeStore?.reward(window.SHADOW_JUMP_ZODIAC[this.chapterIndex].id, this.runeInstanceId, this.practiceMode);
-      const drop = reward?.awarded ? (reward.kind === "rune" ? `获得${window.SHADOW_JUMP_ZODIAC[this.chapterIndex].animal}符文 · 按 E 装备` : "符文已满 · 转为符墨") : "试炼通过，前往右侧两界门";
+      const reward = this.runeStore?.reward(window.LIANGYI_ZODIAC[this.chapterIndex].id, this.runeInstanceId, this.practiceMode);
+      const drop = reward?.awarded ? (reward.kind === "rune" ? `获得${window.LIANGYI_ZODIAC[this.chapterIndex].animal}符文 · 按 E 装备` : "符文已满 · 转为符墨") : "试炼通过，前往右侧两界门";
       this.showMessage(`${model.name} · ${drop}${reward?.awarded && !this.runeStore.persistent ? "（本次会话有效）" : ""}`, 4200);
       return;
     }
@@ -1684,6 +1730,9 @@ class GameScene extends Phaser.Scene {
       model.phaseIndex = 1;
       model.attackTimer = 1.8;
       const next = model.phases[1];
+      // Awakening is a turning point: a cool flash plus ring reads as a realm shift.
+      if (!this.preferences?.reducedMotion) this.cameras.main.flash?.(220, 120, 150, 210);
+      this.motionRing?.(this.boss.sprite.x, this.boss.sprite.y, next.weakness === "light" ? 0xfff1a8 : 0xd58673);
       this.showMessage(`${model.name}觉醒 · 弱点改为${next.weakness === "light" ? "阳" : "阴"}，按 L 换形`, 2500);
     }
   }
@@ -1705,6 +1754,8 @@ class GameScene extends Phaser.Scene {
     this.cancelRuneAttack?.();
     this.jumpBufferTimer = 0;
     this.shake(150, 0.006);
+    // A brief warm flash sells the hit without adding any objects to the effect budget.
+    if (!this.preferences?.reducedMotion) this.cameras.main.flash?.(90, 130, 42, 38);
     this.player.body.setVelocity(this.player.flipX ? 260 : -260, -360);
     this.audio.play("hurt");
     if (this.hp <= 0) {
@@ -1725,6 +1776,8 @@ class GameScene extends Phaser.Scene {
     this.mp = Phaser.Math.Clamp(this.mp + 12, 0, this.maxMp);
     this.addXp(18, "crystal");
     this.audio.play("crystal");
+    // Seal opens with a bright ring plus motes so pickup is unmistakable mid-jump.
+    this.motionRing?.(sprite.x, sprite.y, FORM[this.sceneMode].color);
     this.emitMotes(sprite.x, sprite.y, FORM[this.sceneMode].color, 9, 38);
     this.showMessage(`获得元辰灵印 ${this.crystalCount}/${this.level.crystalsRequired}`, 1200);
   }
@@ -1741,7 +1794,7 @@ class GameScene extends Phaser.Scene {
     }
     this.won = true;
     this.running = false;
-    const zodiac = window.SHADOW_JUMP_ZODIAC[this.chapterIndex];
+    const zodiac = window.LIANGYI_ZODIAC[this.chapterIndex];
     if (!this.practiceMode) {
       this.completedZodiacs.add(zodiac.id);
       try { localStorage.setItem("liangyi-zodiac-progress-v1", JSON.stringify([...this.completedZodiacs])); } catch { /* Completion remains available in this session. */ }
@@ -1881,6 +1934,24 @@ class GameScene extends Phaser.Scene {
       const y = 130 + (i * 67 % 430) + Math.sin(time * .001 + i) * 14;
       this.background.fillStyle(color, .12 + (Math.sin(time * .002 + i) + 1) * .13).fillCircle(x, y, i % 6 === 0 ? 2.3 : 1.1);
     }
+    // Soft vertical light shafts from the moon keep the upper third from going flat.
+    // Five flat fills per frame cost far less than a texture-backed shader would.
+    // Positions wrap by the canvas width and are drawn twice so deep scroll never
+    // leaves the left or right edge bare.
+    const shaft = light ? 0xd6efc4 : 0xe4a68b;
+    const drift = this.cameras.main.scrollX * .12;
+    for (let i = 0; i < 5; i++) {
+      const sway = Math.sin(time * .00007 + i * 1.7) * 34;
+      const anchor = ((150 + i * 250 - drift + sway) % 1152 + 1152) % 1152;
+      for (const base of [anchor, anchor - 1152]) {
+        this.background.fillStyle(shaft, .035).fillTriangle(base - 70, 0, base + 70, 0, base + 210, 648);
+        this.background.fillStyle(shaft, .022).fillTriangle(base - 26, 0, base + 26, 0, base + 120, 648);
+      }
+    }
+    // Halo around the painted moon, breathing slowly so the sky never reads as a still image.
+    const halo = 1 + Math.sin(time * .0006) * .06;
+    this.background.fillStyle(light ? 0xfff4c8 : 0xe8f0d6, .05).fillCircle(824, 139, 96 * halo);
+    this.background.fillStyle(light ? 0xfff4c8 : 0xe8f0d6, .035).fillCircle(824, 139, 140 * halo);
   }
 
   drawPlatformDetails() {
@@ -1899,6 +1970,9 @@ class GameScene extends Phaser.Scene {
         continue;
       }
       g.fillStyle(edge, .15).fillRect(p.x - 2, p.y - 4, p.w + 4, 8);
+      // Top highlight plus a soft under-glow give flat rectangles a lit stone read.
+      g.fillGradientStyle(0xffffff, 0xffffff, edge, edge, active ? .16 : .05).fillRect(p.x + 2, p.y + 1, p.w - 4, 5);
+      g.fillStyle(edge, active ? .10 : .03).fillRect(p.x + 6, p.y + p.h - 3, p.w - 12, 3);
       g.fillStyle(edge, .9).fillRoundedRect(p.x, p.y, p.w, 5, 2);
       g.fillStyle(underworld ? 0x43514d : 0x8c9b85).fillRect(p.x + 2, p.y + 5, p.w - 4, 10);
       g.lineStyle(1, edge, .45).lineBetween(p.x + 3, p.y + 17, p.x + p.w - 3, p.y + 17);
@@ -1961,7 +2035,13 @@ class GameScene extends Phaser.Scene {
     const ready = (this.practiceMode || this.crystalCount >= this.level.crystalsRequired) && !this.boss.sprite.active;
     const g = this.portal.art, x = this.portal.x + this.portal.w / 2, foot = this.portal.y + this.portal.h;
     const color = ready ? 0xd4d6ad : 0x7e9c92, red = this.sceneMode === "shadow";
-    g.clear().fillStyle(color, ready ? .14 : .04).fillEllipse(x, foot - 66, 150, 172);
+    // A slow breath on the aura signals "enter here" without adding objects.
+    const breath = ready ? 1 + Math.sin(time * .0018) * .07 : 1;
+    g.clear().fillStyle(color, ready ? .14 : .04).fillEllipse(x, foot - 66, 150 * breath, 172 * breath);
+    if (ready) {
+      g.fillStyle(0xfff6d0, .10).fillEllipse(x, foot - 66, 92 * breath, 118 * breath);
+      g.lineStyle(1.5, 0xfff6d0, .35 + Math.sin(time * .0026) * .12).strokeEllipse(x, foot - 66, 128 * breath, 152 * breath);
+    }
     g.fillStyle(red ? 0x101f28 : 0x173b40, .7).fillRoundedRect(x - 37, foot - 127, 74, 127, 18);
     // Paifang: upright columns, crossbeam, carved sign and lifted roof corners.
     g.fillStyle(red ? 0x784e45 : 0x8a9a86).fillRect(x - 48, foot - 127, 10, 127).fillRect(x + 38, foot - 127, 10, 127);
@@ -2039,11 +2119,23 @@ class GameScene extends Phaser.Scene {
       const next = String(value);
       if (element && element.textContent !== next) element.textContent = next;
     };
-    this.hud.hpBar.style.width = `${Math.max(0, this.hp / this.maxHp) * 100}%`;
+    // Setting style.width on every frame triggers a style recalculation even when
+    // nothing changed, so only write when the displayed tenth-of-a-percent moves.
+    const width = (element, ratio) => {
+      if (!element) return;
+      const next = `${Math.round(Math.max(0, ratio) * 1000) / 10}%`;
+      if (element.style.width !== next) element.style.width = next;
+    };
+    width(this.hud.hpBar, this.hp / this.maxHp);
     text(this.hud.hpValue, Math.ceil(this.hp));
-    this.hud.mpBar.style.width = `${Math.max(0, this.mp / this.maxMp) * 100}%`;
+    width(this.hud.mpBar, this.mp / this.maxMp);
     text(this.hud.mpValue, Math.ceil(this.mp));
-    this.hud.mpBar.closest(".meter").classList.toggle("low", this.mp / this.maxMp < 0.25 && this.sceneMode !== this.formMode);
+    const nodes = this.cachedNodes || (this.cachedNodes = {
+      gameRoot: dom("game-root"),
+      touchControls: document.querySelector?.(".touch-controls") || null,
+      lowMeter: this.hud.mpBar?.closest?.(".meter") || null
+    });
+    nodes.lowMeter?.classList.toggle("low", this.mp / this.maxMp < 0.25 && this.sceneMode !== this.formMode);
     text(this.hud.crystals, this.practiceMode ? "演武 · 不计通关" : `灵印 ${this.crystalCount}/${this.level.crystalsRequired}`);
     text(this.hud.level, `Lv ${this.levelValue} · ${this.xp}/${this.nextXp}`);
     const weapon = this.getRuneWeapon?.();
@@ -2072,7 +2164,7 @@ class GameScene extends Phaser.Scene {
       if (button.dataset.action === "skill") button.setAttribute("aria-label", `${skillText}，消耗 ${core.cost} 灵力`);
     });
     const position = this.player?.x || this.level.start.x;
-    const zodiac = window.SHADOW_JUMP_ZODIAC[this.chapterIndex];
+    const zodiac = window.LIANGYI_ZODIAC[this.chapterIndex];
     const area = position < 1100 ? "渡口" : position < 2400 ? "两界回廊" : position < this.level.arenaStart ? "凌云阶" : "元辰坛";
     text(this.hud.chapter, `${String(this.chapterIndex + 1).padStart(2, "0")} / ${zodiac.chapterName} · ${area}`);
     let guide = "A / D 行走，K 二段跳；收集沿途五枚元辰灵印。";
@@ -2084,7 +2176,8 @@ class GameScene extends Phaser.Scene {
     if (this.won) guide = this.practiceMode ? "演武完成，回到本章历练即可收录元辰印。" : "元辰印已归位；继续下一章，重整两界秩序。";
     text(this.hud.guide, guide);
     const progress = this.won ? 100 : Math.round(Math.min(1, Math.max(0, (position - this.level.start.x) / (this.level.portal.x - this.level.start.x))) * 100);
-    if (this.hud.progress) {
+    if (this.hud.progress && this.hud.progress.dataset?.value !== String(progress)) {
+      if (this.hud.progress.dataset) this.hud.progress.dataset.value = String(progress);
       this.hud.progress.style.width = `${progress}%`;
       this.hud.progress.parentElement.setAttribute("aria-valuenow", String(progress));
     }
@@ -2093,9 +2186,8 @@ class GameScene extends Phaser.Scene {
     this.hud.pauseOverlay.inert = Boolean(this.helpOpen);
     if (this.helpOpen) this.hud.overlay.setAttribute("aria-hidden", "true");
     else this.hud.overlay.removeAttribute("aria-hidden");
-    const gameRoot = dom("game-root"), touchControls = document.querySelector(".touch-controls");
-    if (gameRoot) gameRoot.inert = !canInteract;
-    if (touchControls) touchControls.inert = !canInteract;
+    if (nodes.gameRoot) nodes.gameRoot.inert = !canInteract;
+    if (nodes.touchControls) nodes.touchControls.inert = !canInteract;
   }
 
   showMessage(text, ms) {
@@ -2184,5 +2276,5 @@ class GameScene extends Phaser.Scene {
 
 }
 
-window.ShadowJumpGameScene = GameScene;
-window.ShadowJumpRunes?.install(GameScene);
+window.LiangyiGameScene = GameScene;
+window.LiangyiRunes?.install(GameScene);

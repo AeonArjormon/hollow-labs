@@ -7,7 +7,7 @@ const vm = require("node:vm");
 const sandbox = { window: {} };
 vm.createContext(sandbox);
 vm.runInContext(fs.readFileSync(path.join(__dirname, "../src/rune-store.js"), "utf8"), sandbox);
-const RuneStore = sandbox.window.ShadowJumpRuneStore;
+const RuneStore = sandbox.window.LiangyiRuneStore;
 const copy = value => JSON.parse(JSON.stringify(value));
 
 function memory(initial = {}) {

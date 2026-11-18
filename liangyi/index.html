@@ -1,25 +1,26 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-skin="jade">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#102c2d">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23102c2d'/%3E%3Cpath d='M16 0a16 16 0 0 1 0 32 8 8 0 0 1 0-16 8 8 0 0 0 0-16z' fill='%23d8c38f'/%3E%3Ccircle cx='16' cy='8' r='2.6' fill='%23102c2d'/%3E%3Ccircle cx='16' cy='24' r='2.6' fill='%23d8c38f'/%3E%3C/svg%3E">
   <meta name="description" content="执剑巡天庭，持符入地府。化身巡界使，收集灵印，挑战十二生肖元辰。">
   <title>两仪行 · 十二元辰</title>
-  <link rel="stylesheet" href="styles.css?v=runes-live-1">
-  <script defer src="vendor/phaser.min.js"></script>
-  <script defer src="src/data/zodiac.js"></script>
-  <script defer src="src/data/level-01.js"></script>
-  <script defer src="src/art.js"></script>
-  <script defer src="src/zodiac-art.js"></script>
-  <script defer src="src/enemy-art.js"></script>
-  <script defer src="src/world-art.js"></script>
-  <link rel="stylesheet" href="rune-ui.css?v=runes-live-1">
-  <script defer src="src/rune-store.js?v=runes-live-1"></script>
-  <script defer src="src/rune-combat.js?v=runes-live-1"></script>
-  <script defer src="src/rune-ui.js?v=runes-live-1"></script>
-  <script defer src="src/game-scene.js?v=runes-live-1"></script>
-  <script defer src="src/main.js?v=runes-live-1"></script>
+  <link rel="stylesheet" href="styles.css?v=art-8">
+  <script defer src="vendor/phaser.min.js?v=art-8"></script>
+  <script defer src="src/data/zodiac.js?v=art-8"></script>
+  <script defer src="src/data/level-01.js?v=art-8"></script>
+  <script defer src="src/art.js?v=art-8"></script>
+  <script defer src="src/zodiac-art.js?v=art-8"></script>
+  <script defer src="src/enemy-art.js?v=art-8"></script>
+  <script defer src="src/world-art.js?v=art-8"></script>
+  <link rel="stylesheet" href="rune-ui.css?v=art-8">
+  <script defer src="src/rune-store.js?v=art-8"></script>
+  <script defer src="src/rune-combat.js?v=art-8"></script>
+  <script defer src="src/rune-ui.js?v=art-8"></script>
+  <script defer src="src/game-scene.js?v=art-8"></script>
+  <script defer src="src/main.js?v=art-8"></script>
 </head>
 <body>
   <main class="shell">
@@ -32,6 +33,7 @@
           <a class="art-preview-link" href="art-preview.html" target="_blank" rel="noopener" aria-label="打开巡界图鉴（新标签页）">图鉴 <span aria-hidden="true">↗</span></a>
           <button id="sound-toggle" type="button" aria-label="切换音效" aria-pressed="true" title="切换音效">音效 开</button>
           <button id="motion-toggle" type="button" aria-label="减少动态效果" aria-pressed="false" title="减少屏幕震动与动态效果">动态 开</button>
+          <button id="skin-toggle" type="button" aria-label="切换界面风格" title="切换界面风格：青玉 / 玄墨 / 赤霞">风格 · 青玉</button>
           <button id="help-toggle" type="button" aria-label="操作指南" aria-expanded="false" aria-controls="help-panel">指南 <span aria-hidden="true">?</span></button>
         </div>
       </div>
@@ -73,7 +75,7 @@
           <div class="intro-art">
             <div class="orbit orbit-one" aria-hidden="true"></div><div class="orbit orbit-two" aria-hidden="true"></div>
             <span class="art-star star-one" aria-hidden="true">✦</span><span class="art-star star-two" aria-hidden="true">✧</span>
-            <img src="assets/hero-portrait.svg" alt="巡界使的御剑与镇魂形态：玉簪长发、青白汉服与朱砂玄衣" width="560" height="430">
+            <img src="assets/hero-portrait.svg?v=art-8" alt="巡界使的御剑与镇魂形态：玉簪长发、青白汉服与朱砂玄衣" width="560" height="430">
             <div class="form-cards"><div class="form-card light-card"><span>剑</span><div><strong>御剑</strong><small>青衫御剑 · 玉清护体</small></div></div><div class="form-card shadow-card"><span>符</span><div><strong>镇魂</strong><small>玄衣镇魂 · 破阵突袭</small></div></div></div>
           </div>
           <div class="intro-controls controls"><span><kbd>A</kbd><kbd>D</kbd> 移动</span><span><kbd>K</kbd> 二段跳</span><span><kbd>J</kbd> 攻击</span><span><kbd>空格</kbd> 换两界</span><span><kbd>L</kbd> 换阴阳</span><span><kbd>Shift</kbd> 冲刺</span></div>

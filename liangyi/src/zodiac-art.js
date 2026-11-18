@@ -495,5 +495,5 @@
       scene.anims.create({key:spec.animation,frames:scene.anims.generateFrameNumbers(spec.texture,{start:0,end:FRAMES-1}),frameRate:spec.frameRate,repeat:-1});
     }
   }
-  window.ShadowJumpZodiacArt=Object.freeze({install,frameSize,footBaseline,render,bosses});
+  window.LiangyiZodiacArt=Object.freeze({install,frameSize,footBaseline,render,bosses});
 })();

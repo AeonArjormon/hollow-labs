@@ -2,12 +2,14 @@
 
 当前版本采用墨线勾勒、青玉与朱砂配色的国风 Canvas 美术。故事横跨天庭和地府，主角是巡界剑修，十二生肖星君分别镇守十二关。所有精灵在场景创建时绘制并缓存为透明纹理，后续直接复用，不额外下载角色图片。
 
+界面外壳另有三种可切换风格：青玉（默认）、玄墨、赤霞。风格只作用于 DOM 层——通过 `styles.css` 与 `rune-ui.css` 的令牌覆盖实现，并记录在 `liangyi-preferences` 的 `skin` 字段；画布内美术保持天庭/地府两套配色，不随界面风格变化。新增风格的做法是追加一段 `html[data-skin="…"]` 令牌覆盖，而不是复制整份样式表。
+
 ## 当前使用
 
 - `hero-portrait.svg`：开始界面的国风巡界剑修与两界背景插图。
-- `../src/art.js`：巡界使的御剑、镇魂两种形态，八组动作，以及飞剑。主角采用露出人脸的修长比例、黑发玉簪、交领汉服、宽袖、玉佩流苏与中国直剑。御剑为白衣青玉，镇魂为玄衣朱砂。`ShadowJumpArt.install(scene)` 注册纹理，`animations` 描述帧区间。
-- `../src/enemy-art.js`：云中纸鹤傀、提灯阴差、持盾天兵、冥火狐妖，分别拥有六帧行走循环。纸翼、灯笼、朱缨与狐尾随步态运动。`ShadowJumpEnemyArt.install(scene)` 注册精灵表与动画，`species` 提供纹理名、显示尺寸和帧率。
-- `../src/zodiac-art.js`：十二生肖星君的独立造型和六帧循环，使用 `ShadowJumpZodiacArt.install(scene)` 注册。造型包含生肖特征、国风法器与各自服饰，不共用单一 Boss 轮廓。
+- `../src/art.js`：巡界使的御剑、镇魂两种形态，八组动作，以及飞剑。主角采用露出人脸的修长比例、黑发玉簪、交领汉服、宽袖、玉佩流苏与中国直剑。御剑为白衣青玉，镇魂为玄衣朱砂。`LiangyiArt.install(scene)` 注册纹理，`animations` 描述帧区间。
+- `../src/enemy-art.js`：云中纸鹤傀、提灯阴差、持盾天兵、冥火狐妖，分别拥有六帧行走循环。纸翼、灯笼、朱缨与狐尾随步态运动。`LiangyiEnemyArt.install(scene)` 注册精灵表与动画，`species` 提供纹理名、显示尺寸和帧率。
+- `../src/zodiac-art.js`：十二生肖星君的独立造型和六帧循环，使用 `LiangyiZodiacArt.install(scene)` 注册。造型包含生肖特征、国风法器与各自服饰，不共用单一 Boss 轮廓。
 - `../src/data/zodiac.js`：十二元辰名称、守护领域、故事、关卡名、战斗招式和战斗提示。
 - `../src/world-art.js`：天庭、地府的远景图层与建筑，初始化时生成并复用，由场景负责视差移动。
 - `../src/game-scene.js`：平台、检查点、传送门、灵石、剑光和其他动态效果。
@@ -42,7 +44,7 @@
 
 ## 十二生肖星君
 
-Boss 使用 `128 × 128` 逻辑坐标、`256 × 256` 透明帧，六帧循环，足底基线 `232`。每位 Boss 的纹理、动画 key 与显示尺寸由 `ShadowJumpZodiacArt.bosses` 提供。原先的单张 `enemy-boss` 纹理已移除。
+Boss 使用 `128 × 128` 逻辑坐标、`256 × 256` 透明帧，六帧循环，足底基线 `232`。每位 Boss 的纹理、动画 key 与显示尺寸由 `LiangyiZodiacArt.bosses` 提供。原先的单张 `enemy-boss` 纹理已移除。
 
 | 生肖 id | 星君 |
 | --- | --- |
@@ -63,10 +65,10 @@ Boss 使用 `128 × 128` 逻辑坐标、`256 × 256` 透明帧，六帧循环，
 
 `../art-preview.html` 为独立开发图鉴。它并排展示两种主角形态的放大画面与实机尺寸，支持切换全部动作、暂停观察，并展示四类小怪和十二生肖星君的动态立绘、故事与战斗提示。页面直接调用游戏绘制接口，不依赖 Phaser：
 
-- `ShadowJumpArt.renderHero(ctx, form, action, step, count)`：逻辑 `96 × 96`。
-- `ShadowJumpEnemyArt.render(ctx, type, step)`：逻辑 `96 × 96`。
-- `ShadowJumpZodiacArt.render(ctx, id, step)`：逻辑 `128 × 128`。
+- `LiangyiArt.renderHero(ctx, form, action, step, count)`：逻辑 `96 × 96`。
+- `LiangyiEnemyArt.render(ctx, type, step)`：逻辑 `96 × 96`。
+- `LiangyiZodiacArt.render(ctx, id, step)`：逻辑 `128 × 128`。
 
 ## 早期素材
 
-`shadow-jump-sprites.svg`、`raster/` 下的旧背景／人物／敌人／羽刃 PNG，以及 `../tools/generate_raster_assets.py` 仅保留作为历史参考。当前游戏不再加载这些 PNG，也不依赖该生成脚本。
+`liangyi-sprites.svg`、`raster/` 下的旧背景／人物／敌人／羽刃 PNG，以及 `../tools/generate_raster_assets.py` 仅保留作为历史参考。当前游戏不再加载这些 PNG，也不依赖该生成脚本。

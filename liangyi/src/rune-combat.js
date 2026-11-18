@@ -173,7 +173,7 @@
     else{const heavy=type==="cleaver";g.moveTo(-7,20);g.lineTo(43,-26-charge*20);g.lineTo(heavy?61:48,heavy?-30-charge*20:-20);g.lineTo(8,19);if(["dagger","twin","claw","mirror","scythes"].includes(type)){g.moveTo(-22,4);g.lineTo(13,-29);g.lineTo(17,-21);g.lineTo(-16,10);}}
     g.strokePath();if(s.runeCharge){g.lineStyle(4,c,.9);g.beginPath();g.arc(-18,-47,18,-Math.PI/2,-Math.PI/2+Math.PI*2*charge,false);g.strokePath();}
   }
-  function companionTick(s,dt){const id=slots(s)[3],key=id?`${s.formMode}:${id}`:null;if(key!==s.runeCompanionKey){s.runeCompanionVisual?.destroy();s.runeCompanionVisual=null;s.runeCompanionKey=key;s.runeCompanionTimer=1.2;if(id){const art=window.ShadowJumpZodiacArt?.bosses[id];if(art&&s.add?.image){s.runeCompanionVisual=s.add.image(s.player.x,s.player.y,art.texture,0).setDisplaySize(64,64).setTint(COLORS[s.formMode]).setOrigin(.5).setDepth(36);}else if(s.add?.text){s.runeCompanionVisual=s.add.text(s.player.x,s.player.y,"",{fontFamily:"serif",fontSize:"20px",fontStyle:"bold",color:s.formMode==="light"?"#ffe6a0":"#f7aaa0",backgroundColor:s.formMode==="light"?"#254340":"#49343f",padding:{x:7,y:4}}).setOrigin(.5).setDepth(36);s.runeCompanionVisual.runeAsText=true;}}}
+  function companionTick(s,dt){const id=slots(s)[3],key=id?`${s.formMode}:${id}`:null;if(key!==s.runeCompanionKey){s.runeCompanionVisual?.destroy();s.runeCompanionVisual=null;s.runeCompanionKey=key;s.runeCompanionTimer=1.2;if(id){const art=window.LiangyiZodiacArt?.bosses[id];if(art&&s.add?.image){s.runeCompanionVisual=s.add.image(s.player.x,s.player.y,art.texture,0).setDisplaySize(64,64).setTint(COLORS[s.formMode]).setOrigin(.5).setDepth(36);}else if(s.add?.text){s.runeCompanionVisual=s.add.text(s.player.x,s.player.y,"",{fontFamily:"serif",fontSize:"20px",fontStyle:"bold",color:s.formMode==="light"?"#ffe6a0":"#f7aaa0",backgroundColor:s.formMode==="light"?"#254340":"#49343f",padding:{x:7,y:4}}).setOrigin(.5).setDepth(36);s.runeCompanionVisual.runeAsText=true;}}}
     if(!id)return;const v=s.runeCompanionVisual;if(v){if(v.runeAsText)v.setText(`${ANIMALS[IDS.indexOf(id)]}灵`);v.setFlipX?.(s.player.flipX);v.setPosition(s.player.x+(s.player.flipX?43:-43),s.player.y-36+Math.sin((s.visualTime||0)*.004)*4);v.setAlpha(.83);}
     s.runeCompanionTimer-=dt;if(s.runeCompanionTimer>0)return;const target=nearest(s,s.player.x,s.player.y,420);if(!target)return;s.runeCompanionTimer=companionInterval(id,s.formMode);const ctx=snapshot(s,"companion",0,true);ring(s,target.sprite.x,target.sprite.y,24,s.formMode,220);hit(s,target,companionDamage(id,s.formMode),ctx);
   }
@@ -210,5 +210,5 @@
       companionTick(this,dt);drawHeld(this);
     };
   }
-  window.ShadowJumpRunes={install,getEntry,weapons:WEAPONS};
+  window.LiangyiRunes={install,getEntry,weapons:WEAPONS};
 })();

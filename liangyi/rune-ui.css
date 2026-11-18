@@ -22,6 +22,32 @@
 }
 .rune-dialog::backdrop { background: #051717cc; backdrop-filter: blur(8px); }
 .rune-dialog[data-face="shadow"] { --rune-accent: #e5b69b; --rune-jade: #d3a98f; --rune-line: #d3a98f33; }
+
+/* Skins restyle the six-path disc too, otherwise it stays jade while the rest of
+   the UI changes. Each block sits after the base rules so it wins on specificity. */
+html[data-skin="ink"] .rune-dialog {
+  --rune-accent: #aec8e6;
+  --rune-ink: #e4eaf4;
+  --rune-muted: #9dabc0;
+  --rune-line: #aec8e633;
+  --rune-jade: #8fb2d8;
+  border-color: #5b6a83;
+  background: radial-gradient(ellipse at 20% 35%, #1e2d4630, transparent 48%), linear-gradient(125deg, #1a2130, #10151e 68%);
+  box-shadow: 0 30px 110px #0009, inset 0 0 0 5px #cdd8ea0b;
+}
+html[data-skin="ink"] .rune-dialog[data-face="shadow"] { --rune-accent: #dda3ab; --rune-jade: #c48d95; --rune-line: #dda3ab33; }
+
+html[data-skin="ember"] .rune-dialog {
+  --rune-accent: #f0c48c;
+  --rune-ink: #f6e9d8;
+  --rune-muted: #bda18c;
+  --rune-line: #f0c48c33;
+  --rune-jade: #e0a06a;
+  border-color: #96603c;
+  background: radial-gradient(ellipse at 20% 35%, #55291a33, transparent 48%), linear-gradient(125deg, #3a2116, #1d100c 68%);
+  box-shadow: 0 30px 110px #0009, inset 0 0 0 5px #f5d3a60b;
+}
+html[data-skin="ember"] .rune-dialog[data-face="shadow"] { --rune-accent: #e59a86; --rune-jade: #cf8570; --rune-line: #e59a8633; }
 .rune-heading { display: flex; justify-content: space-between; gap: 15px; padding: 28px 30px 17px; border-bottom: 1px solid var(--rune-line); }
 .rune-eyebrow { color: var(--rune-accent); font-size: 9px; letter-spacing: 3px; }
 .rune-eyebrow > span { margin-inline: 7px; opacity: .6; }
